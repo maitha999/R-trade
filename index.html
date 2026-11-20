@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="M-Trade">
+    <meta name="apple-mobile-web-app-title" content="M TRADE">
     <meta name="theme-color" content="#050505">
     <link rel="apple-touch-icon" href="https://r-trade.vip/icon-only.png">
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
-    <title>Maitha Trade | R-Trade.VIP</title>
+    <title>M TRADE | R-Trade.VIP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -138,19 +138,17 @@
     <header class="app-header px-4">
         <div class="flex items-center justify-between max-w-5xl mx-auto gap-2">
             <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-lg bg-maitha text-black flex items-center justify-center font-black text-base tracking-tighter shrink-0">
-                    MT
-                </div>
+                <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-10 h-10 rounded-lg border border-maitha object-cover bg-black shrink-0">
                 <div>
                     <div class="flex items-center gap-1.5">
                         <h1 class="font-black text-base tracking-wide text-white uppercase leading-none">
-                            Maitha <span class="text-maitha">Trade</span>
+                            M <span class="text-maitha">TRADE</span>
                         </h1>
                         <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold text-maitha uppercase tracking-wider" style="background: rgba(245,196,0,0.14); border: 1px solid rgba(245,196,0,0.4);">VIP</span>
                     </div>
                     <div class="flex items-center gap-1.5 mt-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-maitha"></span>
-                        <span class="text-[10px] font-bold text-zinc-400">R-Trade.VIP • Bu Maitha</span>
+                        <span class="text-[10px] font-bold text-zinc-400">R-Trade.VIP</span>
                     </div>
                 </div>
             </div>
@@ -170,7 +168,7 @@
         <!-- شريط التوقيت والتاريخ (الإمارات والسعودية - نظام 12 ساعة) -->
         <div class="bg-panel border border-line rounded-lg px-3.5 py-2.5 space-y-2">
             <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-line">
-                <span class="text-zinc-400 font-bold">📅 تاريخ اليوم:</span>
+                <span class="text-zinc-400 font-bold">📅 التاريخ اليوم:</span>
                 <span id="currentDateAr" class="text-zinc-200 font-extrabold">--</span>
             </div>
             <div class="flex items-center justify-between">
@@ -188,57 +186,59 @@
             </div>
         </div>
 
-        <!-- رادار الخبر القادم + بوصلة السوق -->
-        <div id="botAlertBanner" class="bg-panel border border-line rounded-lg px-3.5 py-3 space-y-2.5 transition" style="border-right: 4px solid #F5C400;">
-            <div id="nextNewsRadar" class="flex flex-wrap items-center justify-between gap-2.5">
-                <div class="flex-1 min-w-[200px]">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span id="radarBadge" class="px-2 py-0.5 rounded text-[10px] font-black text-black bg-maitha">الخبر القادم</span>
-                        <span id="radarStrength" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-zinc-300 bg-surface border border-line">جاري الفحص...</span>
-                        <span id="radarUAETime" class="text-[10px] font-extrabold text-maitha mono-num">🇦🇪 --:--</span>
-                    </div>
-                    <div class="flex items-start gap-2 mt-1.5">
-                        <span id="radarFlag" class="text-base leading-none mt-0.5">🌐</span>
-                        <div>
-                            <p id="radarTitleAr" class="text-xs font-black text-white leading-snug">جاري جلب أقرب خبر اقتصادي قادم...</p>
-                            <p id="radarTitle" class="text-[10px] font-semibold text-zinc-400 leading-snug mt-0.5" dir="ltr"></p>
+        <!-- ================= 1. قسم الرئيسية (رادار الأخبار + الجلسات + الشارت) ================= -->
+        <section id="tab-home" class="space-y-4">
+
+            <!-- رادار الأخبار (يظهر في الرئيسية فقط) -->
+            <div id="botAlertBanner" class="bg-panel border border-line rounded-lg px-3.5 py-3 space-y-2.5 transition" style="border-right: 4px solid #F5C400;">
+                <div id="nextNewsRadar" class="flex flex-wrap items-center justify-between gap-2.5">
+                    <div class="flex-1 min-w-[200px]">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span id="radarBadge" class="px-2 py-0.5 rounded text-[10px] font-black text-black bg-maitha">الخبر القادم</span>
+                            <span id="radarStrength" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-zinc-300 bg-surface border border-line">جاري الفحص...</span>
+                            <span id="radarUAETime" class="text-[10px] font-extrabold text-maitha mono-num">🇦🇪 --:--</span>
+                        </div>
+                        <div class="flex items-start gap-2 mt-1.5">
+                            <span id="radarFlag" class="text-base leading-none mt-0.5">🌐</span>
+                            <div>
+                                <p id="radarTitleAr" class="text-xs font-black text-white leading-snug">جاري جلب أقرب خبر اقتصادي قادم...</p>
+                                <p id="radarTitle" class="text-[10px] font-semibold text-zinc-400 leading-snug mt-0.5"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex items-center gap-2">
-                    <div class="px-2.5 py-1.5 rounded-lg bg-surface border border-line text-center min-w-[96px]">
-                        <span class="text-[9px] font-bold text-zinc-400 block">المتبقي للخبر</span>
-                        <span id="radarCountdown" class="text-xs font-black text-maitha mono-num">--:--:--</span>
+                    <div class="flex items-center gap-2">
+                        <div id="radarCountdownBox" class="px-2.5 py-1.5 rounded-lg bg-surface border border-line text-center min-w-[96px]">
+                            <span class="text-[9px] font-bold text-zinc-400 block">المتبقي للخبر</span>
+                            <span id="radarCountdown" class="text-xs font-black text-maitha mono-num">--:--:--</span>
+                        </div>
+                        <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition">
+                            <span id="alarmIcon">🔕</span>
+                            <span id="alarmText">تنبيه</span>
+                        </button>
                     </div>
-                    <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition">
-                        <span id="alarmIcon">🔕</span>
-                        <span id="alarmText">تنبيه</span>
-                    </button>
                 </div>
-            </div>
 
-            <div id="smartRiskBar" class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[11px]">
-                <div class="flex items-center gap-1.5 flex-1">
-                    <span class="text-maitha font-black whitespace-nowrap">🛡️ بوصلة السوق:</span>
-                    <span id="smartMarketAdvice" class="text-zinc-300 font-bold leading-snug">
-                        السيولة مستقرة — يُنصح بالالتزام بإدارة رأس المال ووضع وقف الخسارة.
+                <!-- حالة التذبذب والمخاطرة -->
+                <div id="smartRiskBar" class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                    <div class="flex items-center gap-1.5 flex-1">
+                        <span class="text-maitha font-black whitespace-nowrap">⚡ حالة التذبذب:</span>
+                        <span id="smartMarketAdvice" class="text-zinc-300 font-bold leading-snug">
+                            السوق مستقر — يُنصح بالالتزام بإدارة رأس المال ووضع وقف الخسارة.
+                        </span>
+                    </div>
+                    <span id="smartRiskBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400 whitespace-nowrap" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">
+                        مخاطرة طبيعية
                     </span>
                 </div>
-                <span id="smartRiskBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400 whitespace-nowrap" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">
-                    مخاطرة طبيعية
-                </span>
             </div>
-        </div>
 
-        <!-- ================= 1. قسم الرئيسية (الجلسات + الشارت والمؤشرات) ================= -->
-        <section id="tab-home" class="space-y-4">
-            <!-- الجلسات العالمية المطوّرة -->
-            <div class="bg-panel border border-line rounded-lg p-3.5 space-y-3">
+            <!-- جلسات الأسواق العالمية (مربعات رباعية مرتبة للجوال) -->
+            <div class="bg-panel border border-line rounded-lg p-3 space-y-2.5">
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
                     <div class="flex items-center gap-2">
                         <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
-                        <span class="text-xs font-black text-white">جلسات السوق العالمية</span>
+                        <span class="text-xs font-black text-white">جلسات الأسواق العالمية</span>
                     </div>
                     <div id="nextSessionBanner" class="px-2.5 py-1 rounded text-[10px] font-extrabold text-black bg-maitha">
                         جاري الحساب...
@@ -246,25 +246,26 @@
                 </div>
 
                 <!-- دليل ألوان الجلسات -->
-                <div class="flex flex-wrap items-center justify-between gap-2 px-2.5 py-1.5 rounded bg-surface border border-line text-[10px] font-bold">
-                    <span class="flex items-center gap-1.5 text-emerald-400">
-                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(16,185,129,0.3); border: 1px solid #10B981;"></span>
+                <div class="flex flex-wrap items-center justify-between gap-1.5 px-2 py-1.5 rounded bg-surface border border-line text-[9px] font-bold">
+                    <span class="flex items-center gap-1 text-emerald-400">
+                        <span class="w-2 h-2 rounded-sm" style="background: rgba(16,185,129,0.35); border: 1px solid #10B981;"></span>
                         مفتوح / جديد
                     </span>
-                    <span class="flex items-center gap-1.5 text-amber-400">
-                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(245,158,11,0.28); border: 1px solid #F59E0B;"></span>
-                        تداخل جلستين (سيولة عالية)
+                    <span class="flex items-center gap-1 text-amber-400">
+                        <span class="w-2 h-2 rounded-sm" style="background: rgba(245,158,11,0.3); border: 1px solid #F59E0B;"></span>
+                        تداخل جلستين
                     </span>
-                    <span class="flex items-center gap-1.5 text-rose-400">
-                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(153,27,27,0.45); border: 1px solid #DC2626;"></span>
+                    <span class="flex items-center gap-1 text-rose-400">
+                        <span class="w-2 h-2 rounded-sm" style="background: rgba(153,27,27,0.45); border: 1px solid #DC2626;"></span>
                         مغلق / عطلة
                     </span>
                 </div>
 
-                <div id="sessionsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5"></div>
+                <!-- شبكة 2x2 على الجوال و 4 أعمدة على الشاشات الكبيرة -->
+                <div id="sessionsContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
 
                 <!-- ملاحظة الإغلاق اليومي والويكند -->
-                <div id="marketStatusNote" class="rounded-md px-3 py-2 text-[11px] font-bold bg-surface border border-line text-zinc-300 flex flex-wrap items-center justify-between gap-2">
+                <div id="marketStatusNote" class="rounded-md px-3 py-2 text-[10px] font-bold bg-surface border border-line text-zinc-300 flex flex-wrap items-center justify-between gap-1.5">
                     <span>⏳ جاري حساب حالة الإغلاق اليومي وعطلة الأسبوع...</span>
                 </div>
             </div>
@@ -290,28 +291,9 @@
                 </div>
                 <div id="tv_chart_container" class="w-full" style="height: 440px;"></div>
             </div>
-
-            <!-- المؤشرات المختصرة -->
-            <div class="grid grid-cols-3 gap-2.5">
-                <div class="bg-panel border border-line rounded-lg p-3">
-                    <span class="text-[10px] text-zinc-500 font-bold block">RSI (14)</span>
-                    <span id="indRsi" class="text-lg font-extrabold text-maitha mono-num mt-0.5 block">58.4</span>
-                    <span class="text-[10px] text-emerald-400 font-bold">زخم إيجابي</span>
-                </div>
-                <div class="bg-panel border border-line rounded-lg p-3">
-                    <span class="text-[10px] text-zinc-500 font-bold block">EMA 200</span>
-                    <span id="indEma" class="text-lg font-extrabold text-emerald-400 mt-0.5 block">شراء</span>
-                    <span class="text-[10px] text-zinc-400 font-semibold">فوق المتوسط</span>
-                </div>
-                <div class="bg-panel border border-line rounded-lg p-3">
-                    <span class="text-[10px] text-zinc-500 font-bold block">السيولة</span>
-                    <span id="indVol" class="text-lg font-extrabold text-white mt-0.5 block">عالية</span>
-                    <span class="text-[10px] text-maitha font-semibold">جلسة نشطة</span>
-                </div>
-            </div>
         </section>
 
-        <!-- ================= 2. قسم الأهداف (قريباً + خارطة المميزات + حاسبة اللوت) ================= -->
+        <!-- ================= 2. قسم الأهداف (قريباً + حاسبة اللوت) ================= -->
         <section id="tab-signals" class="hidden space-y-4">
             <div class="flex items-center justify-between border-b border-line pb-2.5">
                 <div class="flex items-center gap-2">
@@ -323,7 +305,6 @@
                 </button>
             </div>
 
-            <!-- حاسبة اللوت وإدارة المخاطر -->
             <div id="riskCalcPanel" class="hidden bg-panel border border-maitha rounded-lg p-3.5 space-y-3">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-black text-maitha">حاسبة إدارة المخاطر وحجم اللوت</span>
@@ -355,11 +336,10 @@
                 </div>
             </div>
 
-            <!-- بطاقة الإعلان الاحترافي عن التحديثات القادمة -->
             <div class="bg-panel border border-line rounded-xl p-5 space-y-4" style="border-top: 3px solid #F5C400;">
                 <div class="text-center space-y-2">
                     <span class="inline-block px-3 py-1 rounded-full text-[11px] font-black text-black bg-maitha">
-                        🚀 قريباً في Maitha Trade VIP
+                        🚀 قريباً في M TRADE VIP
                     </span>
                     <h3 class="text-base font-black text-white">
                         نعمل على تجهيز منظومة تداول متكاملة تليق بكم
@@ -449,7 +429,13 @@
                     <button onclick="setCalendarFilter('usd')" id="flt-usd" class="cal-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">🇺🇸 الدولار USD</button>
                 </div>
 
-                <div id="economicCalendarList" class="space-y-4">
+                <!-- شريط ملخص عدد الأخبار -->
+                <div id="newsCountSummary" class="bg-panel border border-line rounded-lg px-3.5 py-2 flex items-center justify-between text-[11px] font-bold">
+                    <span class="text-zinc-400">📊 إجمالي الأخبار في هذا القسم:</span>
+                    <span id="newsTotalCountBadge" class="px-2.5 py-0.5 rounded bg-maitha text-black font-black mono-num">0 خبر</span>
+                </div>
+
+                <div id="economicCalendarList" class="space-y-3">
                     <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">
                         جاري جلب البيانات الاقتصادية الحقيقية...
                     </div>
@@ -471,26 +457,25 @@
             </div>
         </section>
 
-        <!-- ================= 4. قسم التنزيل (تطبيق M-Trade للآيفون والأندرويد) ================= -->
+        <!-- ================= 4. قسم التنزيل (تطبيق M TRADE للآيفون والأندرويد) ================= -->
         <section id="tab-download" class="hidden space-y-4">
             <div class="flex items-center justify-between border-b border-line pb-2.5">
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
-                    <h2 class="text-sm font-black text-white">تحميل تطبيق M-Trade</h2>
+                    <h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2>
                 </div>
                 <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.0</span>
             </div>
 
-            <!-- بطاقة هوية التطبيق -->
             <div class="bg-panel border border-line rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4" style="border-top: 3px solid #F5C400;">
                 <div class="flex items-center gap-3.5">
-                    <img src="https://r-trade.vip/icon-only.png" onerror="this.style.display='none'" alt="M-Trade" class="w-14 h-14 rounded-2xl border border-maitha object-cover bg-black shrink-0">
+                    <img src="https://r-trade.vip/icon-only.png" onerror="this.style.display='none'" alt="M TRADE" class="w-14 h-14 rounded-2xl border border-maitha object-cover bg-black shrink-0">
                     <div>
                         <div class="flex items-center gap-2">
-                            <h3 class="text-base font-black text-white">تطبيق M-Trade الرسمي</h3>
+                            <h3 class="text-base font-black text-white">تطبيق M TRADE الرسمي</h3>
                             <span class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400" style="background: rgba(16,185,129,0.14); border: 1px solid rgba(16,185,129,0.35);">نسخة مستقرة</span>
                         </div>
-                        <p class="text-xs text-zinc-400 mt-1">وصول أسرع للشارت، جلسات السوق، رادار الأخبار، وتنبيهات التداول المباشرة.</p>
+                        <p class="text-xs text-zinc-400 mt-1">وصول أسرع للشارت، جلسات الأسواق، رادار الأخبار، وتنبيهات التداول المباشرة.</p>
                         <div class="flex items-center gap-3 mt-2 text-[10px] text-zinc-400 font-bold mono-num">
                             <span>الإصدار: <b class="text-maitha">v1.0</b></span>
                             <span>•</span>
@@ -502,7 +487,6 @@
                 </div>
             </div>
 
-            <!-- بطاقات التحميل (آيفون + أندرويد) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 <!-- بطاقة الآيفون iOS -->
                 <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
@@ -586,7 +570,7 @@
                     </li>
                     <li class="flex items-start gap-2.5">
                         <span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span>
-                        <span>اضغط <b class="text-white">Install (تثبيت)</b> مرة أخرى لتأكيد التثبيت، وستظهر أيقونة <b class="text-maitha">M-Trade</b> فوراً على الشاشة الرئيسية.</span>
+                        <span>اضغط <b class="text-white">Install (تثبيت)</b> مرة أخرى لتأكيد التثبيت، وستظهر أيقونة <b class="text-maitha">M TRADE</b> فوراً على الشاشة الرئيسية.</span>
                     </li>
                 </ol>
             </div>
@@ -597,8 +581,6 @@
             <p class="text-[11px] font-bold text-zinc-500">
                 جميع الحقوق محفوظة © 2026 لدى
                 <span class="text-maitha font-extrabold">R-Trade.VIP</span>
-                <span class="text-zinc-600 mx-1">|</span>
-                <span class="text-zinc-300 font-extrabold">Bu Maitha</span>
             </p>
         </footer>
     </main>
@@ -815,7 +797,7 @@
             const m = Math.floor((safe % 3600) / 60);
             const s = safe % 60;
             const hms = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            return d > 0 ? `${d} يوم ${hms}` : hms;
+            return d > 0 ? `${d}ي ${hms}` : hms;
         }
 
         function getTimeZoneOffsetHours(dateObj, timeZone) {
@@ -861,8 +843,6 @@
                 }).format(now);
             }
 
-            updateNextNewsRadar(now);
-
             const uae = getTimePartsInTZ(now, 'Asia/Dubai');
             const ny = getTimePartsInTZ(now, 'America/New_York');
             const nowSec = uae.hour * 3600 + uae.minute * 60 + uae.second;
@@ -884,6 +864,8 @@
             const nyRolloverUAE = getSessionHoursInUAE(now, 'America/New_York', 17, 18);
             const rolloverOpenUAE = formatHourTo12(nyRolloverUAE.openH);
             const rolloverOpenKSA = formatHourTo12((nyRolloverUAE.openH + 23) % 24);
+
+            updateNextNewsRadar(now, isWeekendClosed, rolloverOpenUAE, rolloverOpenKSA);
 
             const sydneyH = getSessionHoursInUAE(now, 'Australia/Sydney', 8, 17);
             const tokyoH  = getSessionHoursInUAE(now, 'Asia/Tokyo', 9, 18);
@@ -946,49 +928,49 @@
 
                 if (!s.isOpen || isWeekendClosed) {
                     cardStyle = 'background: linear-gradient(145deg, rgba(127, 29, 29, 0.30) 0%, #11090A 100%); border: 1px solid rgba(220, 38, 38, 0.45);';
-                    statusBadge = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-rose-300" style="background: rgba(220,38,38,0.22); border: 1px solid rgba(220,38,38,0.4);">مغلق</span>';
+                    statusBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-rose-300" style="background: rgba(220,38,38,0.22); border: 1px solid rgba(220,38,38,0.4);">مغلق</span>';
                     barColor = '#7F1D1D';
                     timerLine = isWeekendClosed
-                        ? `<span class="text-rose-300">عطلة نهاية الأسبوع • يفتح بعد: <b class="mono-num text-white">${formatCountdownHMS(weekendReopenSec)}</b></span>`
-                        : `<span class="text-rose-300">يفتح بعد: <b class="text-maitha mono-num">${formatCountdownHMS(s.remainingSec)}</b></span>`;
+                        ? `<span class="text-rose-300">يفتح بعد: <b class="mono-num text-white">${formatCountdownHMS(weekendReopenSec)}</b></span>`
+                        : `<span class="text-rose-300">يفتح: <b class="text-maitha mono-num">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 } else if (isOverlap) {
                     cardStyle = 'background: linear-gradient(145deg, rgba(180, 83, 9, 0.25) 0%, #14110B 100%); border: 1px solid rgba(245, 158, 11, 0.55);';
-                    statusBadge = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-amber-300" style="background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.45);">🔥 تداخل جلستين</span>';
+                    statusBadge = '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-amber-300" style="background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.45);">🔥 تداخل</span>';
                     barColor = '#F59E0B';
-                    timerLine = `<span class="text-amber-300">يُغلق بعد: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
+                    timerLine = `<span class="text-amber-300">يُغلق: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 } else {
                     const isNewlyOpened = s.elapsedSec <= 3600;
                     cardStyle = 'background: linear-gradient(145deg, rgba(6, 95, 70, 0.28) 0%, #09120E 100%); border: 1px solid rgba(16, 185, 129, 0.5);';
                     statusBadge = isNewlyOpened
-                        ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-300" style="background: rgba(16,185,129,0.22); border: 1px solid rgba(16,185,129,0.45);">✨ فُتحت حديثاً</span>'
-                        : '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-300" style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4);">🟢 مفتوح</span>';
+                        ? '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-emerald-300" style="background: rgba(16,185,129,0.22); border: 1px solid rgba(16,185,129,0.45);">✨ جديد</span>'
+                        : '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-emerald-300" style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4);">🟢 مفتوح</span>';
                     barColor = '#10B981';
-                    timerLine = `<span class="text-emerald-300">يُغلق بعد: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
+                    timerLine = `<span class="text-emerald-300">يُغلق: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 }
 
                 return `
-                    <div class="rounded-lg p-2.5 space-y-1.5 transition" style="${cardStyle}">
+                    <div class="rounded-lg p-2 space-y-1 transition" style="${cardStyle}">
                         <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-extrabold text-white flex items-center gap-1.5">
+                            <span class="text-[11px] font-extrabold text-white flex items-center gap-1">
                                 <span>${s.flag}</span>
                                 <span>${s.name}</span>
                             </span>
                             ${statusBadge}
                         </div>
-                        <div class="space-y-0.5 text-[10px] text-zinc-300">
+                        <div class="space-y-0.5 text-[9px] text-zinc-300">
                             <div class="flex items-center justify-between">
-                                <span class="text-zinc-400">🇦🇪 الإمارات</span>
-                                <span class="font-bold"><b class="mono-num">${openUAE}</b> ← <b class="mono-num">${closeUAE}</b></span>
+                                <span class="text-zinc-400">🇦🇪</span>
+                                <span class="font-bold mono-num">${openUAE} ← ${closeUAE}</span>
                             </div>
                             <div class="flex items-center justify-between">
-                                <span class="text-zinc-400">🇸🇦 السعودية</span>
-                                <span class="font-bold"><b class="mono-num">${openKSA}</b> ← <b class="mono-num">${closeKSA}</b></span>
+                                <span class="text-zinc-400">🇸🇦</span>
+                                <span class="font-bold mono-num">${openKSA} ← ${closeKSA}</span>
                             </div>
                         </div>
                         <div class="w-full h-1 rounded-full overflow-hidden bg-black/40">
                             <div class="h-full transition-all" style="width: ${s.isOpen ? s.progressPct.toFixed(1) : 0}%; background: ${barColor};"></div>
                         </div>
-                        <div class="text-[10px] font-bold pt-0.5">${timerLine}</div>
+                        <div class="text-[9px] font-bold pt-0.5 truncate">${timerLine}</div>
                     </div>
                 `;
             }).join('');
@@ -1022,12 +1004,12 @@
             if (noteEl) {
                 if (isWeekendClosed) {
                     noteEl.innerHTML = `
-                        <span class="text-rose-300">⛔ <b>إغلاق عطلة نهاية الأسبوع:</b> أسواق الفوركس والذهب مغلقة حالياً وتفتح يوم الإثنين الساعة <b class="text-white mono-num">${rolloverOpenUAE} 🇦🇪</b> (<b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b>).</span>
-                        <span class="text-maitha">العملات الرقمية (BTC) تعمل 24/7</span>
+                        <span class="text-rose-300">⛔ <b>عطلة نهاية الأسبوع:</b> تفتح الأسواق يوم الإثنين <b class="text-white mono-num">${rolloverOpenUAE} 🇦🇪</b> (<b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b>).</span>
+                        <span class="text-maitha">BTC يعمل 24/7</span>
                     `;
                 } else {
                     noteEl.innerHTML = `
-                        <span>📌 <b>الإغلاق اليومي للسوق (Rollover):</b> الساعة <b class="text-maitha mono-num">${rolloverOpenUAE} 🇦🇪</b> | <b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b> (تجنب التداول خلال ساعة الإغلاق لارتفاع السبريد).</span>
+                        <span>📌 <b>الإغلاق اليومي (Rollover):</b> <b class="text-maitha mono-num">${rolloverOpenUAE} 🇦🇪</b> | <b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b> (ارتفاع السبريد).</span>
                     `;
                 }
             }
@@ -1139,7 +1121,7 @@
             return { strength, verdict, cardStyle, statusTag, flag: flags[country] || '🌐', country, arTitle, isFinished };
         }
 
-        function updateNextNewsRadar(now) {
+        function updateNextNewsRadar(now, isWeekendClosed = false, rolloverOpenUAE = '', rolloverOpenKSA = '') {
             const badgeEl = document.getElementById('radarBadge');
             const strengthEl = document.getElementById('radarStrength');
             const timeEl = document.getElementById('radarUAETime');
@@ -1147,23 +1129,71 @@
             const titleEl = document.getElementById('radarTitle');
             const titleArEl = document.getElementById('radarTitleAr');
             const cdEl = document.getElementById('radarCountdown');
-            const cardCdEl = document.getElementById('nextCardLiveCountdown');
+            const cdBoxEl = document.getElementById('radarCountdownBox');
+            const adviceEl = document.getElementById('smartMarketAdvice');
+            const riskBadgeEl = document.getElementById('smartRiskBadge');
+
             if (!titleArEl || !cdEl) return;
 
+            const allEvents = appState.economicEvents || [];
             const nowMs = now.getTime();
-            const upcoming = (appState.economicEvents || [])
+            const upcoming = allEvents
                 .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
                 .filter(item => !isNaN(item.ts) && item.ts > nowMs)
                 .sort((a, b) => a.ts - b.ts);
 
             if (upcoming.length === 0) {
+                // إخفاء خانة المتبقي للخبر عند عدم وجود أخبار قادمة
+                if (cdBoxEl) cdBoxEl.classList.add('hidden');
+
+                const finished = allEvents
+                    .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
+                    .filter(item => !isNaN(item.ts) && item.ts <= nowMs)
+                    .sort((a, b) => b.ts - a.ts);
+
                 badgeEl.style.background = '#F5C400';
                 badgeEl.style.color = '#000000';
-                badgeEl.textContent = 'رادار الأخبار';
-                titleArEl.textContent = 'لا توجد أخبار اقتصادية قادمة حالياً (أو السوق في عطلة)';
-                cdEl.textContent = '--:--:--';
+                badgeEl.textContent = `ملخص الأخبار (${allEvents.length} خبر)`;
+
+                if (finished.length > 0) {
+                    const lastEv = finished[0].ev;
+                    const dt = formatEventDateTime(lastEv.date);
+                    const info = analyzeEconomicEvent(lastEv, true, false);
+                    flagEl.textContent = info.flag;
+                    strengthEl.textContent = `آخر خبر صدر`;
+                    strengthEl.style.cssText = 'background:rgba(244,63,94,0.16); color:#FDA4AF; border:1px solid rgba(244,63,94,0.35);';
+                    timeEl.textContent = `🇦🇪 ${dt.uaeTime} | 🇸🇦 ${dt.ksaTime}`;
+                    titleArEl.textContent = `آخر خبر: ${info.arTitle} (${info.country})`;
+                    if (titleEl) {
+                        titleEl.textContent = isWeekendClosed
+                            ? `ننتظر افتتاح السوق يوم الإثنين (${rolloverOpenUAE} 🇦🇪) لصدور أجندة الأسبوع الجديد.`
+                            : `انتهت أخبار اليوم — ننتظر افتتاح جلسة السوق القادمة لتحديث الأجندة.`;
+                    }
+                } else {
+                    flagEl.textContent = '📅';
+                    strengthEl.textContent = isWeekendClosed ? 'عطلة السوق' : 'بانتظار الأجندة';
+                    strengthEl.style.cssText = 'background:#18181B; color:#A1A1AA; border:1px solid #2E2E32;';
+                    timeEl.textContent = `🇦🇪 ${format12HourTime(now, 'Asia/Dubai', false)}`;
+                    titleArEl.textContent = `إجمالي الأخبار المسجلة: ${allEvents.length} • ننتظر افتتاح السوق يوم الإثنين`;
+                    if (titleEl) titleEl.textContent = `يفتح السوق الساعة ${rolloverOpenUAE} بتوقيت الإمارات (${rolloverOpenKSA} بتوقيت السعودية).`;
+                }
+
+                if (adviceEl) {
+                    adviceEl.textContent = isWeekendClosed
+                        ? 'السوق في عطلة نهاية الأسبوع — راقب افتتاح الإثنين وتجنب الفجوات السعرية.'
+                        : 'لا توجد أخبار مؤثرة وشيكة — التذبذب طبيعي ومناسب للتحليل الفني.';
+                }
+                if (riskBadgeEl) {
+                    riskBadgeEl.textContent = isWeekendClosed ? 'السوق مغلق' : 'تذبذب مستقر';
+                    riskBadgeEl.style.cssText = isWeekendClosed
+                        ? 'background: rgba(220,38,38,0.18); border: 1px solid rgba(220,38,38,0.4); color: #FCA5A5;'
+                        : 'background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #34D399;';
+                }
                 return;
             }
+
+            // إظهار خانة المتبقي للخبر عند وجود خبر قادم
+            if (cdBoxEl) cdBoxEl.classList.remove('hidden');
 
             const nextImportant = upcoming.find(item => ['high', 'medium'].includes((item.ev.impact || '').toLowerCase())) || upcoming[0];
             const ev = nextImportant.ev;
@@ -1177,9 +1207,21 @@
             if (titleEl) titleEl.textContent = ev.title;
             timeEl.textContent = `🇦🇪 ${dt.uaeTime}`;
             cdEl.textContent = countdownStr;
-            if (cardCdEl) cardCdEl.textContent = countdownStr;
             strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
             strengthEl.style.cssText = info.strength.badgeStyle;
+
+            const isUrgent = remainingSec <= 900 && (ev.impact || '').toLowerCase() !== 'low';
+            if (adviceEl && riskBadgeEl) {
+                if (isUrgent) {
+                    adviceEl.textContent = 'خبر وشيك خلال أقل من 15 دقيقة — يُنصح بتأمين الصفقات وتجنب الدخول العشوائي.';
+                    riskBadgeEl.textContent = 'تذبذب مرتفع ⚠️';
+                    riskBadgeEl.style.cssText = 'background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.45); color: #FDA4AF;';
+                } else {
+                    adviceEl.textContent = 'السيولة طبيعية حالياً — التزم بإدارة رأس المال ووقف الخسارة.';
+                    riskBadgeEl.textContent = 'مخاطرة طبيعية';
+                    riskBadgeEl.style.cssText = 'background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #34D399;';
+                }
+            }
 
             const eventKey = `${ev.title}_${ev.date}`;
             if (newsAlarmEnabled && remainingSec <= 300 && remainingSec > 0 && !alarmedEventIds.has(eventKey)) {
@@ -1350,8 +1392,11 @@
 
         function renderEconomicCalendar(forceRedraw = false) {
             const container = document.getElementById('economicCalendarList');
+            const totalBadge = document.getElementById('newsTotalCountBadge');
             if (!container) return;
+
             if (!appState.economicEvents || appState.economicEvents.length === 0) {
+                if (totalBadge) totalBadge.textContent = '0 خبر';
                 if (fallbackCalendarMounted && !forceRedraw) return;
                 fallbackCalendarMounted = true;
                 container.innerHTML = `<div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;"><div id="tv_calendar_fallback" class="w-full h-full"></div></div>`;
@@ -1377,16 +1422,20 @@
                 return true;
             });
 
-            if (enriched.length === 0) {
+            const totalCount = enriched.length;
+            if (totalBadge) totalBadge.textContent = `${totalCount} خبر`;
+
+            if (totalCount === 0) {
                 container.innerHTML = `<div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">لا توجد أخبار مطابقة لهذا الفلتر حالياً. اضغط «كل الأسبوع».</div>`;
                 return;
             }
 
-            container.innerHTML = enriched.map(({ ev, dt, info, isNextUpcoming }) => `
+            container.innerHTML = enriched.map(({ ev, dt, info, isNextUpcoming }, idx) => `
                 <div ${isNextUpcoming ? 'id="nextUpcomingCard"' : ''} class="rounded-lg p-3.5 space-y-2.5 transition ${isNextUpcoming ? 'next-upcoming-highlight' : ''}" style="${info.cardStyle}">
                     <div class="flex flex-wrap items-center justify-between gap-2 pb-2" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2.5 py-0.5 rounded text-[10px] font-black" style="${info.statusTag.style}">${info.statusTag.text}</span>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="px-2 py-0.5 rounded bg-black/60 border border-line text-[10px] font-black text-maitha mono-num">خبر ${idx + 1} من ${totalCount}</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-black" style="${info.statusTag.style}">${info.statusTag.text}</span>
                             <span class="text-[11px] font-extrabold text-zinc-300">${dt.shortDayDate}</span>
                         </div>
                         <span class="px-2 py-0.5 rounded text-[10px] font-extrabold" style="${info.strength.badgeStyle}">القوة: ${info.strength.label}</span>
@@ -1440,10 +1489,13 @@
                 }
                 return;
             }
-            list.innerHTML = appState.newsFeed.map(item => `
+            list.innerHTML = appState.newsFeed.map((item, idx) => `
                 <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line rounded-lg p-3.5">
                     <div class="flex items-center justify-between mb-1.5 text-[10px]">
-                        <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${item.source}</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="px-1.5 py-0.5 rounded bg-surface text-maitha font-black mono-num">#${idx + 1}</span>
+                            <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${item.source}</span>
+                        </div>
                         <span class="mono-num text-zinc-400">🇦🇪 ${item.uaeTime} | 🇸🇦 ${item.ksaTime}</span>
                     </div>
                     <h3 class="text-xs font-bold text-white" dir="auto">${item.title}</h3>
@@ -1465,7 +1517,7 @@
                         lastHashes.calendar = h;
                         appState.economicEvents = cal;
                         renderEconomicCalendar(true);
-                        updateNextNewsRadar(new Date());
+                        updateClocksAndSessions();
                     }
                 }
             } catch (e) {}
