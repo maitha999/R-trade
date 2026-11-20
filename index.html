@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Maitha Trade">
+    <meta name="apple-mobile-web-app-title" content="M-Trade">
     <meta name="theme-color" content="#050505">
     <title>Maitha Trade | R-Trade.VIP</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,9 +20,7 @@
             --accent-yellow-hover: #FFE047;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         html, body {
             font-family: 'Cairo', sans-serif;
@@ -52,9 +50,7 @@
 
         .app-header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 60;
             background-color: #050505;
             border-bottom: 1px solid #242424;
@@ -64,9 +60,7 @@
 
         .app-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             z-index: 60;
             background-color: #050505;
             border-top: 1px solid #242424;
@@ -114,21 +108,15 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.32); }
             50% { box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.10); }
         }
-        .urgent-radar {
-            animation: pulseBorder 1.8s infinite;
-        }
+        .urgent-radar { animation: pulseBorder 1.8s infinite; }
 
         @keyframes nextCardGlow {
             0%, 100% { box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.22); }
             50% { box-shadow: 0 0 14px 1px rgba(245, 196, 0, 0.18); }
         }
-        .next-upcoming-highlight {
-            animation: nextCardGlow 2.4s infinite;
-        }
+        .next-upcoming-highlight { animation: nextCardGlow 2.4s infinite; }
 
-        ::-webkit-scrollbar {
-            display: none;
-        }
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="select-none">
@@ -144,7 +132,7 @@
         <span>الخبر القادم</span>
     </button>
 
-    <!-- الشريط العلوي الثابت لهوية Maitha Trade -->
+    <!-- الشريط العلوي الثابت -->
     <header class="app-header px-4">
         <div class="flex items-center justify-between max-w-5xl mx-auto gap-2">
             <div class="flex items-center gap-2.5">
@@ -165,12 +153,11 @@
                 </div>
             </div>
 
-            <!-- زر الاشتراك الاحترافي في بوت التوصيات (تيليجرام) -->
             <a id="telegramBotBtn" href="https://t.me/" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-maitha hover:opacity-95 text-black text-[11px] font-black flex items-center gap-1.5 active:scale-95 transition shadow-sm shrink-0">
                 <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                     <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                 </svg>
-                <span>انضم لبوت التوصيات VIP</span>
+                <span>بوت التوصيات VIP</span>
             </a>
         </div>
     </header>
@@ -178,22 +165,28 @@
     <!-- المحتوى الرئيسي -->
     <main class="relative z-10 max-w-5xl mx-auto px-4 pt-3 space-y-4">
 
-        <!-- شريط توقيت الإمارات والسعودية في أعلى الواجهة (نظام 12 ساعة) -->
-        <div class="bg-panel border border-line rounded-lg px-3.5 py-2.5 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-base leading-none">🇦🇪</span>
-                <span class="text-[11px] font-bold text-zinc-400">الإمارات</span>
-                <span id="clockUAE" class="text-xs font-extrabold text-maitha mono-num">--:--:--</span>
+        <!-- شريط التوقيت والتاريخ (الإمارات والسعودية - نظام 12 ساعة) -->
+        <div class="bg-panel border border-line rounded-lg px-3.5 py-2.5 space-y-2">
+            <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-line">
+                <span class="text-zinc-400 font-bold">📅 التاريخ اليوم:</span>
+                <span id="currentDateAr" class="text-zinc-200 font-extrabold">--</span>
             </div>
-            <div class="h-4 w-px bg-zinc-800"></div>
-            <div class="flex items-center gap-2">
-                <span class="text-base leading-none">🇸🇦</span>
-                <span class="text-[11px] font-bold text-zinc-400">السعودية</span>
-                <span id="clockKSA" class="text-xs font-extrabold text-white mono-num">--:--:--</span>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-base leading-none">🇦🇪</span>
+                    <span class="text-[11px] font-bold text-zinc-400">الإمارات</span>
+                    <span id="clockUAE" class="text-xs font-extrabold text-maitha mono-num">--:--:--</span>
+                </div>
+                <div class="h-4 w-px bg-zinc-800"></div>
+                <div class="flex items-center gap-2">
+                    <span class="text-base leading-none">🇸🇦</span>
+                    <span class="text-[11px] font-bold text-zinc-400">السعودية</span>
+                    <span id="clockKSA" class="text-xs font-extrabold text-white mono-num">--:--:--</span>
+                </div>
             </div>
         </div>
 
-        <!-- رادار الخبر القادم + ملخص إدارة المخاطر وتأثير الذهب -->
+        <!-- رادار الخبر القادم + بوصلة السوق -->
         <div id="botAlertBanner" class="bg-panel border border-line rounded-lg px-3.5 py-3 space-y-2.5 transition" style="border-right: 4px solid #F5C400;">
             <div id="nextNewsRadar" class="flex flex-wrap items-center justify-between gap-2.5">
                 <div class="flex-1 min-w-[200px]">
@@ -205,9 +198,7 @@
                     <div class="flex items-start gap-2 mt-1.5">
                         <span id="radarFlag" class="text-base leading-none mt-0.5">🌐</span>
                         <div>
-                            <p id="radarTitleAr" class="text-xs font-black text-white leading-snug">
-                                جاري جلب أقرب خبر اقتصادي قادم...
-                            </p>
+                            <p id="radarTitleAr" class="text-xs font-black text-white leading-snug">جاري جلب أقرب خبر اقتصادي قادم...</p>
                             <p id="radarTitle" class="text-[10px] font-semibold text-zinc-400 leading-snug mt-0.5" dir="ltr"></p>
                         </div>
                     </div>
@@ -218,14 +209,13 @@
                         <span class="text-[9px] font-bold text-zinc-400 block">المتبقي للخبر</span>
                         <span id="radarCountdown" class="text-xs font-black text-maitha mono-num">--:--:--</span>
                     </div>
-                    <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition" title="تنبيه صوتي قبل الخبر بـ 5 دقائق">
+                    <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition">
                         <span id="alarmIcon">🔕</span>
                         <span id="alarmText">تنبيه</span>
                     </button>
                 </div>
             </div>
 
-            <!-- شريط ذكي لإدارة المخاطر وتأثير الذهب XAUUSD -->
             <div id="smartRiskBar" class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[11px]">
                 <div class="flex items-center gap-1.5 flex-1">
                     <span class="text-maitha font-black whitespace-nowrap">🛡️ بوصلة السوق:</span>
@@ -239,9 +229,10 @@
             </div>
         </div>
 
-        <!-- ================= 1. قسم الشارت والمؤشرات ================= -->
-        <section id="tab-chart" class="space-y-4">
-            <div class="bg-panel border border-line rounded-lg p-3 space-y-2.5">
+        <!-- ================= 1. قسم الرئيسية (الجلسات + الشارت والمؤشرات) ================= -->
+        <section id="tab-home" class="space-y-4">
+            <!-- الجلسات العالمية المطوّرة -->
+            <div class="bg-panel border border-line rounded-lg p-3.5 space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
                     <div class="flex items-center gap-2">
                         <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
@@ -251,9 +242,32 @@
                         جاري الحساب...
                     </div>
                 </div>
-                <div id="sessionsContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+
+                <!-- دليل ألوان الجلسات -->
+                <div class="flex flex-wrap items-center justify-between gap-2 px-2.5 py-1.5 rounded bg-surface border border-line text-[10px] font-bold">
+                    <span class="flex items-center gap-1.5 text-emerald-400">
+                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(16,185,129,0.3); border: 1px solid #10B981;"></span>
+                        مفتوح / جديد
+                    </span>
+                    <span class="flex items-center gap-1.5 text-amber-400">
+                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(245,158,11,0.28); border: 1px solid #F59E0B;"></span>
+                        تداخل جلستين (سيولة عالية)
+                    </span>
+                    <span class="flex items-center gap-1.5 text-rose-400">
+                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(153,27,27,0.45); border: 1px solid #DC2626;"></span>
+                        مغلق / عطلة
+                    </span>
+                </div>
+
+                <div id="sessionsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5"></div>
+
+                <!-- ملاحظة الإغلاق اليومي والويكند -->
+                <div id="marketStatusNote" class="rounded-md px-3 py-2 text-[11px] font-bold bg-surface border border-line text-zinc-300 flex flex-wrap items-center justify-between gap-2">
+                    <span>⏳ جاري حساب حالة الإغلاق اليومي وعطلة الأسبوع...</span>
+                </div>
             </div>
 
+            <!-- أزرار اختيار الأزواج -->
             <div class="flex gap-2 overflow-x-auto pb-1">
                 <button onclick="changeSymbol('OANDA:XAUUSD', 'الذهب XAUUSD', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-extrabold whitespace-nowrap transition">XAUUSD الذهب</button>
                 <button onclick="changeSymbol('BINANCE:BTCUSDT', 'بيتكوين BTC', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">BTCUSDT بيتكوين</button>
@@ -263,17 +277,19 @@
                 <button onclick="changeSymbol('TVC:DXY', 'مؤشر الدولار DXY', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">DXY الدولار</button>
             </div>
 
+            <!-- الشارت -->
             <div class="rounded-lg overflow-hidden border border-line bg-panel">
                 <div class="px-3.5 py-2.5 border-b border-line flex items-center justify-between bg-surface">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-sm bg-maitha"></span>
                         <span id="currentSymbolLabel" class="text-xs font-extrabold text-white">الذهب XAUUSD</span>
                     </div>
-                    <span id="marketBiasBadge" class="px-2 py-0.5 rounded text-emerald-400 text-[10px] font-extrabold" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35);">الاتجاه: صاعد ↗</span>
+                    <span id="marketBiasBadge" class="px-2 py-0.5 rounded text-emerald-400 text-[10px] font-extrabold" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35);">مباشر ↗</span>
                 </div>
                 <div id="tv_chart_container" class="w-full" style="height: 440px;"></div>
             </div>
 
+            <!-- المؤشرات المختصرة -->
             <div class="grid grid-cols-3 gap-2.5">
                 <div class="bg-panel border border-line rounded-lg p-3">
                     <span class="text-[10px] text-zinc-500 font-bold block">RSI (14)</span>
@@ -293,21 +309,19 @@
             </div>
         </section>
 
-        <!-- ================= 2. قسم الصفقات والأهداف + حاسبة المخاطر ================= -->
-        <section id="tab-signals" class="hidden space-y-3.5">
+        <!-- ================= 2. قسم الأهداف (قريباً + خارطة المميزات + حاسبة اللوت) ================= -->
+        <section id="tab-signals" class="hidden space-y-4">
             <div class="flex items-center justify-between border-b border-line pb-2.5">
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
-                    <h2 class="text-sm font-black text-white">الأهداف والصفقات النشطة</h2>
+                    <h2 class="text-sm font-black text-white">الأهداف والصفقات VIP</h2>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleRiskCalc()" class="px-2.5 py-1 rounded bg-surface border border-line text-maitha text-[10px] font-extrabold active:scale-95 transition">
-                        🧮 حاسبة اللوت
-                    </button>
-                    <span id="signalsCount" class="px-2.5 py-0.5 rounded text-maitha text-[11px] font-extrabold" style="background: rgba(245,196,0,0.14); border: 1px solid rgba(245,196,0,0.35);">2 صفقات</span>
-                </div>
+                <button onclick="toggleRiskCalc()" class="px-3 py-1.5 rounded-lg bg-surface border border-maitha text-maitha text-[11px] font-black active:scale-95 transition">
+                    🧮 حاسبة اللوت
+                </button>
             </div>
 
+            <!-- حاسبة اللوت وإدارة المخاطر -->
             <div id="riskCalcPanel" class="hidden bg-panel border border-maitha rounded-lg p-3.5 space-y-3">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-black text-maitha">حاسبة إدارة المخاطر وحجم اللوت</span>
@@ -339,7 +353,60 @@
                 </div>
             </div>
 
-            <div id="signalsList" class="space-y-3"></div>
+            <!-- بطاقة الإعلان الاحترافي عن التحديثات القادمة -->
+            <div class="bg-panel border border-line rounded-xl p-5 space-y-4" style="border-top: 3px solid #F5C400;">
+                <div class="text-center space-y-2">
+                    <span class="inline-block px-3 py-1 rounded-full text-[11px] font-black text-black bg-maitha">
+                        🚀 قريباً في Maitha Trade VIP
+                    </span>
+                    <h3 class="text-base font-black text-white">
+                        نعمل على تجهيز منظومة تداول متكاملة تليق بكم
+                    </h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed max-w-xl mx-auto">
+                        قريباً سيتم تفعيل قسم الصفقات والأهداف المباشرة بمميزات احترافية حصرية تشمل التوصيات الدقيقة، الربط الفوري مع بوت تيليجرام، وتنبيهات السوق الذكية.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
+                        <span class="text-xl">🎯</span>
+                        <div>
+                            <h4 class="text-xs font-black text-maitha">صفقات وأهداف مباشرة</h4>
+                            <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">نقاط دخول دقيقة، أهداف متعددة (TP1 / TP2 / TP3)، ووقف خسارة مدروس للذهب والعملات.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
+                        <span class="text-xl">🤖</span>
+                        <div>
+                            <h4 class="text-xs font-black text-maitha">بوت تيليجرام VIP التلقائي</h4>
+                            <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">إشعارات فورية لحظة صدور الصفقة أو تحديث الأهداف وتأمين الدخول مباشرة على هاتفك.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
+                        <span class="text-xl">⚡</span>
+                        <div>
+                            <h4 class="text-xs font-black text-maitha">رادار الأخبار والسيولة</h4>
+                            <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">تحليل فوري لنتائج الأخبار الاقتصادية وتأثيرها المباشر على الذهب XAUUSD والدولار.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
+                        <span class="text-xl">📊</span>
+                        <div>
+                            <h4 class="text-xs font-black text-maitha">إحصائيات وأدوات ذكية</h4>
+                            <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">سجل شفاف لنسب النجاح الشهرية، حاسبة مخاطر متقدمة، ومناطق العرض والطلب اليومية.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 text-center">
+                    <a href="https://t.me/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-maitha text-black text-xs font-black active:scale-95 transition">
+                        <span>🔔 اشترك الآن لتصلك التحديثات فور الإطلاق</span>
+                    </a>
+                </div>
+            </div>
         </section>
 
         <!-- ================= 3. قسم الأخبار الاقتصادية الحقيقية ================= -->
@@ -363,20 +430,12 @@
                 </div>
             </div>
 
-            <!-- التبديل بين أقسام الأخبار -->
             <div class="grid grid-cols-3 gap-1.5 p-1 rounded-lg bg-panel border border-line">
-                <button onclick="switchNewsSubTab('calendar')" id="subtab-calendar" class="py-2 rounded-md bg-maitha text-black text-[11px] font-black transition">
-                    اليوم وأمس (التحليل)
-                </button>
-                <button onclick="switchNewsSubTab('live')" id="subtab-live" class="py-2 rounded-md text-zinc-400 text-[11px] font-bold transition">
-                    الأجندة الحية
-                </button>
-                <button onclick="switchNewsSubTab('feed')" id="subtab-feed" class="py-2 rounded-md text-zinc-400 text-[11px] font-bold transition">
-                    أخبار عاجلة
-                </button>
+                <button onclick="switchNewsSubTab('calendar')" id="subtab-calendar" class="py-2 rounded-md bg-maitha text-black text-[11px] font-black transition">اليوم وأمس (التحليل)</button>
+                <button onclick="switchNewsSubTab('live')" id="subtab-live" class="py-2 rounded-md text-zinc-400 text-[11px] font-bold transition">الأجندة الحية</button>
+                <button onclick="switchNewsSubTab('feed')" id="subtab-feed" class="py-2 rounded-md text-zinc-400 text-[11px] font-bold transition">أخبار عاجلة</button>
             </div>
 
-            <!-- 3.1 قسم أخبار اليوم وأمس والقادمة -->
             <div id="news-calendar-view" class="space-y-3">
                 <div class="flex gap-1.5 overflow-x-auto pb-1">
                     <button onclick="setCalendarFilter('today')" id="flt-today" class="cal-flt px-3 py-1.5 rounded-md bg-maitha text-black text-[11px] font-extrabold whitespace-nowrap transition">أخبار اليوم</button>
@@ -388,43 +447,122 @@
                     <button onclick="setCalendarFilter('usd')" id="flt-usd" class="cal-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">🇺🇸 الدولار USD</button>
                 </div>
 
-                <!-- دليل ألوان هادئ ومتناسق مع التصميم -->
-                <div class="flex flex-wrap items-center justify-between gap-2 px-3 py-2 rounded-lg bg-panel border border-line text-[10px] font-bold">
-                    <span class="flex items-center gap-1.5 text-rose-300">
-                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(244,63,94,0.22); border: 1px solid rgba(244,63,94,0.45);"></span>
-                        انتهى (خلفية حمراء هادئة)
-                    </span>
-                    <span class="flex items-center gap-1.5 text-sky-300">
-                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(56,189,248,0.18); border: 1px solid rgba(56,189,248,0.4);"></span>
-                        قادم (خلفية زرقاء هادئة)
-                    </span>
-                    <span class="flex items-center gap-1.5 text-maitha">
-                        <span class="w-2.5 h-2.5 rounded-sm" style="background: rgba(245,196,0,0.22); border: 1px solid #F5C400;"></span>
-                        الخبر القادم الآن
-                    </span>
-                </div>
-
                 <div id="economicCalendarList" class="space-y-4">
                     <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">
-                        جاري جلب البيانات الاقتصادية الحقيقية وترتيب أخبار اليوم والخبر القادم...
+                        جاري جلب البيانات الاقتصادية الحقيقية...
                     </div>
                 </div>
             </div>
 
-            <!-- 3.2 الأجندة الاقتصادية الحية من TradingView -->
             <div id="news-live-view" class="hidden space-y-2">
                 <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 520px;">
                     <div id="tv_calendar_container" class="w-full h-full"></div>
                 </div>
             </div>
 
-            <!-- 3.3 الأخبار العاجلة -->
             <div id="news-feed-view" class="hidden space-y-2.5">
                 <div id="newsFeedList" class="space-y-2.5">
                     <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">
                         جاري جلب الأخبار العاجلة للأسواق...
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. قسم التنزيل (تطبيق M-Trade للآيفون والأندرويد) ================= -->
+        <section id="tab-download" class="hidden space-y-4">
+            <div class="flex items-center justify-between border-b border-line pb-2.5">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
+                    <h2 class="text-sm font-black text-white">تحميل تطبيق M-Trade</h2>
+                </div>
+                <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.0</span>
+            </div>
+
+            <!-- بطاقة هوية التطبيق -->
+            <div class="bg-panel border border-line rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4" style="border-top: 3px solid #F5C400;">
+                <div class="flex items-center gap-3.5">
+                    <img src="https://r-trade.vip/icon-only.png" onerror="this.style.display='none'" alt="M-Trade" class="w-14 h-14 rounded-2xl border border-maitha object-cover bg-black shrink-0">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-base font-black text-white">تطبيق M-Trade الرسمي</h3>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400" style="background: rgba(16,185,129,0.14); border: 1px solid rgba(16,185,129,0.35);">نسخة مستقرة</span>
+                        </div>
+                        <p class="text-xs text-zinc-400 mt-1">وصول أسرع للشارت، جلسات السوق، رادار الأخبار، وتنبيهات التداول المباشرة.</p>
+                        <div class="flex items-center gap-3 mt-2 text-[10px] text-zinc-400 font-bold mono-num">
+                            <span>الإصدار: <b class="text-maitha">v1.0</b></span>
+                            <span>•</span>
+                            <span>التحديث: <b class="text-zinc-200">2026</b></span>
+                            <span>•</span>
+                            <span>الحجم: <b class="text-zinc-200">خفيف وسريع</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقات التحميل (آيفون + أندرويد) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <!-- بطاقة الآيفون iOS -->
+                <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-white">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.09-.52 2.72-1.3z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4>
+                                    <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر (OTA)</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">IPA v1.0</span>
+                        </div>
+                        <p class="text-[11px] text-zinc-400 leading-relaxed">
+                            افتح الرابط عبر متصفح <b class="text-zinc-200">Safari</b> واضغط على زر التثبيت المباشر، ثم وافق على رسالة النظام لتثبيت التطبيق فوراً.
+                        </p>
+                    </div>
+
+                    <a href="itms-services://?action=download-manifest&url=https://r-trade.vip/manifest.plist" class="w-full py-2.5 rounded-lg bg-maitha hover:opacity-95 text-black text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition">
+                        <span>تثبيت مباشر للآيفون (iOS)</span>
+                        <span>⬇</span>
+                    </a>
+                </div>
+
+                <!-- بطاقة الأندرويد Android -->
+                <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-emerald-400">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-black text-white">نسخة الأندرويد</h4>
+                                    <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.0</span>
+                        </div>
+                        <p class="text-[11px] text-zinc-400 leading-relaxed">
+                            حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على خيار التثبيت من مصادر غير معروفة إن طُلب منك.
+                        </p>
+                    </div>
+
+                    <a href="https://github.com/maitha999/R-trade/releases/download/v1.0/M-Trade.apk" class="w-full py-2.5 rounded-lg text-white text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition" style="background: #10B981;">
+                        <span>تحميل للأندرويد (APK)</span>
+                        <span>⬇</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ملاحظة سريعة للتثبيت -->
+            <div class="bg-panel border border-line rounded-lg p-3.5 text-[11px] text-zinc-400 space-y-1.5">
+                <div class="text-maitha font-black">💡 ملاحظة لمستخدمي الآيفون:</div>
+                <p>في حال طلب النظام الوثوق بالشهادة بعد التثبيت، توجه إلى: <b class="text-zinc-200">الإعدادات ← عام ← VPN وإدارة الجهاز</b> ثم اضغط <b class="text-zinc-200">الوثوق</b>.</p>
             </div>
         </section>
 
@@ -439,18 +577,17 @@
         </footer>
     </main>
 
-    <!-- شريط التنقل السفلي الثابت -->
+    <!-- شريط التنقل السفلي الثابت (4 تبويبات) -->
     <nav class="app-nav">
-        <div class="grid grid-cols-3 max-w-5xl mx-auto">
-            <button onclick="switchTab('chart')" id="nav-chart" class="nav-active flex flex-col items-center justify-center py-2.5 gap-1 transition">
+        <div class="grid grid-cols-4 max-w-5xl mx-auto">
+            <button onclick="switchTab('home')" id="nav-home" class="nav-active flex flex-col items-center justify-center py-2.5 gap-1 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
-                <span class="text-[11px] font-extrabold">الشارت</span>
+                <span class="text-[11px] font-extrabold">الرئيسية</span>
             </button>
 
             <button onclick="switchTab('signals')" id="nav-signals" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 relative transition">
-                <span id="badgeDot" class="hidden absolute top-2 right-1/3 w-2 h-2 rounded-full bg-maitha"></span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
@@ -463,11 +600,17 @@
                 </svg>
                 <span class="text-[11px] font-extrabold">الأخبار</span>
             </button>
+
+            <button onclick="switchTab('download')" id="nav-download" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span class="text-[11px] font-extrabold">التنزيل</span>
+            </button>
         </div>
     </nav>
 
     <script>
-        // ضع رابط بوت أو قناة تيليجرام هنا مستقبلاً
         const TELEGRAM_BOT_URL = "https://t.me/";
         const FIREBASE_DB_URL = "https://maitha-trade-default-rtdb.firebaseio.com";
         const CACHE_KEY_CALENDAR = "maitha_trade_calendar_cache_v8";
@@ -481,34 +624,9 @@
 
         let newsAlarmEnabled = localStorage.getItem('maitha_news_alarm') === 'on';
         let alarmedEventIds = new Set();
-
-        let lastHashes = {
-            signals: '',
-            news: '',
-            calendar: ''
-        };
+        let lastHashes = { news: '', calendar: '' };
 
         let appState = {
-            signals: [
-                {
-                    pair: "XAUUSD",
-                    type: "BUY",
-                    entry: "2645.0",
-                    tp: "2675.0",
-                    sl: "2630.0",
-                    note: "ارتداد واضح من منطقة طلب يومية مع إغلاق شمعة 15 دقيقة صاعدة.",
-                    time: "12:15 م"
-                },
-                {
-                    pair: "EURUSD",
-                    type: "SELL",
-                    entry: "1.0860",
-                    tp: "1.0805",
-                    sl: "1.0890",
-                    note: "تشبع شرائي على RSI مع رفض سعري عند القمة اليومية.",
-                    time: "10:40 ص"
-                }
-            ],
             newsFeed: [],
             economicEvents: []
         };
@@ -518,66 +636,23 @@
             [/Revised UoM Consumer Sentiment/gi, "مؤشر ثقة المستهلك المعدل (جامعة ميشيغان)"],
             [/Prelim UoM Consumer Sentiment/gi, "مؤشر ثقة المستهلك الأولي (جامعة ميشيغان)"],
             [/UoM Consumer Sentiment/gi, "مؤشر ثقة المستهلك (جامعة ميشيغان)"],
-            [/Revised UoM Inflation Expectations/gi, "توقعات التضخم المعدلة (جامعة ميشيغان)"],
-            [/Prelim UoM Inflation Expectations/gi, "توقعات التضخم الأولية (جامعة ميشيغان)"],
             [/Non-Farm Employment Change|Nonfarm Payrolls|NFP/gi, "التغير في التوظيف بالقطاع غير الزراعي"],
             [/ADP Non-Farm Employment Change/gi, "التغير في وظائف القطاع الخاص (ADP)"],
             [/Unemployment Rate/gi, "معدل البطالة"],
             [/Unemployment Claims|Initial Jobless Claims/gi, "طلبات إعانة البطالة الأسبوعية"],
-            [/Continuing Jobless Claims/gi, "طلبات إعانة البطالة المستمرة"],
-            [/Average Hourly Earnings/gi, "متوسط الأجور في الساعة"],
             [/Core CPI/gi, "مؤشر أسعار المستهلكين الأساسي (التضخم)"],
             [/Consumer Price Index|\bCPI\b/gi, "مؤشر أسعار المستهلكين (التضخم)"],
             [/Core PPI/gi, "مؤشر أسعار المنتجين الأساسي"],
             [/Producer Price Index|\bPPI\b/gi, "مؤشر أسعار المنتجين"],
-            [/Core PCE Price Index/gi, "مؤشر نفقات الاستهلاك الشخصي الأساسي (مقياس الفيدرالي للتضخم)"],
-            [/PCE Price Index/gi, "مؤشر نفقات الاستهلاك الشخصي"],
-            [/Federal Funds Rate|Interest Rate Decision|Official Bank Rate|Main Refinancing Rate|Cash Rate/gi, "قرار سعر الفائدة"],
+            [/Core PCE Price Index/gi, "مؤشر نفقات الاستهلاك الشخصي الأساسي"],
+            [/Federal Funds Rate|Interest Rate Decision|Official Bank Rate/gi, "قرار سعر الفائدة"],
             [/FOMC Statement/gi, "بيان لجنة السوق المفتوحة الفيدرالية (FOMC)"],
             [/FOMC Press Conference/gi, "المؤتمر الصحفي للاحتياطي الفيدرالي"],
-            [/FOMC Meeting Minutes/gi, "محضر اجتماع الاحتياطي الفيدرالي"],
-            [/Monetary Policy Statement/gi, "بيان السياسة النقدية"],
-            [/Press Conference/gi, "المؤتمر الصحفي للبنك المركزي"],
-            [/Core Retail Sales/gi, "مبيعات التجزئة الأساسية"],
             [/Retail Sales/gi, "مبيعات التجزئة"],
-            [/Advance GDP|Prelim GDP|Final GDP|\bGDP\b/gi, "الناتج المحلي الإجمالي"],
-            [/ISM Manufacturing PMI/gi, "مؤشر مديري المشتريات الصناعي (ISM)"],
-            [/ISM Services PMI|ISM Non-Manufacturing PMI/gi, "مؤشر مديري المشتريات الخدمي (ISM)"],
-            [/Flash Manufacturing PMI|Manufacturing PMI/gi, "مؤشر مديري المشتريات الصناعي"],
-            [/Flash Services PMI|Services PMI/gi, "مؤشر مديري المشتريات الخدمي"],
-            [/Composite PMI/gi, "مؤشر مديري المشتريات المركب"],
-            [/Core Durable Goods Orders/gi, "طلبات السلع المعمرة الأساسية"],
-            [/Durable Goods Orders/gi, "طلبات السلع المعمرة"],
-            [/Building Permits/gi, "تصاريح البناء"],
-            [/Housing Starts/gi, "منازل قيد الإنشاء"],
-            [/Existing Home Sales/gi, "مبيعات المنازل القائمة"],
-            [/New Home Sales/gi, "مبيعات المنازل الجديدة"],
-            [/Pending Home Sales/gi, "مبيعات المنازل المعلقة"],
-            [/CB Consumer Confidence/gi, "مؤشر ثقة المستهلك (CB)"],
-            [/JOLTS Job Openings/gi, "فرص العمل المتاحة (JOLTS)"],
-            [/Trade Balance/gi, "الميزان التجاري"],
-            [/Current Account/gi, "الحساب الجاري"],
+            [/\bGDP\b/gi, "الناتج المحلي الإجمالي"],
+            [/Manufacturing PMI/gi, "مؤشر مديري المشتريات الصناعي"],
+            [/Services PMI/gi, "مؤشر مديري المشتريات الخدمي"],
             [/Crude Oil Inventories/gi, "مخزونات النفط الخام الأمريكية"],
-            [/Natural Gas Storage/gi, "مخزونات الغاز الطبيعي"],
-            [/Industrial Production/gi, "الإنتاج الصناعي"],
-            [/Capacity Utilization Rate/gi, "معدل استغلال الطاقة الإنتاجية"],
-            [/Business Inventories/gi, "مخزونات الأعمال"],
-            [/Empire State Manufacturing Index/gi, "مؤشر إمباير ستيت الصناعي"],
-            [/Philly Fed Manufacturing Index/gi, "مؤشر فيلادلفيا الفيدرالي الصناعي"],
-            [/Consumer Confidence/gi, "ثقة المستهلك"],
-            [/ZEW Economic Sentiment/gi, "مؤشر ZEW للثقة الاقتصادية"],
-            [/Ifo Business Climate/gi, "مؤشر Ifo لمناخ الأعمال"],
-            [/Claimant Count Change/gi, "التغير في طلبات إعانة البطالة البريطانية"],
-            [/Employment Change/gi, "التغير في التوظيف"],
-            [/Employment Cost Index/gi, "مؤشر تكلفة التوظيف"],
-            [/Unit Labor Costs/gi, "تكاليف وحدة العمل"],
-            [/Prelim Nonfarm Productivity/gi, "الإنتاجية غير الزراعية الأولية"],
-            [/Personal Income/gi, "الدخل الشخصي"],
-            [/Personal Spending/gi, "الإنفاق الشخصي"],
-            [/Factory Orders/gi, "طلبات المصانع"],
-            [/Import Prices/gi, "أسعار الواردات"],
-            [/Export Prices/gi, "أسعار الصادرات"],
-            [/Treasury Sec|Fed Chair|ECB President|BOE Gov|BOJ Gov|RBA Gov|BOC Gov/gi, "تصريح محافظ / مسؤول مالي"],
             [/Speaks/gi, "يتحدث"],
             [/\bm\/m\b/gi, "(شهري)"],
             [/\bq\/q\b/gi, "(ربع سنوي)"],
@@ -594,14 +669,7 @@
                     translated = translated.replace(regex, ar);
                 }
             });
-            if (!matched) {
-                if (/speech|speaks|testifies|remarks/i.test(title)) return "تصريحات وخطاب رسمي لمسؤول اقتصادي";
-                if (/auction|bond|note/i.test(title)) return "مزاد السندات الحكومية والعوائد";
-                if (/index/i.test(title)) return "مؤشر اقتصادي رسمي للنشاط السوقي";
-                if (/sales/i.test(title)) return "بيانات المبيعات والإنفاق الاستهلاكي";
-                if (/price/i.test(title)) return "بيانات الأسعار ومعدلات التضخم";
-                return "بيان اقتصادي مؤثر على حركة العملة والذهب";
-            }
+            if (!matched) return "بيان اقتصادي مؤثر على حركة العملة والذهب";
             return translated.replace(/\s+/g, ' ').trim();
         }
 
@@ -702,15 +770,9 @@
         }
 
         function format12HourTime(dateObj, timeZone, includeSeconds = false) {
-            const opts = {
-                timeZone,
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            };
+            const opts = { timeZone, hour: '2-digit', minute: '2-digit', hour12: true };
             if (includeSeconds) opts.second = '2-digit';
-            const formatted = new Intl.DateTimeFormat('en-US', opts).format(dateObj);
-            return formatted.replace('AM', 'ص').replace('PM', 'م');
+            return new Intl.DateTimeFormat('en-US', opts).format(dateObj).replace('AM', 'ص').replace('PM', 'م');
         }
 
         function formatHourTo12(hour24) {
@@ -722,10 +784,12 @@
 
         function formatCountdownHMS(totalSeconds) {
             const safe = Math.max(0, Math.floor(totalSeconds));
-            const h = Math.floor(safe / 3600);
+            const d = Math.floor(safe / 86400);
+            const h = Math.floor((safe % 86400) / 3600);
             const m = Math.floor((safe % 3600) / 60);
             const s = safe % 60;
-            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            const hms = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            return d > 0 ? `${d} يوم ${hms}` : hms;
         }
 
         function getTimeZoneOffsetHours(dateObj, timeZone) {
@@ -743,14 +807,9 @@
             return { openH, closeH };
         }
 
-        function getUAETimeParts(dateObj) {
+        function getTimePartsInTZ(dateObj, timeZone) {
             const parts = new Intl.DateTimeFormat('en-GB', {
-                timeZone: 'Asia/Dubai',
-                weekday: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
+                timeZone, weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
             }).formatToParts(dateObj);
             const map = {};
             parts.forEach(p => { map[p.type] = p.value; });
@@ -762,162 +821,51 @@
             };
         }
 
-        function updateNextNewsRadar(now) {
-            const banner = document.getElementById('botAlertBanner');
-            const badgeEl = document.getElementById('radarBadge');
-            const strengthEl = document.getElementById('radarStrength');
-            const timeEl = document.getElementById('radarUAETime');
-            const flagEl = document.getElementById('radarFlag');
-            const titleEl = document.getElementById('radarTitle');
-            const titleArEl = document.getElementById('radarTitleAr');
-            const cdEl = document.getElementById('radarCountdown');
-            const cardCdEl = document.getElementById('nextCardLiveCountdown');
-
-            const adviceEl = document.getElementById('smartMarketAdvice');
-            const riskBadgeEl = document.getElementById('smartRiskBadge');
-
-            if (!titleArEl || !cdEl) return;
-
-            const nowMs = now.getTime();
-            const upcoming = (appState.economicEvents || [])
-                .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
-                .filter(item => !isNaN(item.ts) && item.ts > nowMs)
-                .sort((a, b) => a.ts - b.ts);
-
-            if (upcoming.length === 0) {
-                if (banner) {
-                    banner.classList.remove('urgent-radar');
-                    banner.style.borderRightColor = '#F5C400';
-                }
-                const finished = (appState.economicEvents || [])
-                    .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
-                    .filter(item => !isNaN(item.ts) && item.ts <= nowMs)
-                    .sort((a, b) => b.ts - a.ts);
-
-                if (finished.length > 0) {
-                    const lastEv = finished[0].ev;
-                    const dt = formatEventDateTime(lastEv.date);
-                    const info = analyzeEconomicEvent(lastEv, true, false);
-                    badgeEl.style.background = 'rgba(244,63,94,0.22)';
-                    badgeEl.style.color = '#FDA4AF';
-                    badgeEl.textContent = 'آخر خبر صدر';
-                    strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
-                    strengthEl.style.cssText = info.strength.badgeStyle;
-                    timeEl.textContent = `🇦🇪 ${dt.uaeTime}`;
-                    flagEl.textContent = info.flag;
-                    titleArEl.textContent = `${info.arTitle} (${info.country})`;
-                    if (titleEl) titleEl.textContent = lastEv.title;
-                    cdEl.textContent = 'انتهت أخبار اليوم';
-
-                    if (adviceEl) adviceEl.textContent = info.verdict.text;
-                    if (riskBadgeEl) {
-                        riskBadgeEl.textContent = 'تحليل النتيجة';
-                        riskBadgeEl.style.cssText = 'background: rgba(245,196,0,0.14); border: 1px solid rgba(245,196,0,0.35); color: #F5C400;';
-                    }
-                } else {
-                    badgeEl.style.background = '#F5C400';
-                    badgeEl.style.color = '#000000';
-                    badgeEl.textContent = 'رادار الأخبار';
-                    strengthEl.textContent = 'متابعة مباشرة';
-                    strengthEl.style.cssText = 'background:#151515; color:#A1A1AA; border:1px solid #242424;';
-                    timeEl.textContent = `🇦🇪 ${format12HourTime(now, 'Asia/Dubai', false)}`;
-                    flagEl.textContent = '📡';
-                    titleArEl.textContent = 'جاري مزامنة الأجندة الاقتصادية المباشرة...';
-                    if (titleEl) titleEl.textContent = '';
-                    cdEl.textContent = '--:--:--';
-                }
-                return;
-            }
-
-            const nextImportant = upcoming.find(item => {
-                const imp = (item.ev.impact || '').toLowerCase();
-                return (imp === 'high' || imp === 'medium') && (item.ts - nowMs <= 24 * 3600 * 1000);
-            }) || upcoming[0];
-
-            const ev = nextImportant.ev;
-            const remainingSec = Math.max(0, Math.floor((nextImportant.ts - nowMs) / 1000));
-            const dt = formatEventDateTime(ev.date);
-            const info = analyzeEconomicEvent(ev, false, true);
-            const countdownStr = formatCountdownHMS(remainingSec);
-
-            flagEl.textContent = info.flag;
-            titleArEl.textContent = `${info.arTitle} (${info.country})`;
-            if (titleEl) titleEl.textContent = ev.title;
-            timeEl.textContent = `🇦🇪 ${dt.uaeTime}`;
-            cdEl.textContent = countdownStr;
-            if (cardCdEl) cardCdEl.textContent = countdownStr;
-
-            strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
-            strengthEl.style.cssText = info.strength.badgeStyle;
-
-            const isHigh = (ev.impact || '').toLowerCase() === 'high';
-            const isUrgent = remainingSec <= 900 && (ev.impact || '').toLowerCase() !== 'low';
-
-            if (isUrgent) {
-                banner.classList.add('urgent-radar');
-                banner.style.borderRightColor = '#F43F5E';
-                badgeEl.style.background = '#F43F5E';
-                badgeEl.style.color = '#FFFFFF';
-                badgeEl.textContent = '🚨 خبر وشيك';
-                cdEl.style.color = '#FDA4AF';
-                if (adviceEl) adviceEl.textContent = 'تحذير تذبذب عالٍ: يُنصح بتأمين الصفقات المفتوحة وتجنب الدخول العشوائي قبل الصدور.';
-                if (riskBadgeEl) {
-                    riskBadgeEl.textContent = 'حذر شديد ⚠️';
-                    riskBadgeEl.style.cssText = 'background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.45); color: #FDA4AF;';
-                }
-            } else {
-                banner.classList.remove('urgent-radar');
-                banner.style.borderRightColor = '#F5C400';
-                badgeEl.style.background = '#F5C400';
-                badgeEl.style.color = '#000000';
-                badgeEl.textContent = 'الخبر القادم';
-                cdEl.style.color = '#F5C400';
-                if (adviceEl) {
-                    adviceEl.textContent = isHigh
-                        ? 'خبر عالي التأثير مرتقب: راقب حركة الذهب XAUUSD والدولار عند موعد الصدور.'
-                        : 'السيولة مستقرة — يُنصح بالالتزام بإدارة رأس المال ووضع وقف الخسارة.';
-                }
-                if (riskBadgeEl) {
-                    riskBadgeEl.textContent = isHigh ? 'ترقب عالي التأثير' : 'مخاطرة طبيعية';
-                    riskBadgeEl.style.cssText = isHigh
-                        ? 'background: rgba(245,196,0,0.15); border: 1px solid rgba(245,196,0,0.4); color: #F5C400;'
-                        : 'background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #34D399;';
-                }
-            }
-
-            const eventKey = `${ev.title}_${ev.date}`;
-            if (newsAlarmEnabled && remainingSec <= 300 && remainingSec > 0 && !alarmedEventIds.has(eventKey)) {
-                alarmedEventIds.add(eventKey);
-                playAlertSound();
-                showToast(`🔔 تنبيه: متبقي أقل من 5 دقائق على خبر ${info.arTitle}`);
-            }
-        }
-
         function updateClocksAndSessions() {
             const now = new Date();
-            const uaeClockStr = format12HourTime(now, 'Asia/Dubai', true);
-            const ksaClockStr = format12HourTime(now, 'Asia/Riyadh', true);
-
             const uaeEl = document.getElementById('clockUAE');
             const ksaEl = document.getElementById('clockKSA');
+            const dateEl = document.getElementById('currentDateAr');
 
-            if (uaeEl) uaeEl.textContent = uaeClockStr;
-            if (ksaEl) ksaEl.textContent = ksaClockStr;
+            if (uaeEl) uaeEl.textContent = format12HourTime(now, 'Asia/Dubai', true);
+            if (ksaEl) ksaEl.textContent = format12HourTime(now, 'Asia/Riyadh', true);
+            if (dateEl) {
+                dateEl.textContent = new Intl.DateTimeFormat('ar-AE', {
+                    timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                }).format(now);
+            }
 
             updateNextNewsRadar(now);
 
-            const uae = getUAETimeParts(now);
+            const uae = getTimePartsInTZ(now, 'Asia/Dubai');
+            const ny = getTimePartsInTZ(now, 'America/New_York');
             const nowSec = uae.hour * 3600 + uae.minute * 60 + uae.second;
+
+            // إغلاق نهاية الأسبوع الفعلي للفوركس والذهب (الجمعة 5:00م نيويورك ← الأحد 5:00م نيويورك)
+            const isWeekendClosed =
+                (ny.weekday === 'Fri' && ny.hour >= 17) ||
+                (ny.weekday === 'Sat') ||
+                (ny.weekday === 'Sun' && ny.hour < 17);
+
+            // حساب العد التنازلي لافتتاح السوق بعد الويكند
+            let weekendReopenSec = 0;
+            if (isWeekendClosed) {
+                const nySecNow = ny.hour * 3600 + ny.minute * 60 + ny.second;
+                const sunOpenSec = 17 * 3600;
+                if (ny.weekday === 'Fri') weekendReopenSec = (86400 - nySecNow) + 86400 + sunOpenSec;
+                else if (ny.weekday === 'Sat') weekendReopenSec = (86400 - nySecNow) + sunOpenSec;
+                else if (ny.weekday === 'Sun') weekendReopenSec = sunOpenSec - nySecNow;
+            }
+
+            // حساب الإغلاق اليومي (5:00م بتوقيت نيويورك = 01:00 أو 02:00 ص بتوقيت الإمارات)
+            const nyRolloverUAE = getSessionHoursInUAE(now, 'America/New_York', 17, 18);
+            const rolloverOpenUAE = formatHourTo12(nyRolloverUAE.openH);
+            const rolloverOpenKSA = formatHourTo12((nyRolloverUAE.openH + 23) % 24);
 
             const sydneyH = getSessionHoursInUAE(now, 'Australia/Sydney', 8, 17);
             const tokyoH  = getSessionHoursInUAE(now, 'Asia/Tokyo', 9, 18);
             const londonH = getSessionHoursInUAE(now, 'Europe/London', 8, 17);
             const nyH     = getSessionHoursInUAE(now, 'America/New_York', 8, 17);
-
-            const isWeekendClosed =
-                (uae.weekday === 'Sat' && uae.hour >= nyH.closeH) ||
-                (uae.weekday === 'Sun') ||
-                (uae.weekday === 'Mon' && uae.hour < sydneyH.openH);
 
             const sessions = [
                 { id: 'sydney',  name: 'سيدني',   flag: '🇦🇺', openH: sydneyH.openH, closeH: sydneyH.closeH },
@@ -926,11 +874,8 @@
                 { id: 'newyork', name: 'نيويورك', flag: '🇺🇸', openH: nyH.openH,     closeH: nyH.closeH }
             ];
 
-            let nextOpening = null;
-            let londonOpen = false;
-            let nyOpen = false;
-
-            const cardsHtml = sessions.map(s => {
+            // حساب حالة كل جلسة أولاً لمعرفة التداخل
+            const evaluated = sessions.map(s => {
                 const openSec = s.openH * 3600;
                 const closeSec = s.closeH * 3600;
                 const spansMidnight = closeSec < openSec;
@@ -943,9 +888,6 @@
                         : (nowSec >= openSec && nowSec < closeSec);
                 }
 
-                if (s.id === 'london') londonOpen = isOpen;
-                if (s.id === 'newyork') nyOpen = isOpen;
-
                 let elapsedSec = 0;
                 let remainingSec = 0;
                 let progressPct = 0;
@@ -956,32 +898,54 @@
                     progressPct = Math.min(100, Math.max(0, (elapsedSec / durationSec) * 100));
                 } else {
                     remainingSec = openSec > nowSec ? (openSec - nowSec) : (86400 - nowSec + openSec);
-                    if (!isWeekendClosed && (!nextOpening || remainingSec < nextOpening.sec)) {
-                        nextOpening = {
-                            name: s.name,
-                            flag: s.flag,
-                            sec: remainingSec,
-                            openLabel: formatHourTo12(s.openH)
-                        };
-                    }
                 }
 
-                const openLabel = formatHourTo12(s.openH);
-                const closeLabel = formatHourTo12(s.closeH);
+                return { ...s, isOpen, elapsedSec, remainingSec, progressPct };
+            });
 
-                const cardStyle = isOpen
-                    ? 'background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.38);'
-                    : 'background: #121212; border: 1px solid #242424;';
+            const openSessions = evaluated.filter(s => s.isOpen);
+            const isOverlap = openSessions.length >= 2;
+            let nextOpening = null;
 
-                const statusBadge = isOpen
-                    ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-400" style="background: rgba(16,185,129,0.18);">مفتوح</span>'
-                    : '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold text-zinc-500 bg-surface">مغلق</span>';
+            const cardsHtml = evaluated.map(s => {
+                if (!s.isOpen && !isWeekendClosed && (!nextOpening || s.remainingSec < nextOpening.sec)) {
+                    nextOpening = { name: s.name, flag: s.flag, sec: s.remainingSec, openLabel: formatHourTo12(s.openH) };
+                }
 
-                const timerLine = isWeekendClosed
-                    ? '<span class="text-zinc-500">عطلة نهاية الأسبوع</span>'
-                    : (isOpen
-                        ? `<span class="text-emerald-400">يُغلق بعد: <b class="mono-num">${formatCountdownHMS(remainingSec)}</b></span>`
-                        : `<span class="text-zinc-400">يفتح بعد: <b class="text-maitha mono-num">${formatCountdownHMS(remainingSec)}</b></span>`);
+                const openUAE = formatHourTo12(s.openH);
+                const closeUAE = formatHourTo12(s.closeH);
+                const openKSA = formatHourTo12((s.openH + 23) % 24);
+                const closeKSA = formatHourTo12((s.closeH + 23) % 24);
+
+                let cardStyle = '';
+                let statusBadge = '';
+                let barColor = '#DC2626';
+                let timerLine = '';
+
+                if (!s.isOpen || isWeekendClosed) {
+                    // أحمر داكن للأسواق المغلقة
+                    cardStyle = 'background: linear-gradient(145deg, rgba(127, 29, 29, 0.30) 0%, #11090A 100%); border: 1px solid rgba(220, 38, 38, 0.45);';
+                    statusBadge = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-rose-300" style="background: rgba(220,38,38,0.22); border: 1px solid rgba(220,38,38,0.4);">مغلق</span>';
+                    barColor = '#7F1D1D';
+                    timerLine = isWeekendClosed
+                        ? `<span class="text-rose-300">عطلة نهاية الأسبوع • يفتح بعد: <b class="mono-num text-white">${formatCountdownHMS(weekendReopenSec)}</b></span>`
+                        : `<span class="text-rose-300">يفتح بعد: <b class="text-maitha mono-num">${formatCountdownHMS(s.remainingSec)}</b></span>`;
+                } else if (isOverlap) {
+                    // لون داكن خفيف مميز لتداخل جلستين
+                    cardStyle = 'background: linear-gradient(145deg, rgba(180, 83, 9, 0.25) 0%, #14110B 100%); border: 1px solid rgba(245, 158, 11, 0.55);';
+                    statusBadge = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-amber-300" style="background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.45);">🔥 تداخل جلستين</span>';
+                    barColor = '#F59E0B';
+                    timerLine = `<span class="text-amber-300">يُغلق بعد: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
+                } else {
+                    // أخضر للجلسة المفتوحة / الجديدة
+                    const isNewlyOpened = s.elapsedSec <= 3600;
+                    cardStyle = 'background: linear-gradient(145deg, rgba(6, 95, 70, 0.28) 0%, #09120E 100%); border: 1px solid rgba(16, 185, 129, 0.5);';
+                    statusBadge = isNewlyOpened
+                        ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-300" style="background: rgba(16,185,129,0.22); border: 1px solid rgba(16,185,129,0.45);">✨ فُتحت حديثاً</span>'
+                        : '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-300" style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4);">🟢 مفتوح</span>';
+                    barColor = '#10B981';
+                    timerLine = `<span class="text-emerald-300">يُغلق بعد: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
+                }
 
                 return `
                     <div class="rounded-lg p-2.5 space-y-1.5 transition" style="${cardStyle}">
@@ -992,12 +956,18 @@
                             </span>
                             ${statusBadge}
                         </div>
-                        <div class="flex items-center justify-between text-[10px] text-zinc-400">
-                            <span>الإمارات 🇦🇪</span>
-                            <span class="font-bold text-zinc-200"><b class="mono-num">${openLabel}</b> ← <b class="mono-num">${closeLabel}</b></span>
+                        <div class="space-y-0.5 text-[10px] text-zinc-300">
+                            <div class="flex items-center justify-between">
+                                <span class="text-zinc-400">🇦🇪 الإمارات</span>
+                                <span class="font-bold"><b class="mono-num">${openUAE}</b> ← <b class="mono-num">${closeUAE}</b></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-zinc-400">🇸🇦 السعودية</span>
+                                <span class="font-bold"><b class="mono-num">${openKSA}</b> ← <b class="mono-num">${closeKSA}</b></span>
+                            </div>
                         </div>
-                        <div class="w-full h-1 rounded-full overflow-hidden bg-surface">
-                            <div class="h-full transition-all" style="width: ${isOpen ? progressPct.toFixed(1) : 0}%; background: ${isOpen ? '#10B981' : '#3F3F46'};"></div>
+                        <div class="w-full h-1 rounded-full overflow-hidden bg-black/40">
+                            <div class="h-full transition-all" style="width: ${s.isOpen ? s.progressPct.toFixed(1) : 0}%; background: ${barColor};"></div>
                         </div>
                         <div class="text-[10px] font-bold pt-0.5">${timerLine}</div>
                     </div>
@@ -1008,21 +978,38 @@
             if (sessEl) sessEl.innerHTML = cardsHtml;
 
             const bannerEl = document.getElementById('nextSessionBanner');
+            const noteEl = document.getElementById('marketStatusNote');
+
             if (bannerEl) {
                 if (isWeekendClosed) {
-                    bannerEl.style.background = '#27272A';
-                    bannerEl.style.color = '#E4E4E7';
-                    bannerEl.textContent = `السوق مغلق (عطلة الأسبوع • يفتح الإثنين ${formatHourTo12(sydneyH.openH)} 🇦🇪)`;
-                } else if (londonOpen && nyOpen) {
-                    bannerEl.style.background = '#F5C400';
+                    bannerEl.style.background = 'rgba(220,38,38,0.25)';
+                    bannerEl.style.color = '#FCA5A5';
+                    bannerEl.style.border = '1px solid rgba(220,38,38,0.5)';
+                    bannerEl.textContent = `السوق مغلق (عطلة الأسبوع) • يفتح بعد ${formatCountdownHMS(weekendReopenSec)}`;
+                } else if (isOverlap) {
+                    const names = openSessions.map(x => x.name).join(' + ');
+                    bannerEl.style.background = '#F59E0B';
                     bannerEl.style.color = '#000000';
-                    bannerEl.textContent = nextOpening
-                        ? `🔥 ذروة السيولة (لندن + نيويورك) • التالي: ${nextOpening.flag} ${nextOpening.name} بعد ${formatCountdownHMS(nextOpening.sec)}`
-                        : '🔥 ذروة السيولة: تداخل لندن ونيويورك';
+                    bannerEl.style.border = 'none';
+                    bannerEl.textContent = `🔥 تداخل نشط (${names}) — ذروة السيولة`;
                 } else if (nextOpening) {
                     bannerEl.style.background = '#F5C400';
                     bannerEl.style.color = '#000000';
-                    bannerEl.textContent = `الافتتاح القادم: ${nextOpening.flag} ${nextOpening.name} (${nextOpening.openLabel}) بعد ${formatCountdownHMS(nextOpening.sec)}`;
+                    bannerEl.style.border = 'none';
+                    bannerEl.textContent = `الافتتاح القادم: ${nextOpening.flag} ${nextOpening.name} (${nextOpening.openLabel} 🇦🇪) بعد ${formatCountdownHMS(nextOpening.sec)}`;
+                }
+            }
+
+            if (noteEl) {
+                if (isWeekendClosed) {
+                    noteEl.innerHTML = `
+                        <span class="text-rose-300">⛔ <b>إغلاق عطلة نهاية الأسبوع:</b> أسواق الفوركس والذهب مغلقة حالياً وتفتح يوم الإثنين الساعة <b class="text-white mono-num">${rolloverOpenUAE} 🇦🇪</b> (<b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b>).</span>
+                        <span class="text-maitha">العملات الرقمية (BTC) تعمل 24/7</span>
+                    `;
+                } else {
+                    noteEl.innerHTML = `
+                        <span>📌 <b>الإغلاق اليومي للسوق (Rollover):</b> الساعة <b class="text-maitha mono-num">${rolloverOpenUAE} 🇦🇪</b> | <b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b> (تجنب التداول خلال ساعة الإغلاق لارتفاع السبريد).</span>
+                    `;
                 }
             }
         }
@@ -1035,17 +1022,10 @@
         function formatEventDateTime(isoStr) {
             const d = new Date(isoStr);
             if (isNaN(d.getTime())) {
-                return {
-                    uaeTime: '--:--', ksaTime: '--:--',
-                    dayKey: 'unknown', fullDateText: 'غير محدد',
-                    shortDayDate: 'غير محدد', relativeLabel: '',
-                    isFinishedByTime: false, dayCategory: 'other', timestamp: 0
-                };
+                return { uaeTime: '--:--', ksaTime: '--:--', dayKey: 'unknown', fullDateText: 'غير محدد', shortDayDate: 'غير محدد', relativeLabel: '', isFinishedByTime: false, dayCategory: 'other', timestamp: 0 };
             }
-
             const uaeTime = format12HourTime(d, 'Asia/Dubai', false);
             const ksaTime = format12HourTime(d, 'Asia/Riyadh', false);
-
             const now = new Date();
             const todayKey = getUAEDayKey(now);
             const yesterdayKey = getUAEDayKey(new Date(now.getTime() - 86400000));
@@ -1059,13 +1039,8 @@
             else if (eventKey > todayKey) dayCategory = 'upcoming';
             else dayCategory = 'past';
 
-            const fullDateText = new Intl.DateTimeFormat('ar-AE', {
-                timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-            }).format(d);
-
-            const shortDayDate = new Intl.DateTimeFormat('ar-AE', {
-                timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'short'
-            }).format(d);
+            const fullDateText = new Intl.DateTimeFormat('ar-AE', { timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+            const shortDayDate = new Intl.DateTimeFormat('ar-AE', { timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'short' }).format(d);
 
             const diffMs = d.getTime() - now.getTime();
             const isFinishedByTime = diffMs < 0;
@@ -1073,22 +1048,11 @@
             const hrs = Math.floor(absMins / 60);
             const mins = absMins % 60;
 
-            let relativeLabel = '';
-            if (isFinishedByTime) {
-                if (hrs >= 24) relativeLabel = `انتهى منذ ${Math.floor(hrs / 24)} يوم`;
-                else if (hrs > 0) relativeLabel = `انتهى منذ ${hrs} س ${mins} د`;
-                else relativeLabel = `انتهى منذ ${mins} د`;
-            } else {
-                if (hrs >= 24) relativeLabel = `بعد ${Math.floor(hrs / 24)} يوم`;
-                else if (hrs > 0) relativeLabel = `بعد ${hrs} س ${mins} د`;
-                else relativeLabel = `بعد ${mins} د`;
-            }
+            let relativeLabel = isFinishedByTime
+                ? (hrs >= 24 ? `انتهى منذ ${Math.floor(hrs / 24)} يوم` : hrs > 0 ? `انتهى منذ ${hrs} س ${mins} د` : `انتهى منذ ${mins} د`)
+                : (hrs >= 24 ? `بعد ${Math.floor(hrs / 24)} يوم` : hrs > 0 ? `بعد ${hrs} س ${mins} د` : `بعد ${mins} د`);
 
-            return {
-                uaeTime, ksaTime, dayKey: eventKey,
-                fullDateText, shortDayDate, relativeLabel,
-                isFinishedByTime, dayCategory, timestamp: d.getTime()
-            };
+            return { uaeTime, ksaTime, dayKey: eventKey, fullDateText, shortDayDate, relativeLabel, isFinishedByTime, dayCategory, timestamp: d.getTime() };
         }
 
         function parseNumericVal(str) {
@@ -1105,27 +1069,9 @@
 
         function analyzeEconomicEvent(ev, isFinishedByTime = false, isNextUpcoming = false) {
             const impactRaw = (ev.impact || '').toLowerCase();
-            let strength = {
-                percent: 25,
-                label: 'ضعيف',
-                badgeStyle: 'background:#18181B; color:#A1A1AA; border:1px solid #2E2E32;',
-                barColor: '#52525B'
-            };
-            if (impactRaw === 'high') {
-                strength = {
-                    percent: 95,
-                    label: 'قوي جداً',
-                    badgeStyle: 'background:rgba(244,63,94,0.14); color:#FDA4AF; border:1px solid rgba(244,63,94,0.35);',
-                    barColor: '#E11D48'
-                };
-            } else if (impactRaw === 'medium') {
-                strength = {
-                    percent: 65,
-                    label: 'متوسط',
-                    badgeStyle: 'background:rgba(245,196,0,0.14); color:#F5C400; border:1px solid rgba(245,196,0,0.35);',
-                    barColor: '#D97706'
-                };
-            }
+            let strength = { percent: 25, label: 'ضعيف', badgeStyle: 'background:#18181B; color:#A1A1AA; border:1px solid #2E2E32;', barColor: '#52525B' };
+            if (impactRaw === 'high') strength = { percent: 95, label: 'قوي جداً', badgeStyle: 'background:rgba(244,63,94,0.14); color:#FDA4AF; border:1px solid rgba(244,63,94,0.35);', barColor: '#E11D48' };
+            else if (impactRaw === 'medium') strength = { percent: 65, label: 'متوسط', badgeStyle: 'background:rgba(245,196,0,0.14); color:#F5C400; border:1px solid rgba(245,196,0,0.35);', barColor: '#D97706' };
 
             const country = (ev.country || 'USD').toUpperCase();
             const isUSD = country === 'USD';
@@ -1136,148 +1082,125 @@
             const forecastNum = parseNumericVal(ev.forecast);
             const previousNum = parseNumericVal(ev.previous);
             const benchmark = forecastNum !== null ? forecastNum : previousNum;
-
-            const titleLower = (ev.title || '').toLowerCase();
-            const isInverted = titleLower.includes('unemployment') || titleLower.includes('jobless') || titleLower.includes('claims');
+            const isInverted = (ev.title || '').toLowerCase().includes('unemployment') || (ev.title || '').toLowerCase().includes('claims');
             const isFinished = isFinishedByTime || actualNum !== null;
 
-            let cardStyle = '';
-            let statusTag = { text: '', style: '' };
-            let verdict = { text: '', dotColor: '#71717A', boxStyle: '' };
+            let cardStyle = '', statusTag = { text: '', style: '' }, verdict = { text: '', dotColor: '#71717A', boxStyle: '' };
 
             if (isFinished) {
                 cardStyle = 'background: linear-gradient(145deg, rgba(244,63,94,0.08) 0%, #0E0D0E 100%); border: 1px solid rgba(244,63,94,0.32);';
-                statusTag = {
-                    text: 'انتهى',
-                    style: 'background: rgba(244,63,94,0.16); color: #FDA4AF; border: 1px solid rgba(244,63,94,0.35);'
-                };
-
+                statusTag = { text: 'انتهى', style: 'background: rgba(244,63,94,0.16); color: #FDA4AF; border: 1px solid rgba(244,63,94,0.35);' };
                 if (actualNum !== null && benchmark !== null) {
                     if (actualNum === benchmark) {
-                        statusTag.text = 'انتهى • محايد';
-                        verdict = {
-                            text: `محايد لـ ${currencyName} والذهب (مطابق للمتوقع)`,
-                            dotColor: '#A1A1AA',
-                            boxStyle: 'background: rgba(24,24,27,0.75); border: 1px solid #2E2E32; color: #D4D4D8;'
-                        };
+                        verdict = { text: `محايد لـ ${currencyName} والذهب (مطابق للمتوقع)`, dotColor: '#A1A1AA', boxStyle: 'background: rgba(24,24,27,0.75); border: 1px solid #2E2E32; color: #D4D4D8;' };
                     } else {
                         const isPositive = isInverted ? (actualNum < benchmark) : (actualNum > benchmark);
-                        if (isPositive) {
-                            statusTag.text = 'انتهى • نتيجة إيجابية';
-                            verdict = {
-                                text: isUSD
-                                    ? 'إيجابي للدولار 🟢  ⇐  سلبي للذهب 🔴'
-                                    : `إيجابي لـ ${currencyName} 🟢 (دعم صعودي للعملة)`,
-                                dotColor: '#34D399',
-                                boxStyle: 'background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: #6EE7B7;'
-                            };
-                        } else {
-                            statusTag.text = 'انتهى • نتيجة سلبية';
-                            verdict = {
-                                text: isUSD
-                                    ? 'سلبي للدولار 🔴  ⇐  إيجابي للذهب 🟢'
-                                    : `سلبي لـ ${currencyName} 🔴 (ضغط هبوطي للعملة)`,
-                                dotColor: '#FB7185',
-                                boxStyle: 'background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.35); color: #FDA4AF;'
-                            };
-                        }
+                        verdict = isPositive
+                            ? { text: isUSD ? 'إيجابي للدولار 🟢  ⇐  سلبي للذهب 🔴' : `إيجابي لـ ${currencyName} 🟢`, dotColor: '#34D399', boxStyle: 'background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: #6EE7B7;' }
+                            : { text: isUSD ? 'سلبي للدولار 🔴  ⇐  إيجابي للذهب 🟢' : `سلبي لـ ${currencyName} 🔴`, dotColor: '#FB7185', boxStyle: 'background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.35); color: #FDA4AF;' };
                     }
                 } else {
-                    verdict = {
-                        text: 'انتهى وقت الخبر (بانتظار تحديث النتيجة الرقمية)',
-                        dotColor: '#FB7185',
-                        boxStyle: 'background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.25); color: #FECDD3;'
-                    };
+                    verdict = { text: 'انتهى وقت الخبر (بانتظار تحديث النتيجة الرقمية)', dotColor: '#FB7185', boxStyle: 'background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.25); color: #FECDD3;' };
                 }
             } else {
-                if (isNextUpcoming) {
-                    cardStyle = 'background: linear-gradient(145deg, rgba(245,196,0,0.10) 0%, #0F0F10 100%); border: 1.5px solid #F5C400;';
-                    statusTag = {
-                        text: '🎯 الخبر القادم الآن',
-                        style: 'background: #F5C400; color: #000000; border: 1px solid #FFE047;'
-                    };
-                } else {
-                    cardStyle = 'background: linear-gradient(145deg, rgba(56,189,248,0.07) 0%, #0D0E10 100%); border: 1px solid rgba(56,189,248,0.28);';
-                    statusTag = {
-                        text: 'قادم',
-                        style: 'background: rgba(56,189,248,0.14); color: #7DD3FC; border: 1px solid rgba(56,189,248,0.3);'
-                    };
-                }
+                cardStyle = isNextUpcoming
+                    ? 'background: linear-gradient(145deg, rgba(245,196,0,0.10) 0%, #0F0F10 100%); border: 1.5px solid #F5C400;'
+                    : 'background: linear-gradient(145deg, rgba(56,189,248,0.07) 0%, #0D0E10 100%); border: 1px solid rgba(56,189,248,0.28);';
+                statusTag = isNextUpcoming
+                    ? { text: '🎯 الخبر القادم الآن', style: 'background: #F5C400; color: #000000; border: 1px solid #FFE047;' }
+                    : { text: 'قادم', style: 'background: rgba(56,189,248,0.14); color: #7DD3FC; border: 1px solid rgba(56,189,248,0.3);' };
                 verdict = {
-                    text: isUSD
-                        ? 'بانتظار الصدور • سيحدد اتجاه الدولار والذهب فوراً'
-                        : `بانتظار الصدور • تأثير مباشر على ${currencyName}`,
+                    text: isUSD ? 'بانتظار الصدور • سيحدد اتجاه الدولار والذهب فوراً' : `بانتظار الصدور • تأثير مباشر على ${currencyName}`,
                     dotColor: isNextUpcoming ? '#F5C400' : '#38BDF8',
-                    boxStyle: isNextUpcoming
-                        ? 'background: rgba(245,196,0,0.08); border: 1px solid rgba(245,196,0,0.28); color: #FDE047;'
-                        : 'background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.22); color: #BAE6FD;'
+                    boxStyle: isNextUpcoming ? 'background: rgba(245,196,0,0.08); border: 1px solid rgba(245,196,0,0.28); color: #FDE047;' : 'background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.22); color: #BAE6FD;'
                 };
             }
 
             const flags = { USD: '🇺🇸', EUR: '🇪🇺', GBP: '🇬🇧', JPY: '🇯🇵', AUD: '🇦🇺', CAD: '🇨🇦', CHF: '🇨🇭', NZD: '🇳🇿', CNY: '🇨🇳' };
-            return {
-                strength, verdict, cardStyle, statusTag,
-                flag: flags[country] || '🌐', country,
-                arTitle, isFinished
-            };
+            return { strength, verdict, cardStyle, statusTag, flag: flags[country] || '🌐', country, arTitle, isFinished };
+        }
+
+        function updateNextNewsRadar(now) {
+            const banner = document.getElementById('botAlertBanner');
+            const badgeEl = document.getElementById('radarBadge');
+            const strengthEl = document.getElementById('radarStrength');
+            const timeEl = document.getElementById('radarUAETime');
+            const flagEl = document.getElementById('radarFlag');
+            const titleEl = document.getElementById('radarTitle');
+            const titleArEl = document.getElementById('radarTitleAr');
+            const cdEl = document.getElementById('radarCountdown');
+            const cardCdEl = document.getElementById('nextCardLiveCountdown');
+            if (!titleArEl || !cdEl) return;
+
+            const nowMs = now.getTime();
+            const upcoming = (appState.economicEvents || [])
+                .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
+                .filter(item => !isNaN(item.ts) && item.ts > nowMs)
+                .sort((a, b) => a.ts - b.ts);
+
+            if (upcoming.length === 0) {
+                badgeEl.style.background = '#F5C400';
+                badgeEl.style.color = '#000000';
+                badgeEl.textContent = 'رادار الأخبار';
+                titleArEl.textContent = 'لا توجد أخبار اقتصادية قادمة حالياً (أو السوق في عطلة)';
+                cdEl.textContent = '--:--:--';
+                return;
+            }
+
+            const nextImportant = upcoming.find(item => ['high', 'medium'].includes((item.ev.impact || '').toLowerCase())) || upcoming[0];
+            const ev = nextImportant.ev;
+            const remainingSec = Math.max(0, Math.floor((nextImportant.ts - nowMs) / 1000));
+            const dt = formatEventDateTime(ev.date);
+            const info = analyzeEconomicEvent(ev, false, true);
+            const countdownStr = formatCountdownHMS(remainingSec);
+
+            flagEl.textContent = info.flag;
+            titleArEl.textContent = `${info.arTitle} (${info.country})`;
+            if (titleEl) titleEl.textContent = ev.title;
+            timeEl.textContent = `🇦🇪 ${dt.uaeTime}`;
+            cdEl.textContent = countdownStr;
+            if (cardCdEl) cardCdEl.textContent = countdownStr;
+            strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
+            strengthEl.style.cssText = info.strength.badgeStyle;
+
+            const eventKey = `${ev.title}_${ev.date}`;
+            if (newsAlarmEnabled && remainingSec <= 300 && remainingSec > 0 && !alarmedEventIds.has(eventKey)) {
+                alarmedEventIds.add(eventKey);
+                playAlertSound();
+                showToast(`🔔 تنبيه: متبقي أقل من 5 دقائق على خبر ${info.arTitle}`);
+            }
         }
 
         function loadChart(symbol) {
-            try {
-                const container = document.getElementById('tv_chart_container');
-                if (!container) return;
-                container.innerHTML = '';
-                const script = document.createElement('script');
-                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-                script.type = 'text/javascript';
-                script.async = true;
-                script.innerHTML = JSON.stringify({
-                    "autosize": true,
-                    "symbol": symbol,
-                    "interval": "15",
-                    "timezone": "Asia/Dubai",
-                    "theme": "dark",
-                    "style": "1",
-                    "locale": "ar_AE",
-                    "hide_top_toolbar": false,
-                    "hide_legend": false,
-                    "allow_symbol_change": true,
-                    "save_image": false,
-                    "calendar": false,
-                    "studies": ["STD;RSI"],
-                    "support_host": "https://www.tradingview.com"
-                });
-                container.appendChild(script);
-            } catch (err) {
-                console.error('Chart load error:', err);
-            }
+            const container = document.getElementById('tv_chart_container');
+            if (!container) return;
+            container.innerHTML = '';
+            const script = document.createElement('script');
+            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+            script.type = 'text/javascript';
+            script.async = true;
+            script.innerHTML = JSON.stringify({
+                "autosize": true, "symbol": symbol, "interval": "15", "timezone": "Asia/Dubai",
+                "theme": "dark", "style": "1", "locale": "ar_AE", "allow_symbol_change": true,
+                "studies": ["STD;RSI"], "support_host": "https://www.tradingview.com"
+            });
+            container.appendChild(script);
         }
 
         function loadTradingViewCalendar(targetId = 'tv_calendar_container', force = false) {
-            try {
-                const container = document.getElementById(targetId);
-                if (!container) return;
-                if (targetId === 'tv_calendar_container' && tvCalendarLoaded && !force) return;
-                if (targetId === 'tv_calendar_container') tvCalendarLoaded = true;
-
-                container.innerHTML = '';
-                const script = document.createElement('script');
-                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
-                script.type = 'text/javascript';
-                script.async = true;
-                script.innerHTML = JSON.stringify({
-                    "colorTheme": "dark",
-                    "isTransparent": true,
-                    "width": "100%",
-                    "height": "100%",
-                    "locale": "ar_AE",
-                    "importanceFilter": "-1,0,1",
-                    "currencyFilter": "USD,EUR,GBP,JPY,AUD,CAD,CHF"
-                });
-                container.appendChild(script);
-            } catch (err) {
-                console.error('TV Calendar load error:', err);
-            }
+            const container = document.getElementById(targetId);
+            if (!container || (targetId === 'tv_calendar_container' && tvCalendarLoaded && !force)) return;
+            if (targetId === 'tv_calendar_container') tvCalendarLoaded = true;
+            container.innerHTML = '';
+            const script = document.createElement('script');
+            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
+            script.type = 'text/javascript';
+            script.async = true;
+            script.innerHTML = JSON.stringify({
+                "colorTheme": "dark", "isTransparent": true, "width": "100%", "height": "100%",
+                "locale": "ar_AE", "importanceFilter": "-1,0,1", "currencyFilter": "USD,EUR,GBP,JPY,AUD,CAD,CHF"
+            });
+            container.appendChild(script);
         }
 
         function changeSymbol(symbol, label, btnEl) {
@@ -1294,7 +1217,7 @@
         }
 
         function switchTab(tabName) {
-            ['chart', 'signals', 'news'].forEach(t => {
+            ['home', 'signals', 'news', 'download'].forEach(t => {
                 const sec = document.getElementById('tab-' + t);
                 const navBtn = document.getElementById('nav-' + t);
                 if (sec) sec.classList.add('hidden');
@@ -1314,13 +1237,8 @@
 
             const floatBtn = document.getElementById('jumpNextFloatingBtn');
             if (floatBtn) {
-                if (tabName === 'news') {
-                    floatBtn.classList.remove('hidden');
-                    floatBtn.classList.add('flex');
-                } else {
-                    floatBtn.classList.add('hidden');
-                    floatBtn.classList.remove('flex');
-                }
+                floatBtn.classList.toggle('hidden', tabName !== 'news');
+                floatBtn.classList.toggle('flex', tabName === 'news');
             }
 
             if (tabName === 'news') {
@@ -1329,27 +1247,14 @@
                 loadTradingViewCalendar('tv_calendar_container', false);
                 loadRealEconomicCalendar(false);
                 loadLiveNews(false);
-                setTimeout(() => {
-                    if (scrollToNextUpcomingNews(false)) {
-                        pendingScrollToNextNews = false;
-                    }
-                }, 180);
             } else {
                 window.scrollTo(0, 0);
-            }
-
-            if (tabName === 'signals') {
-                const dot = document.getElementById('badgeDot');
-                if (dot) dot.classList.add('hidden');
             }
         }
 
         function toggleRiskCalc() {
             const panel = document.getElementById('riskCalcPanel');
-            if (panel) {
-                panel.classList.toggle('hidden');
-                calculateRisk();
-            }
+            if (panel) { panel.classList.toggle('hidden'); calculateRisk(); }
         }
 
         function calculateRisk() {
@@ -1358,62 +1263,29 @@
             const slPips = parseFloat(document.getElementById('calcSlPips')?.value) || 1;
             const riskUsd = (balance * riskPct) / 100;
             const lotSize = slPips > 0 ? riskUsd / (slPips * 10) : 0;
-
-            const usdEl = document.getElementById('calcRiskUsd');
-            const lotEl = document.getElementById('calcLotSize');
-            if (usdEl) usdEl.textContent = `$${riskUsd.toFixed(2)}`;
-            if (lotEl) lotEl.textContent = `${Math.max(0.01, lotSize).toFixed(2)} Lot`;
+            document.getElementById('calcRiskUsd').textContent = `$${riskUsd.toFixed(2)}`;
+            document.getElementById('calcLotSize').textContent = `${Math.max(0.01, lotSize).toFixed(2)} Lot`;
         }
 
         async function refreshAllRealNews() {
-            const btn = document.getElementById('refreshNewsBtn');
-            if (btn) btn.innerHTML = '<span>جاري التحديث...</span>';
-            fallbackCalendarMounted = false;
-            fallbackNewsMounted = false;
-            await Promise.allSettled([
-                fetchFromFirebase(true),
-                loadRealEconomicCalendar(true),
-                loadLiveNews(true)
-            ]);
+            await Promise.allSettled([fetchFromFirebase(true), loadRealEconomicCalendar(true), loadLiveNews(true)]);
             loadTradingViewCalendar('tv_calendar_container', true);
-            if (btn) {
-                btn.innerHTML = `
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    <span>تحديث</span>`;
-            }
             showToast('تم تحديث الأخبار والبيانات المباشرة');
         }
 
         function switchNewsSubTab(sub) {
-            const views = {
-                calendar: document.getElementById('news-calendar-view'),
-                live: document.getElementById('news-live-view'),
-                feed: document.getElementById('news-feed-view')
-            };
-            const btns = {
-                calendar: document.getElementById('subtab-calendar'),
-                live: document.getElementById('subtab-live'),
-                feed: document.getElementById('subtab-feed')
-            };
-
-            Object.keys(views).forEach(k => {
-                if (!views[k] || !btns[k]) return;
-                if (k === sub) {
-                    views[k].classList.remove('hidden');
-                    btns[k].classList.add('bg-maitha', 'text-black', 'font-black');
-                    btns[k].classList.remove('text-zinc-400', 'font-bold');
-                } else {
-                    views[k].classList.add('hidden');
-                    btns[k].classList.remove('bg-maitha', 'text-black', 'font-black');
-                    btns[k].classList.add('text-zinc-400', 'font-bold');
-                }
+            ['calendar', 'live', 'feed'].forEach(k => {
+                const v = document.getElementById(`news-${k}-view`);
+                const b = document.getElementById(`subtab-${k}`);
+                if (!v || !b) return;
+                v.classList.toggle('hidden', k !== sub);
+                b.classList.toggle('bg-maitha', k === sub);
+                b.classList.toggle('text-black', k === sub);
+                b.classList.toggle('font-black', k === sub);
+                b.classList.toggle('text-zinc-400', k !== sub);
             });
-
             if (sub === 'live') loadTradingViewCalendar('tv_calendar_container', false);
             if (sub === 'feed') loadLiveNews(false);
-            if (sub === 'calendar') loadRealEconomicCalendar(false);
         }
 
         function setCalendarFilter(filterType, autoScroll = true) {
@@ -1428,113 +1300,55 @@
                 active.classList.add('bg-maitha', 'text-black', 'font-extrabold');
             }
             renderEconomicCalendar(true);
-            if (autoScroll && (filterType === 'today' || filterType === 'upcoming')) {
-                setTimeout(() => scrollToNextUpcomingNews(false), 120);
-            }
+            if (autoScroll && (filterType === 'today' || filterType === 'upcoming')) setTimeout(() => scrollToNextUpcomingNews(false), 120);
         }
 
-        let realCalendarLoaded = false;
         async function loadRealEconomicCalendar(forceRefresh = false) {
             if (isFetchingCalendar) return;
-
             if (appState.economicEvents.length === 0) {
                 try {
                     const cached = JSON.parse(localStorage.getItem(CACHE_KEY_CALENDAR) || 'null');
                     if (cached && Array.isArray(cached.data) && cached.data.length > 0 && (Date.now() - cached.ts < 3600000)) {
                         appState.economicEvents = cached.data;
                         renderEconomicCalendar(true);
-                        updateNextNewsRadar(new Date());
                     }
                 } catch (e) {}
             }
-
-            if (realCalendarLoaded && !forceRefresh && appState.economicEvents.length > 0) {
-                renderEconomicCalendar(false);
-                return;
-            }
-
             isFetchingCalendar = true;
             const sourceUrl = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json';
-            const attempts = [
-                async () => {
-                    const r = await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(sourceUrl)}`, 7500);
-                    const parsed = await r.json();
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                    throw new Error('empty');
-                },
-                async () => {
-                    const r = await fetchWithTimeout(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(sourceUrl)}`, 7500);
-                    const parsed = await r.json();
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                    throw new Error('empty');
-                },
-                async () => {
-                    const r = await fetchWithTimeout(`https://corsproxy.io/?url=${encodeURIComponent(sourceUrl)}`, 7500);
-                    const parsed = await r.json();
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                    throw new Error('empty');
-                }
-            ];
-
             try {
-                const fetchedData = await Promise.any(attempts.map(fn => fn()));
-                appState.economicEvents = fetchedData
-                    .filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday')
-                    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-                realCalendarLoaded = true;
-                try {
+                const r = await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(sourceUrl)}`, 7500);
+                const fetchedData = await r.json();
+                if (Array.isArray(fetchedData) && fetchedData.length > 0) {
+                    appState.economicEvents = fetchedData
+                        .filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday')
+                        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
                     localStorage.setItem(CACHE_KEY_CALENDAR, JSON.stringify({ ts: Date.now(), data: appState.economicEvents }));
-                } catch (e) {}
-                renderEconomicCalendar(true);
-                updateNextNewsRadar(new Date());
-            } catch (err) {
-                console.warn('Direct calendar fetch skipped, relying on Firebase sync:', err);
-                renderEconomicCalendar(false);
-            } finally {
-                isFetchingCalendar = false;
-            }
+                    renderEconomicCalendar(true);
+                }
+            } catch (e) { renderEconomicCalendar(false); }
+            finally { isFetchingCalendar = false; }
         }
 
         function renderEconomicCalendar(forceRedraw = false) {
             const container = document.getElementById('economicCalendarList');
             if (!container) return;
-
             if (!appState.economicEvents || appState.economicEvents.length === 0) {
                 if (fallbackCalendarMounted && !forceRedraw) return;
                 fallbackCalendarMounted = true;
-                container.innerHTML = `
-                    <div class="bg-panel rounded-lg p-3.5 space-y-2" style="border: 1px solid rgba(245,196,0,0.4);">
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-xs font-extrabold text-maitha">الأجندة الاقتصادية المباشرة</span>
-                            <button onclick="refreshAllRealNews()" class="px-2.5 py-1 rounded bg-maitha text-black text-[10px] font-black">مزامنة الآن ↻</button>
-                        </div>
-                        <p class="text-[11px] text-zinc-400 leading-relaxed">
-                            جاري تحميل بطاقات الأخبار الاقتصادية المترجمة من قاعدة البيانات المباشرة...
-                        </p>
-                    </div>
-                    <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;">
-                        <div id="tv_calendar_fallback" class="w-full h-full"></div>
-                    </div>`;
+                container.innerHTML = `<div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;"><div id="tv_calendar_fallback" class="w-full h-full"></div></div>`;
                 loadTradingViewCalendar('tv_calendar_fallback', true);
                 return;
             }
-
             fallbackCalendarMounted = false;
-
             const nowMs = Date.now();
-            const upcomingSorted = appState.economicEvents
-                .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
-                .filter(x => !isNaN(x.ts) && x.ts > nowMs)
-                .sort((a, b) => a.ts - b.ts);
+            const upcomingSorted = appState.economicEvents.map(ev => ({ ev, ts: new Date(ev.date).getTime() })).filter(x => !isNaN(x.ts) && x.ts > nowMs).sort((a, b) => a.ts - b.ts);
             const nextUpcomingEvent = upcomingSorted.length > 0 ? upcomingSorted[0].ev : null;
 
             const enriched = appState.economicEvents.map(ev => {
                 const dt = formatEventDateTime(ev.date);
                 const isNextUpcoming = nextUpcomingEvent !== null && ev === nextUpcomingEvent;
-                return {
-                    ev, dt, isNextUpcoming,
-                    info: analyzeEconomicEvent(ev, dt.isFinishedByTime, isNextUpcoming)
-                };
+                return { ev, dt, isNextUpcoming, info: analyzeEconomicEvent(ev, dt.isFinishedByTime, isNextUpcoming) };
             }).filter(item => {
                 if (currentCalendarFilter === 'today') return item.dt.dayCategory === 'today';
                 if (currentCalendarFilter === 'upcoming') return !item.dt.isFinishedByTime && !item.ev.actual;
@@ -1546,282 +1360,77 @@
             });
 
             if (enriched.length === 0) {
-                container.innerHTML = `<div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">لا توجد أخبار اقتصادية مطابقة لهذا الفلتر حالياً. اضغط «كل الأسبوع» لعرض جميع الأخبار.</div>`;
+                container.innerHTML = `<div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">لا توجد أخبار مطابقة لهذا الفلتر حالياً. اضغط «كل الأسبوع».</div>`;
                 return;
             }
 
-            const groupsMap = new Map();
-            enriched.forEach(item => {
-                const key = item.dt.dayKey;
-                if (!groupsMap.has(key)) {
-                    groupsMap.set(key, {
-                        dayKey: key,
-                        dayCategory: item.dt.dayCategory,
-                        fullDateText: item.dt.fullDateText,
-                        items: []
-                    });
-                }
-                groupsMap.get(key).items.push(item);
-            });
-
-            const priority = { today: 1, tomorrow: 2, upcoming: 3, yesterday: 4, past: 5, other: 6 };
-            const sortedGroups = Array.from(groupsMap.values()).sort((a, b) => {
-                const pA = priority[a.dayCategory] || 9;
-                const pB = priority[b.dayCategory] || 9;
-                if (pA !== pB) return pA - pB;
-                return a.dayKey.localeCompare(b.dayKey);
-            });
-
-            container.innerHTML = sortedGroups.map(group => {
-                let sectionTitle = 'أخبار اقتصادية';
-                let headerStyle = 'background:#141416; border:1px solid #242424; color:#E4E4E7;';
-                let badgeStyle = 'background:#27272A; color:#E4E4E7;';
-
-                if (group.dayCategory === 'today') {
-                    sectionTitle = 'أخبار اليوم';
-                    headerStyle = 'background:rgba(245,196,0,0.10); border:1px solid rgba(245,196,0,0.5); color:#F5C400;';
-                    badgeStyle = 'background:#F5C400; color:#000000;';
-                } else if (group.dayCategory === 'yesterday') {
-                    sectionTitle = 'أخبار أمس';
-                    headerStyle = 'background:rgba(244,63,94,0.08); border:1px solid rgba(244,63,94,0.3); color:#FDA4AF;';
-                    badgeStyle = 'background:rgba(244,63,94,0.25); color:#FDA4AF;';
-                } else if (group.dayCategory === 'tomorrow') {
-                    sectionTitle = 'أخبار غداً';
-                    headerStyle = 'background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.3); color:#7DD3FC;';
-                    badgeStyle = 'background:rgba(56,189,248,0.2); color:#7DD3FC;';
-                } else if (group.dayCategory === 'upcoming') {
-                    sectionTitle = 'أخبار قادمة';
-                    headerStyle = 'background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.3); color:#7DD3FC;';
-                    badgeStyle = 'background:rgba(56,189,248,0.2); color:#7DD3FC;';
-                } else if (group.dayCategory === 'past') {
-                    sectionTitle = 'أخبار سابقة';
-                }
-
-                const cardsHtml = group.items.map(({ ev, dt, info, isNextUpcoming }) => `
-                    <div ${isNextUpcoming ? 'id="nextUpcomingCard"' : ''} class="rounded-lg p-3.5 space-y-2.5 transition ${isNextUpcoming ? 'next-upcoming-highlight' : ''}" style="${info.cardStyle}">
-                        <div class="flex flex-wrap items-center justify-between gap-2 pb-2" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="px-2.5 py-0.5 rounded text-[10px] font-black" style="${info.statusTag.style}">
-                                    ${info.statusTag.text}
-                                </span>
-                                <span class="text-[11px] font-extrabold text-zinc-300">${dt.shortDayDate}</span>
-                                ${dt.relativeLabel ? `<span class="text-[10px] font-bold text-zinc-400">(${dt.relativeLabel})</span>` : ''}
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                                ${isNextUpcoming ? `<span id="nextCardLiveCountdown" class="px-2 py-0.5 rounded bg-black text-maitha text-[10px] font-black mono-num" style="border: 1px solid rgba(245,196,0,0.45);">--:--:--</span>` : ''}
-                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold" style="${info.strength.badgeStyle}">
-                                    القوة: ${info.strength.label}
-                                </span>
-                            </div>
+            container.innerHTML = enriched.map(({ ev, dt, info, isNextUpcoming }) => `
+                <div ${isNextUpcoming ? 'id="nextUpcomingCard"' : ''} class="rounded-lg p-3.5 space-y-2.5 transition ${isNextUpcoming ? 'next-upcoming-highlight' : ''}" style="${info.cardStyle}">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-2" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+                        <div class="flex items-center gap-1.5">
+                            <span class="px-2.5 py-0.5 rounded text-[10px] font-black" style="${info.statusTag.style}">${info.statusTag.text}</span>
+                            <span class="text-[11px] font-extrabold text-zinc-300">${dt.shortDayDate}</span>
                         </div>
-
-                        <div class="flex items-center justify-between gap-2 flex-wrap">
-                            <div class="flex items-center gap-2">
-                                <span class="px-2.5 py-1 rounded text-[11px] font-extrabold text-maitha mono-num" style="background: rgba(0,0,0,0.42); border: 1px solid rgba(245,196,0,0.25);">
-                                    🇦🇪 الإمارات ${dt.uaeTime}
-                                </span>
-                                <span class="px-2.5 py-1 rounded text-[11px] font-bold text-zinc-200 mono-num" style="background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.1);">
-                                    🇸🇦 السعودية ${dt.ksaTime}
-                                </span>
-                            </div>
-                            <span class="text-[10px] font-extrabold text-zinc-400 mono-num">${info.strength.percent}%</span>
-                        </div>
-
-                        <div class="flex items-start gap-2.5">
-                            <span class="text-xl leading-none mt-0.5">${info.flag}</span>
-                            <div class="flex-1">
-                                <span class="text-[10px] font-extrabold text-maitha tracking-wider block">${info.country}</span>
-                                <h3 class="text-xs font-black text-white leading-snug mt-0.5">${info.arTitle}</h3>
-                                <p class="text-[10px] font-semibold text-zinc-400 leading-snug mt-0.5" dir="ltr">${ev.title}</p>
-                            </div>
-                        </div>
-
-                        <div class="w-full h-1 rounded-full overflow-hidden" style="background: rgba(0,0,0,0.45);">
-                            <div class="h-full" style="width: ${info.strength.percent}%; background-color: ${info.strength.barColor};"></div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-2 rounded-md p-2 text-center" style="background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.08);">
-                            <div>
-                                <span class="text-[10px] text-zinc-400 font-bold block">السابق</span>
-                                <span class="text-xs font-bold text-zinc-200 mt-0.5 block mono-num" dir="ltr">${ev.previous || '—'}</span>
-                            </div>
-                            <div style="border-left: 1px solid rgba(255,255,255,0.08); border-right: 1px solid rgba(255,255,255,0.08);">
-                                <span class="text-[10px] text-maitha font-bold block">المتوقع</span>
-                                <span class="text-xs font-extrabold text-maitha mt-0.5 block mono-num" dir="ltr">${ev.forecast || '—'}</span>
-                            </div>
-                            <div>
-                                <span class="text-[10px] text-zinc-300 font-bold block">الفعلي</span>
-                                <span class="text-xs font-extrabold text-white mt-0.5 block mono-num" dir="ltr">${ev.actual || 'قريباً'}</span>
-                            </div>
-                        </div>
-
-                        <div class="rounded-md px-3 py-2 text-[11px] font-extrabold flex items-center justify-center gap-2 text-center" style="${info.verdict.boxStyle}">
-                            <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${info.verdict.dotColor};"></span>
-                            <span>${info.verdict.text}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold" style="${info.strength.badgeStyle}">القوة: ${info.strength.label}</span>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-extrabold text-maitha mono-num" style="background: rgba(0,0,0,0.42);">🇦🇪 ${dt.uaeTime}</span>
+                        <span class="px-2.5 py-1 rounded text-[11px] font-bold text-zinc-200 mono-num" style="background: rgba(0,0,0,0.42);">🇸🇦 ${dt.ksaTime}</span>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-xl leading-none">${info.flag}</span>
+                        <div>
+                            <h3 class="text-xs font-black text-white">${info.arTitle}</h3>
+                            <p class="text-[10px] text-zinc-400" dir="ltr">${ev.title}</p>
                         </div>
                     </div>
-                `).join('');
-
-                return `
-                    <div class="space-y-2.5">
-                        <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="${headerStyle}">
-                            <div class="flex items-center gap-2">
-                                <span class="px-2 py-0.5 rounded text-[11px] font-black" style="${badgeStyle}">${sectionTitle}</span>
-                                <span class="text-xs font-extrabold">${group.fullDateText}</span>
-                            </div>
-                            <span class="text-[10px] font-bold opacity-85 mono-num">${group.items.length} خبر</span>
-                        </div>
-                        <div class="space-y-2.5">${cardsHtml}</div>
-                    </div>
-                `;
-            }).join('');
-
-            if (pendingScrollToNextNews) {
-                setTimeout(() => {
-                    if (scrollToNextUpcomingNews(false)) {
-                        pendingScrollToNextNews = false;
-                    }
-                }, 120);
-            }
+                    <div class="rounded-md px-3 py-2 text-[11px] font-extrabold text-center" style="${info.verdict.boxStyle}">${info.verdict.text}</div>
+                </div>
+            `).join('');
         }
 
-        let newsLoaded = false;
         async function loadLiveNews(forceRefresh = false) {
-            if (appState.newsFeed.length > 0 && !forceRefresh) {
-                renderNewsFeed(false);
-                return;
-            }
-            if (newsLoaded && !forceRefresh) return;
-
+            if (appState.newsFeed.length > 0 && !forceRefresh) { renderNewsFeed(false); return; }
             try {
                 const rssUrl = encodeURIComponent('https://www.fxstreet.com/rss/news');
                 const res = await fetchWithTimeout(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`, 6000);
                 const data = await res.json();
-
-                if (data && data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
+                if (data?.status === 'ok' && Array.isArray(data.items)) {
                     appState.newsFeed = data.items.slice(0, 12).map(item => {
                         const dt = formatEventDateTime(item.pubDate);
-                        return {
-                            title: item.title,
-                            source: 'FXStreet',
-                            uaeTime: dt.uaeTime,
-                            ksaTime: dt.ksaTime,
-                            link: item.link || '#'
-                        };
+                        return { title: item.title, source: 'FXStreet', uaeTime: dt.uaeTime, ksaTime: dt.ksaTime, link: item.link || '#' };
                     });
-                    newsLoaded = true;
                     renderNewsFeed(true);
-                    return;
                 }
-            } catch (err) {
-                console.warn('Live news fetch error:', err);
-            }
-            renderNewsFeed(false);
+            } catch (e) { renderNewsFeed(false); }
         }
 
         function renderNewsFeed(forceRedraw = false) {
             const list = document.getElementById('newsFeedList');
             if (!list) return;
-
-            if (!appState.newsFeed || appState.newsFeed.length === 0) {
+            if (!appState.newsFeed.length) {
                 if (fallbackNewsMounted && !forceRedraw) return;
                 fallbackNewsMounted = true;
-                list.innerHTML = `
-                    <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;">
-                        <div id="tv_timeline_fallback" class="w-full h-full"></div>
-                    </div>`;
+                list.innerHTML = `<div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;"><div id="tv_timeline_fallback" class="w-full h-full"></div></div>`;
                 const container = document.getElementById('tv_timeline_fallback');
                 if (container) {
                     const script = document.createElement('script');
                     script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js';
-                    script.type = 'text/javascript';
                     script.async = true;
-                    script.innerHTML = JSON.stringify({
-                        "feedMode": "all_symbols",
-                        "isTransparent": true,
-                        "displayMode": "regular",
-                        "width": "100%",
-                        "height": "100%",
-                        "colorTheme": "dark",
-                        "locale": "ar_AE"
-                    });
+                    script.innerHTML = JSON.stringify({ "feedMode": "all_symbols", "isTransparent": true, "width": "100%", "height": "100%", "colorTheme": "dark", "locale": "ar_AE" });
                     container.appendChild(script);
                 }
                 return;
             }
-
-            fallbackNewsMounted = false;
             list.innerHTML = appState.newsFeed.map(item => `
-                <a href="${item.link || '#'}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line rounded-lg p-3.5 transition">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="px-2 py-0.5 rounded text-maitha text-[10px] font-extrabold" style="background: rgba(245,196,0,0.14);">${item.source || 'أخبار السوق'}</span>
-                        <div class="flex items-center gap-1.5 text-[10px] mono-num">
-                            <span class="text-maitha font-bold">🇦🇪 ${item.uaeTime || item.time || 'مباشر'}</span>
-                            ${item.ksaTime ? `<span class="text-zinc-500">|</span><span class="text-zinc-300 font-bold">🇸🇦 ${item.ksaTime}</span>` : ''}
-                        </div>
+                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line rounded-lg p-3.5">
+                    <div class="flex items-center justify-between mb-1.5 text-[10px]">
+                        <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${item.source}</span>
+                        <span class="mono-num text-zinc-400">🇦🇪 ${item.uaeTime} | 🇸🇦 ${item.ksaTime}</span>
                     </div>
-                    <h3 class="text-xs font-bold text-white leading-relaxed" dir="auto">${item.title}</h3>
+                    <h3 class="text-xs font-bold text-white" dir="auto">${item.title}</h3>
                 </a>
             `).join('');
-        }
-
-        function copySignalText(pair, type, entry, tp, sl) {
-            const txt = `R-Trade.VIP | Maitha Trade\n${pair} ${type}\nالدخول: ${entry}\nالهدف (TP): ${tp}\nالوقف (SL): ${sl}`;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(txt).then(() => showToast(`تم نسخ صفقة ${pair}`)).catch(() => showToast('تعذر النسخ التلقائي'));
-            } else {
-                showToast(`صفقة ${pair} جاهزة`);
-            }
-        }
-
-        function renderSignals() {
-            const list = document.getElementById('signalsList');
-            const countEl = document.getElementById('signalsCount');
-            if (!list) return;
-            if (countEl) countEl.textContent = `${appState.signals.length} صفقات`;
-
-            list.innerHTML = appState.signals.map(sig => {
-                const isBuy = String(sig.type).toUpperCase() === 'BUY';
-                const badgeStyle = isBuy
-                    ? 'background:rgba(16,185,129,0.15); color:#34D399; border:1px solid rgba(16,185,129,0.4);'
-                    : 'background:rgba(244,63,94,0.15); color:#FB7185; border:1px solid rgba(244,63,94,0.4);';
-                const accentColor = isBuy ? '#10B981' : '#F43F5E';
-                const typeLabel = isBuy ? 'شراء BUY ↗' : 'بيع SELL ↘';
-
-                return `
-                    <div class="bg-panel border border-line rounded-lg p-4 space-y-3" style="border-right: 4px solid ${accentColor};">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-base font-black text-white mono-num">${sig.pair}</span>
-                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold" style="${badgeStyle}">${typeLabel}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[11px] text-zinc-400 mono-num">${sig.time}</span>
-                                <button onclick="copySignalText('${sig.pair}','${sig.type}','${sig.entry}','${sig.tp}','${sig.sl}')" class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-bold text-maitha active:scale-95">نسخ</button>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-2 bg-surface border border-line rounded-md p-2.5 text-center">
-                            <div>
-                                <span class="text-[10px] text-zinc-500 font-bold block">سعر الدخول</span>
-                                <span class="text-xs font-extrabold text-white mt-0.5 block mono-num">${sig.entry}</span>
-                            </div>
-                            <div class="border-x border-line">
-                                <span class="text-[10px] text-emerald-400 font-bold block">الهدف (TP)</span>
-                                <span class="text-xs font-extrabold text-emerald-400 mt-0.5 block mono-num">${sig.tp}</span>
-                            </div>
-                            <div>
-                                <span class="text-[10px] text-rose-400 font-bold block">الوقف (SL)</span>
-                                <span class="text-xs font-extrabold text-rose-400 mt-0.5 block mono-num">${sig.sl}</span>
-                            </div>
-                        </div>
-
-                        <div class="text-xs text-zinc-300 bg-surface rounded px-3 py-2 leading-relaxed" style="border-right: 2px solid #F5C400;">
-                            ${sig.note}
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
         async function fetchFromFirebase(force = false) {
@@ -1830,60 +1439,30 @@
                 const res = await fetchWithTimeout(`${FIREBASE_DB_URL}/trading_app.json`, 6000);
                 const data = await res.json();
                 if (!data) return;
-
-                if (data.signals) {
-                    const sigs = Object.values(data.signals).reverse();
-                    const h = JSON.stringify(sigs);
-                    if (h !== lastHashes.signals || force) {
-                        lastHashes.signals = h;
-                        appState.signals = sigs;
-                        renderSignals();
-                    }
-                }
-
-                if (data.news_feed) {
-                    const feed = Array.isArray(data.news_feed) ? data.news_feed : Object.values(data.news_feed).reverse();
-                    const h = JSON.stringify(feed);
-                    if (h !== lastHashes.news || force) {
-                        lastHashes.news = h;
-                        appState.newsFeed = feed;
-                        renderNewsFeed(true);
-                    }
-                }
-
                 if (data.economic_calendar) {
                     const rawCal = Array.isArray(data.economic_calendar) ? data.economic_calendar : Object.values(data.economic_calendar);
-                    const cal = rawCal
-                        .filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday')
-                        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                    const cal = rawCal.filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday').sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
                     const h = JSON.stringify(cal);
                     if (h !== lastHashes.calendar || force) {
                         lastHashes.calendar = h;
                         appState.economicEvents = cal;
-                        try {
-                            localStorage.setItem(CACHE_KEY_CALENDAR, JSON.stringify({ ts: Date.now(), data: cal }));
-                        } catch (e) {}
                         renderEconomicCalendar(true);
                         updateNextNewsRadar(new Date());
                     }
                 }
-            } catch (err) {
-                console.error('Firebase sync error:', err);
-            }
+            } catch (e) {}
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             const botBtn = document.getElementById('telegramBotBtn');
             if (botBtn && TELEGRAM_BOT_URL) botBtn.href = TELEGRAM_BOT_URL;
-
             updateAlarmButtonUI();
             updateClocksAndSessions();
             loadChart('OANDA:XAUUSD');
-            renderSignals();
             calculateRisk();
             fetchFromFirebase(true);
             loadRealEconomicCalendar(false);
-            setInterval(() => fetchFromFirebase(false), 10000);
+            setInterval(() => fetchFromFirebase(false), 15000);
         });
     </script>
 </body>
