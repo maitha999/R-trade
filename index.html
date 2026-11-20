@@ -161,10 +161,21 @@
 
         <!-- ================= 1. قسم الشارت والمؤشرات ================= -->
         <section id="tab-chart" class="space-y-4">
-            <!-- شريط جلسات التداول العالمية -->
-            <div class="bg-panel border border-line rounded-lg px-3 py-2 flex items-center justify-between gap-2 overflow-x-auto">
-                <span class="text-[10px] font-extrabold text-maitha whitespace-nowrap">جلسات السوق:</span>
-                <div id="sessionsContainer" class="flex items-center gap-2 whitespace-nowrap"></div>
+            <!-- لوحة جلسات السوق العالمية بتوقيت الإمارات 12 ساعة -->
+            <div class="bg-panel border border-line rounded-lg p-3 space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
+                        <span class="text-xs font-black text-white">جلسات السوق العالمية</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold text-maitha mono-num" style="background: rgba(245,196,0,0.12); border: 1px solid rgba(245,196,0,0.35);">
+                            🇦🇪 <span id="sessionsUAEClock">--:--:--</span>
+                        </span>
+                    </div>
+                    <div id="nextSessionBanner" class="px-2.5 py-1 rounded text-[10px] font-extrabold text-black bg-maitha">
+                        جاري الحساب...
+                    </div>
+                </div>
+                <div id="sessionsContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
             </div>
 
             <!-- شريط اختيار الأصل -->
@@ -275,7 +286,7 @@
                 </button>
             </div>
 
-            <!-- شريط الساعة الحية 24 ساعة للإمارات والسعودية -->
+            <!-- شريط الساعة الحية 12 ساعة للإمارات والسعودية -->
             <div class="bg-panel border border-line rounded-lg px-3.5 py-2.5 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-base leading-none">🇦🇪</span>
@@ -338,159 +349,302 @@
             </div>
 
             <!-- 3.2 الأجندة الاقتصادية الحية من TradingView -->
-            <div id="news-live-view" class="hidden">
-                <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 540px;">
+            <div id="news-live-view" class="hidden space-y-2">
+                <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 520px;">
                     <div id="tv_calendar_container" class="w-full h-full"></div>
                 </div>
             </div>
 
-            <!-- 3.3 الأخبار العاجلة الحقيقية -->
+            <!-- 3.3 الأخبار العاجلة -->
             <div id="news-feed-view" class="hidden space-y-2.5">
                 <div id="newsFeedList" class="space-y-2.5">
                     <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">
-                        جاري تحميل الأخبار العاجلة...
+                        جاري جلب الأخبار العاجلة للأسواق...
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- تذييل حقوق الملكية -->
-        <footer class="pt-4 pb-2 border-t border-line text-center">
+        <footer class="pt-4 pb-2 text-center border-t border-line">
             <p class="text-[11px] font-bold text-zinc-500">
                 جميع الحقوق محفوظة © 2026 لدى
                 <span class="text-maitha font-extrabold">R-Trade.VIP</span>
                 <span class="text-zinc-600 mx-1">|</span>
-                <span class="text-white font-extrabold">Bu Maitha</span>
+                <span class="text-zinc-300 font-extrabold">Bu Maitha</span>
             </p>
         </footer>
     </main>
 
-    <!-- الشريط السفلي الثابت للتنقل -->
+    <!-- شريط التنقل السفلي الثابت -->
     <nav class="app-nav">
         <div class="grid grid-cols-3 max-w-5xl mx-auto">
-            <button onclick="switchTab('chart')" id="nav-chart" class="nav-active py-2.5 flex flex-col items-center gap-1 transition">
+            <button onclick="switchTab('chart')" id="nav-chart" class="nav-active flex flex-col items-center justify-center py-2.5 gap-1 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
                 </svg>
-                <span class="text-[10px] font-extrabold">الشارت</span>
+                <span class="text-[11px] font-extrabold">الشارت</span>
             </button>
 
-            <button onclick="switchTab('signals')" id="nav-signals" class="nav-inactive py-2.5 flex flex-col items-center gap-1 relative transition">
+            <button onclick="switchTab('signals')" id="nav-signals" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 relative transition">
                 <span id="badgeDot" class="hidden absolute top-2 right-1/3 w-2 h-2 rounded-full bg-maitha"></span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <span class="text-[10px] font-extrabold">الأهداف</span>
+                <span class="text-[11px] font-extrabold">الأهداف</span>
             </button>
 
-            <button onclick="switchTab('news')" id="nav-news" class="nav-inactive py-2.5 flex flex-col items-center gap-1 transition">
+            <button onclick="switchTab('news')" id="nav-news" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                 </svg>
-                <span class="text-[10px] font-extrabold">الأخبار</span>
+                <span class="text-[11px] font-extrabold">الأخبار</span>
             </button>
         </div>
     </nav>
 
     <script>
-        const FIREBASE_DB_URL = 'https://maitha-trade-default-rtdb.firebaseio.com';
-        const CACHE_KEY_CALENDAR = 'maitha_trade_calendar_v2';
+        // رابط قاعدة بيانات Firebase المرتبط مباشرة ببوت Maitha Trade
+        const FIREBASE_DB_URL = "https://maitha-trade-default-rtdb.firebaseio.com";
+        const CACHE_KEY_CALENDAR = "maitha_trade_calendar_cache_v3";
 
-        const appState = {
+        let currentCalendarFilter = 'all';
+        let tvCalendarLoaded = false;
+        let fallbackCalendarMounted = false;
+        let fallbackNewsMounted = false;
+        let isFetchingCalendar = false;
+
+        let lastHashes = {
+            alert: '',
+            signals: '',
+            news: '',
+            calendar: ''
+        };
+
+        let appState = {
             alert: {
-                message: 'ترقب صدور البيانات الاقتصادية اليوم؛ يُنصح بمتابعة قوة الخبر وتأمين الصفقات المفتوحة.',
-                time: 'الآن'
+                message: "ترقب صدور البيانات الاقتصادية اليوم؛ يُنصح بمتابعة قوة الخبر وتأمين الصفقات المفتوحة.",
+                time: "الآن"
             },
             signals: [
                 {
-                    id: 1,
-                    pair: 'XAUUSD',
-                    type: 'BUY',
-                    entry: '2645.0',
-                    tp: '2675.0',
-                    sl: '2630.0',
-                    note: 'ارتداد واضح من منطقة طلب يومية مع إغلاق شمعة 15 دقيقة صاعدة.',
-                    time: '12:15',
-                    status: 'نشطة'
+                    pair: "XAUUSD",
+                    type: "BUY",
+                    entry: "2645.0",
+                    tp: "2675.0",
+                    sl: "2630.0",
+                    note: "ارتداد واضح من منطقة طلب يومية مع إغلاق شمعة 15 دقيقة صاعدة.",
+                    time: "12:15 م"
                 },
                 {
-                    id: 2,
-                    pair: 'EURUSD',
-                    type: 'SELL',
-                    entry: '1.0860',
-                    tp: '1.0805',
-                    sl: '1.0890',
-                    note: 'تشبع شرائي على RSI مع رفض سعري عند القمة اليومية.',
-                    time: '10:40',
-                    status: 'نشطة'
+                    pair: "EURUSD",
+                    type: "SELL",
+                    entry: "1.0860",
+                    tp: "1.0805",
+                    sl: "1.0890",
+                    note: "تشبع شرائي على RSI مع رفض سعري عند القمة اليومية.",
+                    time: "10:40 ص"
                 }
             ],
             newsFeed: [],
             economicEvents: []
         };
 
-        // متغيرات لمنع إعادة الرسم المتكرر والوميض (Flickering)
-        let lastHashes = { alert: '', signals: '', news: '', calendar: '' };
-        let currentCalendarFilter = 'all';
-        let fallbackCalendarMounted = false;
-        let fallbackNewsMounted = false;
-        let tvCalendarLoaded = false;
-        let isFetchingCalendar = false;
-
         function showToast(msg) {
             const box = document.getElementById('toastBox');
             if (!box) return;
             box.textContent = msg;
             box.classList.add('show');
-            setTimeout(() => box.classList.remove('show'), 2400);
+            setTimeout(() => box.classList.remove('show'), 2200);
         }
 
-        async function fetchWithTimeout(url, timeoutMs = 7000) {
+        async function fetchWithTimeout(url, ms = 6000) {
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            const timer = setTimeout(() => controller.abort(), ms);
             try {
                 const res = await fetch(url, { signal: controller.signal });
                 clearTimeout(timer);
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 return res;
-            } catch (err) {
+            } catch (e) {
                 clearTimeout(timer);
-                throw err;
+                throw e;
             }
         }
 
-        // الساعة الحية 24 ساعة للإمارات والسعودية + جلسات السوق
+        // تنسيق الوقت بنظام 12 ساعة (ص / م) بأرقام إنجليزية واضحة
+        function format12HourTime(dateObj, timeZone, includeSeconds = false) {
+            const opts = {
+                timeZone,
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            };
+            if (includeSeconds) opts.second = '2-digit';
+            const formatted = new Intl.DateTimeFormat('en-US', opts).format(dateObj);
+            return formatted.replace('AM', 'ص').replace('PM', 'م');
+        }
+
+        function formatHourTo12(hour24) {
+            const h = ((hour24 % 24) + 24) % 24;
+            const period = h >= 12 ? 'م' : 'ص';
+            const h12 = h % 12 === 0 ? 12 : h % 12;
+            return `${String(h12).padStart(2, '0')}:00 ${period}`;
+        }
+
+        function formatCountdownHMS(totalSeconds) {
+            const safe = Math.max(0, Math.floor(totalSeconds));
+            const h = Math.floor(safe / 3600);
+            const m = Math.floor((safe % 3600) / 60);
+            const s = safe % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function getUAETimeParts(dateObj) {
+            const parts = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Asia/Dubai',
+                weekday: 'short',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).formatToParts(dateObj);
+            const map = {};
+            parts.forEach(p => { map[p.type] = p.value; });
+            return {
+                weekday: map.weekday,
+                hour: parseInt(map.hour, 10) % 24,
+                minute: parseInt(map.minute, 10),
+                second: parseInt(map.second, 10)
+            };
+        }
+
+        // الساعة الحية 12 ساعة للإمارات والسعودية + لوحة جلسات السوق بتوقيت الإمارات
         function updateClocksAndSessions() {
             const now = new Date();
+            const uaeClockStr = format12HourTime(now, 'Asia/Dubai', true);
+            const ksaClockStr = format12HourTime(now, 'Asia/Riyadh', true);
+
             const uaeEl = document.getElementById('clockUAE');
             const ksaEl = document.getElementById('clockKSA');
+            const sessClockEl = document.getElementById('sessionsUAEClock');
 
-            if (uaeEl) {
-                uaeEl.textContent = new Intl.DateTimeFormat('en-GB', {
-                    timeZone: 'Asia/Dubai', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-                }).format(now);
-            }
-            if (ksaEl) {
-                ksaEl.textContent = new Intl.DateTimeFormat('en-GB', {
-                    timeZone: 'Asia/Riyadh', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-                }).format(now);
-            }
+            if (uaeEl) uaeEl.textContent = uaeClockStr;
+            if (sessClockEl) sessClockEl.textContent = uaeClockStr;
+            if (ksaEl) ksaEl.textContent = ksaClockStr;
 
-            const utcHour = now.getUTCHours();
+            const uae = getUAETimeParts(now);
+            const nowSec = uae.hour * 3600 + uae.minute * 60 + uae.second;
+
+            // عطلة الأسواق (من السبت 02:00 ص حتى الإثنين 02:00 ص بتوقيت الإمارات)
+            const isWeekendClosed =
+                (uae.weekday === 'Sat' && uae.hour >= 2) ||
+                (uae.weekday === 'Sun') ||
+                (uae.weekday === 'Mon' && uae.hour < 2);
+
+            // أوقات الجلسات بتوقيت الإمارات (UTC+4) بنظام 12 ساعة
             const sessions = [
-                { name: 'سيدني', open: utcHour >= 22 || utcHour < 7 },
-                { name: 'طوكيو', open: utcHour >= 0 && utcHour < 9 },
-                { name: 'لندن', open: utcHour >= 8 && utcHour < 17 },
-                { name: 'نيويورك', open: utcHour >= 13 && utcHour < 22 }
+                { id: 'sydney',  name: 'سيدني',   flag: '🇦🇺', openH: 2,  closeH: 11, label: '02:00 ص - 11:00 ص' },
+                { id: 'tokyo',   name: 'طوكيو',   flag: '🇯🇵', openH: 4,  closeH: 13, label: '04:00 ص - 01:00 م' },
+                { id: 'london',  name: 'لندن',    flag: '🇬🇧', openH: 12, closeH: 21, label: '12:00 م - 09:00 م' },
+                { id: 'newyork', name: 'نيويورك', flag: '🇺🇸', openH: 17, closeH: 2,  label: '05:00 م - 02:00 ص' }
             ];
+
+            let nextOpening = null;
+            let londonOpen = false;
+            let nyOpen = false;
+
+            const cardsHtml = sessions.map(s => {
+                const openSec = s.openH * 3600;
+                const closeSec = s.closeH * 3600;
+                const spansMidnight = closeSec < openSec;
+                const durationSec = spansMidnight ? (86400 - openSec + closeSec) : (closeSec - openSec);
+
+                let isOpen = false;
+                if (!isWeekendClosed) {
+                    isOpen = spansMidnight
+                        ? (nowSec >= openSec || nowSec < closeSec)
+                        : (nowSec >= openSec && nowSec < closeSec);
+                }
+
+                if (s.id === 'london') londonOpen = isOpen;
+                if (s.id === 'newyork') nyOpen = isOpen;
+
+                let elapsedSec = 0;
+                let remainingSec = 0;
+                let progressPct = 0;
+
+                if (isOpen) {
+                    elapsedSec = nowSec >= openSec ? (nowSec - openSec) : (86400 - openSec + nowSec);
+                    remainingSec = durationSec - elapsedSec;
+                    progressPct = Math.min(100, Math.max(0, (elapsedSec / durationSec) * 100));
+                } else {
+                    remainingSec = openSec > nowSec ? (openSec - nowSec) : (86400 - nowSec + openSec);
+                    if (!isWeekendClosed && (!nextOpening || remainingSec < nextOpening.sec)) {
+                        nextOpening = {
+                            name: s.name,
+                            flag: s.flag,
+                            sec: remainingSec,
+                            openLabel: formatHourTo12(s.openH)
+                        };
+                    }
+                }
+
+                const cardStyle = isOpen
+                    ? 'background: rgba(16,185,129,0.09); border: 1px solid rgba(16,185,129,0.45);'
+                    : 'background: #121212; border: 1px solid #242424;';
+
+                const statusBadge = isOpen
+                    ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-400" style="background: rgba(16,185,129,0.2);">مفتوح</span>'
+                    : '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold text-zinc-500 bg-surface">مغلق</span>';
+
+                const timerLine = isWeekendClosed
+                    ? '<span class="text-zinc-500">عطلة نهاية الأسبوع</span>'
+                    : (isOpen
+                        ? `<span class="text-emerald-400">يُغلق بعد: <b class="mono-num">${formatCountdownHMS(remainingSec)}</b></span>`
+                        : `<span class="text-zinc-400">يفتح بعد: <b class="text-maitha mono-num">${formatCountdownHMS(remainingSec)}</b></span>`);
+
+                return `
+                    <div class="rounded-lg p-2.5 space-y-1.5 transition" style="${cardStyle}">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-xs font-extrabold text-white flex items-center gap-1.5">
+                                <span>${s.flag}</span>
+                                <span>${s.name}</span>
+                            </span>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-zinc-400">
+                            <span>الإمارات 🇦🇪</span>
+                            <span class="mono-num font-bold text-zinc-200">${s.label}</span>
+                        </div>
+                        <div class="w-full h-1 rounded-full overflow-hidden bg-surface">
+                            <div class="h-full transition-all" style="width: ${isOpen ? progressPct.toFixed(1) : 0}%; background: ${isOpen ? '#10B981' : '#3F3F46'};"></div>
+                        </div>
+                        <div class="text-[10px] font-bold pt-0.5">${timerLine}</div>
+                    </div>
+                `;
+            }).join('');
+
             const sessEl = document.getElementById('sessionsContainer');
-            if (sessEl) {
-                sessEl.innerHTML = sessions.map(s => `
-                    <span class="px-2 py-0.5 rounded text-[10px] font-extrabold flex items-center gap-1" style="${s.open ? 'background:rgba(16,185,129,0.16); color:#34D399; border:1px solid rgba(16,185,129,0.45);' : 'background:#151515; color:#71717A; border:1px solid #242424;'}">
-                        <span class="w-1.5 h-1.5 rounded-full" style="background:${s.open ? '#10B981' : '#52525B'};"></span>
-                        ${s.name}
-                    </span>
-                `).join('');
+            if (sessEl) sessEl.innerHTML = cardsHtml;
+
+            const bannerEl = document.getElementById('nextSessionBanner');
+            if (bannerEl) {
+                if (isWeekendClosed) {
+                    bannerEl.style.background = '#27272A';
+                    bannerEl.style.color = '#E4E4E7';
+                    bannerEl.textContent = 'السوق مغلق (عطلة الأسبوع • يفتح الإثنين 02:00 ص 🇦🇪)';
+                } else if (londonOpen && nyOpen) {
+                    bannerEl.style.background = '#F5C400';
+                    bannerEl.style.color = '#000000';
+                    bannerEl.textContent = nextOpening
+                        ? `🔥 ذروة السيولة (لندن + نيويورك) • التالي: ${nextOpening.flag} ${nextOpening.name} بعد ${formatCountdownHMS(nextOpening.sec)}`
+                        : '🔥 ذروة السيولة: تداخل لندن ونيويورك';
+                } else if (nextOpening) {
+                    bannerEl.style.background = '#F5C400';
+                    bannerEl.style.color = '#000000';
+                    bannerEl.textContent = `الافتتاح القادم: ${nextOpening.flag} ${nextOpening.name} (${nextOpening.openLabel}) بعد ${formatCountdownHMS(nextOpening.sec)}`;
+                }
             }
         }
         setInterval(updateClocksAndSessions, 1000);
@@ -500,6 +654,7 @@
             return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai' }).format(dateObj);
         }
 
+        // تنسيق توقيت الأخبار الاقتصادية بنظام 12 ساعة للإمارات والسعودية
         function formatEventDateTime(isoStr) {
             const d = new Date(isoStr);
             if (isNaN(d.getTime())) {
@@ -511,13 +666,8 @@
                 };
             }
 
-            const uaeTime = new Intl.DateTimeFormat('en-GB', {
-                timeZone: 'Asia/Dubai', hour: '2-digit', minute: '2-digit', hour12: false
-            }).format(d);
-
-            const ksaTime = new Intl.DateTimeFormat('en-GB', {
-                timeZone: 'Asia/Riyadh', hour: '2-digit', minute: '2-digit', hour12: false
-            }).format(d);
+            const uaeTime = format12HourTime(d, 'Asia/Dubai', false);
+            const ksaTime = format12HourTime(d, 'Asia/Riyadh', false);
 
             const now = new Date();
             const todayKey = getUAEDayKey(now);
@@ -862,7 +1012,6 @@
         async function loadRealEconomicCalendar(forceRefresh = false) {
             if (isFetchingCalendar) return;
 
-            // 1. محاولة التحميل من الكاش المحلي فوراً لثبات العرض
             if (appState.economicEvents.length === 0) {
                 try {
                     const cached = JSON.parse(localStorage.getItem(CACHE_KEY_CALENDAR) || 'null');
@@ -947,7 +1096,7 @@
                             <button onclick="refreshAllRealNews()" class="px-2.5 py-1 rounded bg-maitha text-black text-[10px] font-black">مزامنة الآن ↻</button>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">
-                            عند تشغيل البوت وإرسال <b class="text-white">/calendar</b> (أو تفعيل المزامنة التلقائية في GitHub) ستتحول هذه القائمة إلى بطاقات <b class="text-emerald-400">خضراء للإيجابي</b> و<b class="text-rose-400">حمراء للسلبي</b> مع قوة الخبر وتوقيت الإمارات والسعودية.
+                            عند تشغيل البوت وإرسال <b class="text-white">/calendar</b> (أو تفعيل المزامنة التلقائية في GitHub) ستتحول هذه القائمة إلى بطاقات <b class="text-emerald-400">خضراء للإيجابي</b> و<b class="text-rose-400">حمراء للسلبي</b> مع قوة الخبر وتوقيت الإمارات والسعودية بنظام 12 ساعة.
                         </p>
                     </div>
                     <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;">
@@ -1305,3 +1454,4 @@
     </script>
 </body>
 </html>
+
