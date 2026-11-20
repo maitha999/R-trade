@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>IgnoreManifestScope</key>
+            <true/>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+            <string>M-Trade</string>
+            <key>PayloadDescription</key>
+            <string>تطبيق M-Trade الرسمي للتداول والأخبار المباشرة</string>
+            <key>PayloadDisplayName</key>
+            <string>M-Trade</string>
+            <key>PayloadIdentifier</key>
+            <string>vip.rtrade.mtrade.webclip</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
+            <key>PayloadUUID</key>
+            <string>A1B2C3D4-E5F6-4789-A012-3456789ABCDE</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>Precomposed</key>
+            <true/>
+            <key>URL</key>
+            <string>https://r-trade.vip</string>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>تثبيت تطبيق M-Trade مباشرة على الشاشة الرئيسية</string>
+    <key>PayloadDisplayName</key>
+    <string>M-Trade VIP</string>
+    <key>PayloadIdentifier</key>
+    <string>vip.rtrade.mtrade.profile</string>
+    <key>PayloadOrganization</key>
+    <string>R-Trade.VIP</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>F1E2D3C4-B5A6-4987-9012-EDCBA9876543</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>
