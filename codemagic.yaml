@@ -1,0 +1,47 @@
+workflows:
+  ios-m-trade-ipa:
+    name: Build M-Trade iOS IPA
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    environment:
+      node: 20
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Initialize Capacitor App
+        script: |
+          set -e
+          mkdir -p app_build/www
+          printf '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=https://r-trade.vip"></head></html>' > app_build/www/index.html
+          cd app_build
+          npm init -y
+          npm install --no-audit --no-fund @capacitor/core @capacitor/cli @capacitor/ios
+          npm install --no-audit --no-fund --save-dev @capacitor/assets
+          npx --yes cap init "M-Trade" "vip.rtrade.mtrade" --web-dir www
+          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('capacitor.config.json','utf8'));c.appName='M-Trade';c.appId='vip.rtrade.mtrade';c.webDir='www';c.server={url:'https://r-trade.vip',cleartext:false};fs.writeFileSync('capacitor.config.json',JSON.stringify(c,null,2));"
+          npx --yes cap add ios
+
+      - name: Apply MT App Icon
+        script: |
+          if [ -f "icon-only.png" ]; then
+            mkdir -p app_build/assets
+            cp icon-only.png app_build/assets/icon-only.png
+            cd app_build
+            npx --yes capacitor-assets generate --ios --iconBackgroundColor "#050505" --splashBackgroundColor "#050505" || true
+          fi
+
+      - name: Build Unsigned IPA
+        script: |
+          set -e
+          cd app_build/ios/App
+          if [ -f "Podfile" ]; then
+            pod install
+            xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          else
+            xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          fi
+          mkdir -p Payload
+          cp -r build/Build/Products/Release-iphoneos/App.app Payload/
+          zip -r M-Trade.ipa Payload
+    artifacts:
+      - app_build/ios/App/M-Trade.ipa
