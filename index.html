@@ -102,6 +102,14 @@
             transform: translateX(-50%) translateY(0);
         }
 
+        @keyframes pulseBorder {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.35); }
+            50% { box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12); }
+        }
+        .urgent-radar {
+            animation: pulseBorder 1.8s infinite;
+        }
+
         ::-webkit-scrollbar {
             display: none;
         }
@@ -145,23 +153,51 @@
     <!-- المحتوى الرئيسي -->
     <main class="relative z-10 max-w-5xl mx-auto px-4 pt-3 space-y-4">
 
-        <!-- شريط التنبيه العاجل من البوت -->
-        <div id="botAlertBanner" class="bg-panel border border-line rounded-lg px-3.5 py-2.5 flex items-start justify-between gap-3" style="border-right: 4px solid #F5C400;">
-            <div class="flex-1">
-                <div class="flex items-center gap-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-maitha">تنبيه مباشر</span>
-                    <span class="w-1 h-1 rounded-full bg-zinc-600"></span>
-                    <span id="alertTime" class="text-[10px] text-zinc-400 mono-num">الآن</span>
+        <!-- رادار الخبر القادم + التنبيه المباشر -->
+        <div id="botAlertBanner" class="bg-panel border border-line rounded-lg px-3.5 py-3 space-y-2.5 transition" style="border-right: 4px solid #F5C400;">
+            <!-- الجزء 1: رادار الخبر الاقتصادي القادم مع العد التنازلي وقوة الخبر -->
+            <div id="nextNewsRadar" class="flex flex-wrap items-center justify-between gap-2.5">
+                <div class="flex-1 min-w-[200px]">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span id="radarBadge" class="px-2 py-0.5 rounded text-[10px] font-black text-black bg-maitha">الخبر القادم</span>
+                        <span id="radarStrength" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-zinc-300 bg-surface border border-line">جاري الفحص...</span>
+                        <span id="radarUAETime" class="text-[10px] font-extrabold text-maitha mono-num">🇦🇪 --:--</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-1.5">
+                        <span id="radarFlag" class="text-base leading-none">🌐</span>
+                        <p id="radarTitle" class="text-xs font-extrabold text-white leading-snug" dir="auto">
+                            جاري جلب أقرب خبر اقتصادي قادم...
+                        </p>
+                    </div>
                 </div>
-                <p id="alertMessage" class="text-xs text-zinc-200 mt-1 leading-relaxed font-semibold">
-                    ترقب صدور البيانات الاقتصادية اليوم؛ يُنصح بمتابعة قوة الخبر وتأمين الصفقات المفتوحة.
-                </p>
+
+                <div class="flex items-center gap-2">
+                    <div class="px-2.5 py-1.5 rounded-lg bg-surface border border-line text-center min-w-[96px]">
+                        <span class="text-[9px] font-bold text-zinc-400 block">المتبقي للخبر</span>
+                        <span id="radarCountdown" class="text-xs font-black text-maitha mono-num">--:--:--</span>
+                    </div>
+                    <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition" title="تنبيه صوتي قبل الخبر بـ 5 دقائق">
+                        <span id="alarmIcon">🔕</span>
+                        <span id="alarmText">تنبيه</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- الجزء 2: تنبيه البوت اليدوي -->
+            <div id="manualBotRow" class="pt-2 border-t border-line flex items-center justify-between gap-2 text-[11px]">
+                <div class="flex items-center gap-1.5 flex-1">
+                    <span class="text-maitha font-black whitespace-nowrap">⚡ تنبيه مباشر:</span>
+                    <span id="alertMessage" class="text-zinc-300 font-semibold leading-snug">
+                        ترقب صدور البيانات الاقتصادية اليوم؛ يُنصح بمتابعة قوة الخبر وتأمين الصفقات المفتوحة.
+                    </span>
+                </div>
+                <span id="alertTime" class="text-[10px] text-zinc-500 mono-num whitespace-nowrap">الآن</span>
             </div>
         </div>
 
         <!-- ================= 1. قسم الشارت والمؤشرات ================= -->
         <section id="tab-chart" class="space-y-4">
-            <!-- لوحة جلسات السوق العالمية بتوقيت الإمارات 12 ساعة -->
+            <!-- لوحة جلسات السوق العالمية بتوقيت الإمارات (ضبط تلقائي للصيفي والشتوي) -->
             <div class="bg-panel border border-line rounded-lg p-3 space-y-2.5">
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
                     <div class="flex items-center gap-2">
@@ -404,15 +440,17 @@
     </nav>
 
     <script>
-        // رابط قاعدة بيانات Firebase المرتبط مباشرة ببوت Maitha Trade
         const FIREBASE_DB_URL = "https://maitha-trade-default-rtdb.firebaseio.com";
-        const CACHE_KEY_CALENDAR = "maitha_trade_calendar_cache_v3";
+        const CACHE_KEY_CALENDAR = "maitha_trade_calendar_cache_v5";
 
         let currentCalendarFilter = 'all';
         let tvCalendarLoaded = false;
         let fallbackCalendarMounted = false;
         let fallbackNewsMounted = false;
         let isFetchingCalendar = false;
+
+        let newsAlarmEnabled = localStorage.getItem('maitha_news_alarm') === 'on';
+        let alarmedEventIds = new Set();
 
         let lastHashes = {
             alert: '',
@@ -455,7 +493,60 @@
             if (!box) return;
             box.textContent = msg;
             box.classList.add('show');
-            setTimeout(() => box.classList.remove('show'), 2200);
+            setTimeout(() => box.classList.remove('show'), 2400);
+        }
+
+        function playAlertSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                [880, 1174.66].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.16);
+                    gain.gain.setValueAtTime(0.15, now + idx * 0.16);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.16 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + idx * 0.16);
+                    osc.stop(now + idx * 0.16 + 0.26);
+                });
+            } catch (e) {}
+        }
+
+        function updateAlarmButtonUI() {
+            const btn = document.getElementById('alarmToggleBtn');
+            const icon = document.getElementById('alarmIcon');
+            const txt = document.getElementById('alarmText');
+            if (!btn || !icon || !txt) return;
+            if (newsAlarmEnabled) {
+                btn.style.background = 'rgba(245,196,0,0.16)';
+                btn.style.borderColor = '#F5C400';
+                btn.style.color = '#F5C400';
+                icon.textContent = '🔔';
+                txt.textContent = 'مُفعّل';
+            } else {
+                btn.style.background = '#151515';
+                btn.style.borderColor = '#242424';
+                btn.style.color = '#D4D4D8';
+                icon.textContent = '🔕';
+                txt.textContent = 'تنبيه';
+            }
+        }
+
+        function toggleNewsAlarm() {
+            newsAlarmEnabled = !newsAlarmEnabled;
+            localStorage.setItem('maitha_news_alarm', newsAlarmEnabled ? 'on' : 'off');
+            updateAlarmButtonUI();
+            if (newsAlarmEnabled) {
+                playAlertSound();
+                showToast('تم تفعيل التنبيه الصوتي قبل صدور الخبر بـ 5 دقائق 🔔');
+            } else {
+                showToast('تم إيقاف التنبيه الصوتي للأخبار');
+            }
         }
 
         async function fetchWithTimeout(url, ms = 6000) {
@@ -472,7 +563,6 @@
             }
         }
 
-        // تنسيق الوقت بنظام 12 ساعة (ص / م) بأرقام إنجليزية واضحة
         function format12HourTime(dateObj, timeZone, includeSeconds = false) {
             const opts = {
                 timeZone,
@@ -486,7 +576,7 @@
         }
 
         function formatHourTo12(hour24) {
-            const h = ((hour24 % 24) + 24) % 24;
+            const h = ((Math.round(hour24) % 24) + 24) % 24;
             const period = h >= 12 ? 'م' : 'ص';
             const h12 = h % 12 === 0 ? 12 : h % 12;
             return `${String(h12).padStart(2, '0')}:00 ${period}`;
@@ -498,6 +588,21 @@
             const m = Math.floor((safe % 3600) / 60);
             const s = safe % 60;
             return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function getTimeZoneOffsetHours(dateObj, timeZone) {
+            const utcDate = new Date(dateObj.toLocaleString('en-US', { timeZone: 'UTC' }));
+            const tzDate = new Date(dateObj.toLocaleString('en-US', { timeZone }));
+            return Math.round((tzDate.getTime() - utcDate.getTime()) / 3600000);
+        }
+
+        function getSessionHoursInUAE(dateObj, tz, localOpenH, localCloseH) {
+            const uaeOffset = 4;
+            const marketOffset = getTimeZoneOffsetHours(dateObj, tz);
+            const diff = uaeOffset - marketOffset;
+            const openH = ((localOpenH + diff) % 24 + 24) % 24;
+            const closeH = ((localCloseH + diff) % 24 + 24) % 24;
+            return { openH, closeH };
         }
 
         function getUAETimeParts(dateObj) {
@@ -519,7 +624,104 @@
             };
         }
 
-        // الساعة الحية 12 ساعة للإمارات والسعودية + لوحة جلسات السوق بتوقيت الإمارات
+        // تحديث رادار الخبر القادم في شريط التنبيه العلوي كل ثانية
+        function updateNextNewsRadar(now) {
+            const banner = document.getElementById('botAlertBanner');
+            const badgeEl = document.getElementById('radarBadge');
+            const strengthEl = document.getElementById('radarStrength');
+            const timeEl = document.getElementById('radarUAETime');
+            const flagEl = document.getElementById('radarFlag');
+            const titleEl = document.getElementById('radarTitle');
+            const cdEl = document.getElementById('radarCountdown');
+
+            if (!titleEl || !cdEl) return;
+
+            const nowMs = now.getTime();
+            const upcoming = (appState.economicEvents || [])
+                .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
+                .filter(item => !isNaN(item.ts) && item.ts > nowMs)
+                .sort((a, b) => a.ts - b.ts);
+
+            if (upcoming.length === 0) {
+                if (banner) {
+                    banner.classList.remove('urgent-radar');
+                    banner.style.borderRightColor = '#F5C400';
+                }
+                const finished = (appState.economicEvents || [])
+                    .map(ev => ({ ev, ts: new Date(ev.date).getTime() }))
+                    .filter(item => !isNaN(item.ts) && item.ts <= nowMs)
+                    .sort((a, b) => b.ts - a.ts);
+
+                if (finished.length > 0) {
+                    const lastEv = finished[0].ev;
+                    const dt = formatEventDateTime(lastEv.date);
+                    const info = analyzeEconomicEvent(lastEv, true);
+                    badgeEl.style.background = '#27272A';
+                    badgeEl.style.color = '#E4E4E7';
+                    badgeEl.textContent = 'آخر خبر صدر';
+                    strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
+                    strengthEl.style.cssText = info.strength.badgeStyle;
+                    timeEl.textContent = `🇦🇪 ${dt.uaeTime}`;
+                    flagEl.textContent = info.flag;
+                    titleEl.textContent = `${lastEv.title} (${info.country}) — ${info.verdict.text}`;
+                    cdEl.textContent = 'انتهت أخبار الأسبوع';
+                } else {
+                    badgeEl.style.background = '#F5C400';
+                    badgeEl.style.color = '#000000';
+                    badgeEl.textContent = 'رادار الأخبار';
+                    strengthEl.textContent = 'متابعة مباشرة';
+                    strengthEl.style.cssText = 'background:#151515; color:#A1A1AA; border:1px solid #242424;';
+                    timeEl.textContent = `🇦🇪 ${format12HourTime(now, 'Asia/Dubai', false)}`;
+                    flagEl.textContent = '📡';
+                    titleEl.textContent = 'جاري مزامنة الأجندة الاقتصادية المباشرة...';
+                    cdEl.textContent = '--:--:--';
+                }
+                return;
+            }
+
+            const nextImportant = upcoming.find(item => {
+                const imp = (item.ev.impact || '').toLowerCase();
+                return (imp === 'high' || imp === 'medium') && (item.ts - nowMs <= 24 * 3600 * 1000);
+            }) || upcoming[0];
+
+            const ev = nextImportant.ev;
+            const remainingSec = Math.max(0, Math.floor((nextImportant.ts - nowMs) / 1000));
+            const dt = formatEventDateTime(ev.date);
+            const info = analyzeEconomicEvent(ev, false);
+
+            flagEl.textContent = info.flag;
+            titleEl.textContent = `${ev.title} (${info.country})`;
+            timeEl.textContent = `🇦🇪 ${dt.uaeTime}`;
+            cdEl.textContent = formatCountdownHMS(remainingSec);
+
+            strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
+            strengthEl.style.cssText = info.strength.badgeStyle;
+
+            const isUrgent = remainingSec <= 900 && (ev.impact || '').toLowerCase() !== 'low';
+            if (isUrgent) {
+                banner.classList.add('urgent-radar');
+                banner.style.borderRightColor = '#F43F5E';
+                badgeEl.style.background = '#F43F5E';
+                badgeEl.style.color = '#FFFFFF';
+                badgeEl.textContent = '🚨 خبر وشيك';
+                cdEl.style.color = '#FDA4AF';
+            } else {
+                banner.classList.remove('urgent-radar');
+                banner.style.borderRightColor = '#F5C400';
+                badgeEl.style.background = '#F5C400';
+                badgeEl.style.color = '#000000';
+                badgeEl.textContent = 'الخبر القادم';
+                cdEl.style.color = '#F5C400';
+            }
+
+            const eventKey = `${ev.title}_${ev.date}`;
+            if (newsAlarmEnabled && remainingSec <= 300 && remainingSec > 0 && !alarmedEventIds.has(eventKey)) {
+                alarmedEventIds.add(eventKey);
+                playAlertSound();
+                showToast(`🔔 تنبيه: متبقي أقل من 5 دقائق على خبر ${ev.title}`);
+            }
+        }
+
         function updateClocksAndSessions() {
             const now = new Date();
             const uaeClockStr = format12HourTime(now, 'Asia/Dubai', true);
@@ -533,21 +735,26 @@
             if (sessClockEl) sessClockEl.textContent = uaeClockStr;
             if (ksaEl) ksaEl.textContent = ksaClockStr;
 
+            updateNextNewsRadar(now);
+
             const uae = getUAETimeParts(now);
             const nowSec = uae.hour * 3600 + uae.minute * 60 + uae.second;
 
-            // عطلة الأسواق (من السبت 02:00 ص حتى الإثنين 02:00 ص بتوقيت الإمارات)
-            const isWeekendClosed =
-                (uae.weekday === 'Sat' && uae.hour >= 2) ||
-                (uae.weekday === 'Sun') ||
-                (uae.weekday === 'Mon' && uae.hour < 2);
+            const sydneyH = getSessionHoursInUAE(now, 'Australia/Sydney', 8, 17);
+            const tokyoH  = getSessionHoursInUAE(now, 'Asia/Tokyo', 9, 18);
+            const londonH = getSessionHoursInUAE(now, 'Europe/London', 8, 17);
+            const nyH     = getSessionHoursInUAE(now, 'America/New_York', 8, 17);
 
-            // أوقات الجلسات بتوقيت الإمارات (UTC+4) بنظام 12 ساعة
+            const isWeekendClosed =
+                (uae.weekday === 'Sat' && uae.hour >= nyH.closeH) ||
+                (uae.weekday === 'Sun') ||
+                (uae.weekday === 'Mon' && uae.hour < sydneyH.openH);
+
             const sessions = [
-                { id: 'sydney',  name: 'سيدني',   flag: '🇦🇺', openH: 2,  closeH: 11, label: '02:00 ص - 11:00 ص' },
-                { id: 'tokyo',   name: 'طوكيو',   flag: '🇯🇵', openH: 4,  closeH: 13, label: '04:00 ص - 01:00 م' },
-                { id: 'london',  name: 'لندن',    flag: '🇬🇧', openH: 12, closeH: 21, label: '12:00 م - 09:00 م' },
-                { id: 'newyork', name: 'نيويورك', flag: '🇺🇸', openH: 17, closeH: 2,  label: '05:00 م - 02:00 ص' }
+                { id: 'sydney',  name: 'سيدني',   flag: '🇦🇺', openH: sydneyH.openH, closeH: sydneyH.closeH },
+                { id: 'tokyo',   name: 'طوكيو',   flag: '🇯🇵', openH: tokyoH.openH,  closeH: tokyoH.closeH },
+                { id: 'london',  name: 'لندن',    flag: '🇬🇧', openH: londonH.openH, closeH: londonH.closeH },
+                { id: 'newyork', name: 'نيويورك', flag: '🇺🇸', openH: nyH.openH,     closeH: nyH.closeH }
             ];
 
             let nextOpening = null;
@@ -590,6 +797,9 @@
                     }
                 }
 
+                const openLabel = formatHourTo12(s.openH);
+                const closeLabel = formatHourTo12(s.closeH);
+
                 const cardStyle = isOpen
                     ? 'background: rgba(16,185,129,0.09); border: 1px solid rgba(16,185,129,0.45);'
                     : 'background: #121212; border: 1px solid #242424;';
@@ -615,7 +825,7 @@
                         </div>
                         <div class="flex items-center justify-between text-[10px] text-zinc-400">
                             <span>الإمارات 🇦🇪</span>
-                            <span class="mono-num font-bold text-zinc-200">${s.label}</span>
+                            <span class="font-bold text-zinc-200"><b class="mono-num">${openLabel}</b> ← <b class="mono-num">${closeLabel}</b></span>
                         </div>
                         <div class="w-full h-1 rounded-full overflow-hidden bg-surface">
                             <div class="h-full transition-all" style="width: ${isOpen ? progressPct.toFixed(1) : 0}%; background: ${isOpen ? '#10B981' : '#3F3F46'};"></div>
@@ -633,7 +843,7 @@
                 if (isWeekendClosed) {
                     bannerEl.style.background = '#27272A';
                     bannerEl.style.color = '#E4E4E7';
-                    bannerEl.textContent = 'السوق مغلق (عطلة الأسبوع • يفتح الإثنين 02:00 ص 🇦🇪)';
+                    bannerEl.textContent = `السوق مغلق (عطلة الأسبوع • يفتح الإثنين ${formatHourTo12(sydneyH.openH)} 🇦🇪)`;
                 } else if (londonOpen && nyOpen) {
                     bannerEl.style.background = '#F5C400';
                     bannerEl.style.color = '#000000';
@@ -648,13 +858,11 @@
             }
         }
         setInterval(updateClocksAndSessions, 1000);
-        updateClocksAndSessions();
 
         function getUAEDayKey(dateObj) {
             return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai' }).format(dateObj);
         }
 
-        // تنسيق توقيت الأخبار الاقتصادية بنظام 12 ساعة للإمارات والسعودية
         function formatEventDateTime(isoStr) {
             const d = new Date(isoStr);
             if (isNaN(d.getTime())) {
@@ -726,7 +934,6 @@
             return num;
         }
 
-        // تحليل قوة الخبر وتلوين خلفية البطاقة بالكامل بالأخضر للإيجابي والأحمر للسلبي
         function analyzeEconomicEvent(ev, isFinishedByTime = false) {
             const impactRaw = (ev.impact || '').toLowerCase();
             let strength = {
@@ -738,7 +945,7 @@
             if (impactRaw === 'high') {
                 strength = {
                     percent: 95,
-                    label: 'قوي جداً (تأثير عالٍ)',
+                    label: 'قوي جداً',
                     badgeStyle: 'background:rgba(244,63,94,0.22); color:#FDA4AF; border:1px solid rgba(244,63,94,0.55);',
                     barColor: '#F43F5E'
                 };
@@ -1007,7 +1214,6 @@
             renderEconomicCalendar(true);
         }
 
-        // جلب البيانات الاقتصادية الحقيقية وتخزينها محلياً لمنع الاختفاء
         let realCalendarLoaded = false;
         async function loadRealEconomicCalendar(forceRefresh = false) {
             if (isFetchingCalendar) return;
@@ -1018,6 +1224,7 @@
                     if (cached && Array.isArray(cached.data) && cached.data.length > 0 && (Date.now() - cached.ts < 3600000)) {
                         appState.economicEvents = cached.data;
                         renderEconomicCalendar(true);
+                        updateNextNewsRadar(new Date());
                     }
                 } catch (e) {}
             }
@@ -1030,12 +1237,6 @@
             isFetchingCalendar = true;
             const sourceUrl = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json';
             const attempts = [
-                async () => {
-                    const r = await fetchWithTimeout('./calendar.json?t=' + Date.now(), 4000);
-                    const parsed = await r.json();
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                    throw new Error('empty');
-                },
                 async () => {
                     const r = await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(sourceUrl)}`, 7500);
                     const parsed = await r.json();
@@ -1053,35 +1254,28 @@
                     const parsed = await r.json();
                     if (Array.isArray(parsed) && parsed.length > 0) return parsed;
                     throw new Error('empty');
-                },
-                async () => {
-                    const r = await fetchWithTimeout(`https://api.allorigins.win/get?url=${encodeURIComponent(sourceUrl)}`, 7500);
-                    const wrapper = await r.json();
-                    const parsed = JSON.parse(wrapper.contents);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                    throw new Error('empty');
                 }
             ];
 
             try {
                 const fetchedData = await Promise.any(attempts.map(fn => fn()));
                 appState.economicEvents = fetchedData
-                    .filter(ev => ev.impact && ev.impact.toLowerCase() !== 'holiday')
+                    .filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday')
                     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
                 realCalendarLoaded = true;
                 try {
                     localStorage.setItem(CACHE_KEY_CALENDAR, JSON.stringify({ ts: Date.now(), data: appState.economicEvents }));
                 } catch (e) {}
                 renderEconomicCalendar(true);
+                updateNextNewsRadar(new Date());
             } catch (err) {
-                console.warn('Direct calendar fetch blocked, keeping stable fallback:', err);
+                console.warn('Direct calendar fetch skipped, relying on Firebase sync:', err);
                 renderEconomicCalendar(false);
             } finally {
                 isFetchingCalendar = false;
             }
         }
 
-        // عرض الأخبار الاقتصادية بدون وميض أو إعادة تحميل عشوائية
         function renderEconomicCalendar(forceRedraw = false) {
             const container = document.getElementById('economicCalendarList');
             if (!container) return;
@@ -1096,7 +1290,7 @@
                             <button onclick="refreshAllRealNews()" class="px-2.5 py-1 rounded bg-maitha text-black text-[10px] font-black">مزامنة الآن ↻</button>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">
-                            عند تشغيل البوت وإرسال <b class="text-white">/calendar</b> (أو تفعيل المزامنة التلقائية في GitHub) ستتحول هذه القائمة إلى بطاقات <b class="text-emerald-400">خضراء للإيجابي</b> و<b class="text-rose-400">حمراء للسلبي</b> مع قوة الخبر وتوقيت الإمارات والسعودية بنظام 12 ساعة.
+                            جاري تحميل بطاقات الأخبار الاقتصادية الملونة من قاعدة البيانات المباشرة...
                         </p>
                     </div>
                     <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;">
@@ -1392,7 +1586,6 @@
             if (timeEl) timeEl.textContent = appState.alert.time;
         }
 
-        // المزامنة الذكية مع Firebase (تحدث الواجهة فقط عند وجود تغيير حقيقي في البيانات)
         async function fetchFromFirebase(force = false) {
             if (!FIREBASE_DB_URL) return;
             try {
@@ -1430,12 +1623,19 @@
                 }
 
                 if (data.economic_calendar) {
-                    const cal = Array.isArray(data.economic_calendar) ? data.economic_calendar : Object.values(data.economic_calendar);
+                    const rawCal = Array.isArray(data.economic_calendar) ? data.economic_calendar : Object.values(data.economic_calendar);
+                    const cal = rawCal
+                        .filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday')
+                        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
                     const h = JSON.stringify(cal);
                     if (h !== lastHashes.calendar || force) {
                         lastHashes.calendar = h;
                         appState.economicEvents = cal;
+                        try {
+                            localStorage.setItem(CACHE_KEY_CALENDAR, JSON.stringify({ ts: Date.now(), data: cal }));
+                        } catch (e) {}
                         renderEconomicCalendar(true);
+                        updateNextNewsRadar(new Date());
                     }
                 }
             } catch (err) {
@@ -1444,14 +1644,16 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            updateAlarmButtonUI();
+            updateClocksAndSessions();
             loadChart('OANDA:XAUUSD');
             renderAlert();
             renderSignals();
             calculateRisk();
             fetchFromFirebase(true);
+            loadRealEconomicCalendar(false);
             setInterval(() => fetchFromFirebase(false), 10000);
         });
     </script>
 </body>
 </html>
-
