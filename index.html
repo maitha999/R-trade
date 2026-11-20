@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="M-Trade">
     <meta name="theme-color" content="#050505">
     <link rel="apple-touch-icon" href="https://r-trade.vip/icon-only.png">
+    <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>Maitha Trade | R-Trade.VIP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
@@ -169,7 +170,7 @@
         <!-- شريط التوقيت والتاريخ (الإمارات والسعودية - نظام 12 ساعة) -->
         <div class="bg-panel border border-line rounded-lg px-3.5 py-2.5 space-y-2">
             <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-line">
-                <span class="text-zinc-400 font-bold">📅 التاريخ اليوم:</span>
+                <span class="text-zinc-400 font-bold">📅 تاريخ اليوم:</span>
                 <span id="currentDateAr" class="text-zinc-200 font-extrabold">--</span>
             </div>
             <div class="flex items-center justify-between">
@@ -515,13 +516,13 @@
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4>
-                                    <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر (OTA)</span>
+                                    <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">IPA v1.0</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.0</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">
-                            افتح الرابط عبر متصفح <b class="text-zinc-200">Safari</b> واضغط على زر التثبيت المباشر، ثم وافق على رسالة النظام لتثبيت التطبيق فوراً.
+                            يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة بدون حظر أو انتهاء شهادة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت أدناه.
                         </p>
                     </div>
 
@@ -560,10 +561,34 @@
                 </div>
             </div>
 
-            <!-- ملاحظة سريعة للتثبيت -->
-            <div class="bg-panel border border-line rounded-lg p-3.5 text-[11px] text-zinc-400 space-y-1.5">
-                <div class="text-maitha font-black">💡 ملاحظة لمستخدمي الآيفون:</div>
-                <p>في حال طلب النظام الوثوق بالشهادة بعد التثبيت، توجه إلى: <b class="text-zinc-200">الإعدادات ← عام ← VPN وإدارة الجهاز</b> ثم اضغط <b class="text-zinc-200">الوثوق</b>.</p>
+            <!-- دليل تثبيت نسخة الآيفون خطوة بخطوة -->
+            <div class="bg-panel border border-line rounded-xl p-4 space-y-3">
+                <div class="flex items-center gap-2 pb-2 border-b border-line">
+                    <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
+                    <h4 class="text-xs font-black text-white">طريقة تثبيت نسخة الآيفون (iOS) في 5 خطوات سريعة</h4>
+                </div>
+                <ol class="space-y-2 text-[11px] text-zinc-300 leading-relaxed">
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+                        <span>افتح الموقع من متصفح <b class="text-white">Safari</b> واضغط على زر <b class="text-maitha">تثبيت مباشر للآيفون</b>، ثم اضغط <b class="text-white">Allow (سماح)</b>.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+                        <span>عند ظهور رسالة <b class="text-white">Profile Downloaded</b> اضغط <b class="text-white">Close (إغلاق)</b>، ثم افتح تطبيق <b class="text-white">الإعدادات (Settings)</b>.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+                        <span>توجه إلى <b class="text-white">عام (General)</b> ← <b class="text-white">VPN وإدارة الجهاز (VPN &amp; Device Management)</b>، واضغط على <b class="text-maitha">M-Trade VIP</b>.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span>
+                        <span>اضغط على <b class="text-white">Install (تثبيت)</b> في الأعلى وأدخل رمز قفل الشاشة الخاص بجهازك.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span>
+                        <span>اضغط <b class="text-white">Install (تثبيت)</b> مرة أخرى لتأكيد التثبيت، وستظهر أيقونة <b class="text-maitha">M-Trade</b> فوراً على الشاشة الرئيسية.</span>
+                    </li>
+                </ol>
             </div>
         </section>
 
@@ -842,13 +867,11 @@
             const ny = getTimePartsInTZ(now, 'America/New_York');
             const nowSec = uae.hour * 3600 + uae.minute * 60 + uae.second;
 
-            // إغلاق نهاية الأسبوع الفعلي للفوركس والذهب (الجمعة 5:00م نيويورك ← الأحد 5:00م نيويورك)
             const isWeekendClosed =
                 (ny.weekday === 'Fri' && ny.hour >= 17) ||
                 (ny.weekday === 'Sat') ||
                 (ny.weekday === 'Sun' && ny.hour < 17);
 
-            // حساب العد التنازلي لافتتاح السوق بعد الويكند
             let weekendReopenSec = 0;
             if (isWeekendClosed) {
                 const nySecNow = ny.hour * 3600 + ny.minute * 60 + ny.second;
@@ -858,7 +881,6 @@
                 else if (ny.weekday === 'Sun') weekendReopenSec = sunOpenSec - nySecNow;
             }
 
-            // حساب الإغلاق اليومي (5:00م بتوقيت نيويورك = 01:00 أو 02:00 ص بتوقيت الإمارات)
             const nyRolloverUAE = getSessionHoursInUAE(now, 'America/New_York', 17, 18);
             const rolloverOpenUAE = formatHourTo12(nyRolloverUAE.openH);
             const rolloverOpenKSA = formatHourTo12((nyRolloverUAE.openH + 23) % 24);
@@ -875,7 +897,6 @@
                 { id: 'newyork', name: 'نيويورك', flag: '🇺🇸', openH: nyH.openH,     closeH: nyH.closeH }
             ];
 
-            // حساب حالة كل جلسة أولاً لمعرفة التداخل
             const evaluated = sessions.map(s => {
                 const openSec = s.openH * 3600;
                 const closeSec = s.closeH * 3600;
@@ -924,7 +945,6 @@
                 let timerLine = '';
 
                 if (!s.isOpen || isWeekendClosed) {
-                    // أحمر داكن للأسواق المغلقة
                     cardStyle = 'background: linear-gradient(145deg, rgba(127, 29, 29, 0.30) 0%, #11090A 100%); border: 1px solid rgba(220, 38, 38, 0.45);';
                     statusBadge = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-rose-300" style="background: rgba(220,38,38,0.22); border: 1px solid rgba(220,38,38,0.4);">مغلق</span>';
                     barColor = '#7F1D1D';
@@ -932,13 +952,11 @@
                         ? `<span class="text-rose-300">عطلة نهاية الأسبوع • يفتح بعد: <b class="mono-num text-white">${formatCountdownHMS(weekendReopenSec)}</b></span>`
                         : `<span class="text-rose-300">يفتح بعد: <b class="text-maitha mono-num">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 } else if (isOverlap) {
-                    // لون داكن خفيف مميز لتداخل جلستين
                     cardStyle = 'background: linear-gradient(145deg, rgba(180, 83, 9, 0.25) 0%, #14110B 100%); border: 1px solid rgba(245, 158, 11, 0.55);';
                     statusBadge = '<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-amber-300" style="background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.45);">🔥 تداخل جلستين</span>';
                     barColor = '#F59E0B';
                     timerLine = `<span class="text-amber-300">يُغلق بعد: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 } else {
-                    // أخضر للجلسة المفتوحة / الجديدة
                     const isNewlyOpened = s.elapsedSec <= 3600;
                     cardStyle = 'background: linear-gradient(145deg, rgba(6, 95, 70, 0.28) 0%, #09120E 100%); border: 1px solid rgba(16, 185, 129, 0.5);';
                     statusBadge = isNewlyOpened
@@ -1122,7 +1140,6 @@
         }
 
         function updateNextNewsRadar(now) {
-            const banner = document.getElementById('botAlertBanner');
             const badgeEl = document.getElementById('radarBadge');
             const strengthEl = document.getElementById('radarStrength');
             const timeEl = document.getElementById('radarUAETime');
