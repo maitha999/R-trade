@@ -1,0 +1,38 @@
+name: Sync Economic Calendar to Maitha Trade
+on:
+schedule:
+- cron: '*/15 * * * *'
+workflow_dispatch:
+jobs:
+sync-calendar:
+runs-on: ubuntu-latest
+steps:
+- name: Fetch Real Economic Calendar & Push to Firebase
+run: |
+python3 - << 'EOF'
+import json
+import urllib.request
+SOURCE_URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+FIREBASE_URL = "https://maitha-trade-default-rtdb.firebaseio.com/trading_app/economic_calendar.json"
+headers = {
+"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+}
+req = urllib.request.Request(SOURCE_URL, headers=headers)
+with urllib.request.urlopen(req, timeout=20) as resp:
+raw_data = json.loads(resp.read().decode("utf-8"))
+events = [
+ev for ev in raw_data
+if isinstance(ev, dict) and str(ev.get("impact", "")).lower() != "holiday"
+]
+if not events:
+raise RuntimeError("No economic events fetched from source.")
+payload = json.dumps(events, ensure_ascii=False).encode("utf-8")
+put_req = urllib.request.Request(
+FIREBASE_URL,
+data=payload,
+headers={"Content-Type": "application/json; charset=utf-8"},
+method="PUT"
+)
+with urllib.request.urlopen(put_req, timeout=20) as fb_resp:
+print(f"Synced {len(events)} real economic events! Status: {fb_resp.status}")
+EOF
