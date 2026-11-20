@@ -15,11 +15,20 @@ workflows:
           printf '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=https://r-trade.vip"></head></html>' > app_build/www/index.html
           cd app_build
           npm init -y
-          npm install --no-audit --no-fund @capacitor/core @capacitor/cli @capacitor/ios
+          npm install --no-audit --no-fund @capacitor/core@6 @capacitor/cli@6 @capacitor/ios@6
           npm install --no-audit --no-fund --save-dev @capacitor/assets
-          npx --yes cap init "M-Trade" "vip.rtrade.mtrade" --web-dir www
-          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('capacitor.config.json','utf8'));c.appName='M-Trade';c.appId='vip.rtrade.mtrade';c.webDir='www';c.server={url:'https://r-trade.vip',cleartext:false};fs.writeFileSync('capacitor.config.json',JSON.stringify(c,null,2));"
-          npx --yes cap add ios
+          cat << 'EOF' > capacitor.config.json
+          {
+            "appId": "vip.rtrade.mtrade",
+            "appName": "M-Trade",
+            "webDir": "www",
+            "server": {
+              "url": "https://r-trade.vip",
+              "cleartext": false
+            }
+          }
+          EOF
+          npx cap add ios
 
       - name: Apply MT App Icon
         script: |
@@ -27,7 +36,7 @@ workflows:
             mkdir -p app_build/assets
             cp icon-only.png app_build/assets/icon-only.png
             cd app_build
-            npx --yes capacitor-assets generate --ios --iconBackgroundColor "#050505" --splashBackgroundColor "#050505" || true
+            npx capacitor-assets generate --ios --iconBackgroundColor "#050505" --splashBackgroundColor "#050505" || true
           fi
 
       - name: Build Unsigned IPA
