@@ -17,15 +17,16 @@ jobs:
 
       - name: Initialize Capacitor App
         run: |
+          set -e
           mkdir -p app_build/www
-          echo '<meta http-equiv="refresh" content="0;url=https://r-trade.vip">' > app_build/www/index.html
+          printf '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=https://r-trade.vip"></head></html>' > app_build/www/index.html
           cd app_build
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/ios
-          npm install @capacitor/assets --save-dev
-          npx cap init "M-Trade" "vip.rtrade.mtrade" --web-dir www
-          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('capacitor.config.json'));c.server={url:'https://r-trade.vip',cleartext:false};fs.writeFileSync('capacitor.config.json',JSON.stringify(c,null,2));"
-          npx cap add ios
+          npm install --no-audit --no-fund @capacitor/core@latest @capacitor/cli@latest @capacitor/ios@latest
+          npm install --no-audit --no-fund --save-dev @capacitor/assets@latest
+          npx --yes cap init "M-Trade" "vip.rtrade.mtrade" --web-dir www --non-interactive
+          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('capacitor.config.json','utf8'));c.appName='M-Trade';c.appId='vip.rtrade.mtrade';c.webDir='www';c.server={url:'https://r-trade.vip',cleartext:false};fs.writeFileSync('capacitor.config.json',JSON.stringify(c,null,2));"
+          npx --yes cap add ios
 
       - name: Apply MT App Icon
         run: |
@@ -33,14 +34,15 @@ jobs:
             mkdir -p app_build/assets
             cp icon-only.png app_build/assets/icon-only.png
             cd app_build
-            npx capacitor-assets generate --ios --iconBackgroundColor "#050505" --splashBackgroundColor "#050505"
+            npx --yes capacitor-assets generate --ios --iconBackgroundColor "#050505" --splashBackgroundColor "#050505" || true
           fi
 
       - name: Build Unsigned IPA
         run: |
+          set -e
           cd app_build/ios/App
           if [ -f "Podfile" ]; then
-            pod install
+            pod install --repo-update || pod install
             xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
           else
             xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
