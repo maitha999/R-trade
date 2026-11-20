@@ -1,18 +1,1 @@
-{
-"name": "Sync Economic Calendar to Maitha Trade",
-"on": {
-"schedule": [{"cron": "*/15 * * * *"}],
-"workflow_dispatch": {}
-},
-"jobs": {
-"sync-calendar": {
-"runs-on": "ubuntu-latest",
-"steps": [
-{
-"name": "Fetch Real Economic Calendar and Push to Firebase",
-"run": "curl -sSL -f -A 'Mozilla/5.0' 'https://nfs.faireconomy.media/ff_calendar_thisweek.json' -o cal.json && curl -sS -f -X PUT -H 'Content-Type: application/json' --data-binary @cal.json 'https://maitha-trade-default-rtdb.firebaseio.com/trading_app/economic_calendar.json'"
-}
-]
-}
-}
-}
+{"name":"Sync Economic Calendar to Maitha Trade","on":{"schedule":[{"cron":"*/15 * * * *"}],"workflow_dispatch":{}},"jobs":{"sync-calendar":{"runs-on":"ubuntu-latest","steps":[{"name":"Fetch Real Economic Calendar and Push to Firebase","run":"curl -sSL -f -A 'Mozilla/5.0' 'https://nfs.faireconomy.media/ff_calendar_thisweek.json' -o cal.json && curl -sS -f -X PUT -H 'Content-Type: application/json' --data-binary @cal.json 'https://maitha-trade-default-rtdb.firebaseio.com/trading_app/economic_calendar.json'"}]}}}
