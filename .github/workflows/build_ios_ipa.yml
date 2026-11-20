@@ -1,0 +1,56 @@
+name: Build M-Trade iOS IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Initialize Capacitor App
+        run: |
+          mkdir -p app_build/www
+          echo '<meta http-equiv="refresh" content="0;url=https://r-trade.vip">' > app_build/www/index.html
+          cd app_build
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/ios
+          npm install @capacitor/assets --save-dev
+          npx cap init "M-Trade" "vip.rtrade.mtrade" --web-dir www
+          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('capacitor.config.json'));c.server={url:'https://r-trade.vip',cleartext:false};fs.writeFileSync('capacitor.config.json',JSON.stringify(c,null,2));"
+          npx cap add ios
+
+      - name: Apply MT App Icon
+        run: |
+          if [ -f "icon-only.png" ]; then
+            mkdir -p app_build/assets
+            cp icon-only.png app_build/assets/icon-only.png
+            cd app_build
+            npx capacitor-assets generate --ios --iconBackgroundColor "#050505" --splashBackgroundColor "#050505"
+          fi
+
+      - name: Build Unsigned IPA
+        run: |
+          cd app_build/ios/App
+          if [ -f "Podfile" ]; then
+            pod install
+            xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          else
+            xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          fi
+          mkdir -p Payload
+          cp -r build/Build/Products/Release-iphoneos/App.app Payload/
+          zip -r M-Trade.ipa Payload
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: M-Trade-IPA
+          path: app_build/ios/App/M-Trade.ipa
