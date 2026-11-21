@@ -2,6 +2,9 @@
 <html lang="ar" dir="rtl" class="dark">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -10,6 +13,24 @@
     <link rel="apple-touch-icon" href="https://r-trade.vip/icon-only.png">
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
+    <script>
+        // الحل الجذري لتحديث التطبيقات تلقائياً عند كل تعديل (غيّر الرقم عند كل تحديث جديد)
+        const APP_UI_VERSION = "1.2";
+        (function() {
+            try {
+                const savedVer = localStorage.getItem("mtrade_ui_ver");
+                if (savedVer !== APP_UI_VERSION) {
+                    localStorage.setItem("mtrade_ui_ver", APP_UI_VERSION);
+                    localStorage.setItem("mtrade_just_updated", "1");
+                    const url = new URL(window.location.href);
+                    if (url.searchParams.get("v") !== APP_UI_VERSION) {
+                        url.searchParams.set("v", APP_UI_VERSION);
+                        window.location.replace(url.toString());
+                    }
+                }
+            } catch (e) {}
+        })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -88,7 +109,7 @@
             top: calc(20px + env(safe-area-inset-top));
             left: 50%;
             transform: translateX(-50%) translateY(-20px);
-            z-index: 120;
+            z-index: 130;
             opacity: 0;
             pointer-events: none;
             transition: all 0.25s ease;
@@ -128,14 +149,31 @@
         تم التحديث بنجاح
     </div>
 
+    <!-- نافذة مركز التنبيهات (Notification Center) -->
+    <div id="notifModal" class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-3">
+        <div class="bg-panel border border-line rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl" style="border-top: 3px solid #F5C400;">
+            <div class="px-4 py-3 border-b border-line flex items-center justify-between bg-surface">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🔔</span>
+                    <h3 class="text-xs font-black text-white">مركز التنبيهات والإشعارات</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="clearAllNotifications()" class="text-[10px] font-bold text-zinc-400 hover:text-rose-400">مسح الكل</button>
+                    <button onclick="closeNotifModal()" class="w-7 h-7 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-black">✕</button>
+                </div>
+            </div>
+            <div id="notifListContainer" class="p-3 space-y-2 overflow-y-auto flex-1">
+                <p class="text-center text-xs text-zinc-500 py-8">لا توجد تنبيهات حالياً</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= شاشة تسجيل الدخول المحمية (تظهر أولاً) ================= -->
     <div id="loginGate" class="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-obsidian relative overflow-hidden">
-        <!-- خلفية جمالية خفيفة -->
         <div class="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-10 blur-3xl bg-maitha"></div>
         <div class="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full opacity-10 blur-3xl bg-maitha"></div>
 
         <div class="w-full max-w-md space-y-4 relative z-10">
-            <!-- هوية المنصة -->
             <div class="text-center space-y-2.5">
                 <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-20 h-20 rounded-2xl border-2 border-maitha mx-auto object-cover bg-black shadow-lg">
                 <div>
@@ -147,7 +185,6 @@
                 </div>
             </div>
 
-            <!-- بطاقة إدخال كود الاشتراك -->
             <div class="bg-panel border border-line rounded-2xl p-5 space-y-4 shadow-2xl" style="border-top: 3px solid #F5C400;">
                 <div class="space-y-1">
                     <h2 class="text-sm font-black text-white">تسجيل الدخول بكود الاشتراك</h2>
@@ -160,13 +197,11 @@
                         class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-4 py-3 text-center text-sm font-black text-maitha tracking-widest uppercase mono-num outline-none transition">
                 </div>
 
-                <!-- خيار حفظ الكود -->
                 <label class="flex items-center gap-2.5 cursor-pointer select-none">
                     <input id="rememberCodeChk" type="checkbox" checked class="w-4 h-4 accent-[#F5C400] rounded">
                     <span class="text-xs font-bold text-zinc-300">حفظ الكود على هذا الجهاز للدخول التلقائي</span>
                 </label>
 
-                <!-- رسالة الخطأ -->
                 <div id="loginErrorBox" class="hidden rounded-lg px-3 py-2 text-[11px] font-extrabold text-rose-300 text-center" style="background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.35);"></div>
 
                 <button id="loginSubmitBtn" onclick="attemptLogin()" class="w-full py-3 rounded-xl bg-maitha hover:opacity-95 text-black text-sm font-black active:scale-95 transition shadow-lg">
@@ -182,7 +217,6 @@
                 <span>لتحميل التطبيق (آيفون / أندرويد)</span>
             </button>
 
-            <!-- بطاقة كيفية الحصول على الكود -->
             <div class="bg-panel border border-line rounded-2xl p-4 space-y-3">
                 <div class="flex items-center gap-2 pb-2 border-b border-line">
                     <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
@@ -202,7 +236,7 @@
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.2</span>
             </p>
         </div>
     </div>
@@ -210,13 +244,12 @@
     <!-- ================= صفحة التنزيل العامة (متاحة من شاشة تسجيل الدخول) ================= -->
     <div id="publicDownloadGate" class="hidden min-h-screen px-4 py-6 bg-obsidian">
         <div class="max-w-3xl mx-auto space-y-4">
-            <!-- شريط علوي للرجوع لصفحة تسجيل الدخول -->
             <div class="flex items-center justify-between bg-panel border border-line rounded-xl p-3.5">
                 <div class="flex items-center gap-2.5">
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.0</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.2</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -225,23 +258,20 @@
                 </button>
             </div>
 
-            <!-- بطاقات التحميل (آيفون + أندرويد) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
                     <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2.5">
                                 <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-white">
-                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.09-.52 2.72-1.3z"/>
-                                    </svg>
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.09-.52 2.72-1.3z"/></svg>
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4>
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.0</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.2</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">
                             يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة بدون حظر أو انتهاء شهادة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت أدناه.
@@ -258,16 +288,14 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2.5">
                                 <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-emerald-400">
-                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                                        <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/>
-                                    </svg>
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-black text-white">نسخة الأندرويد</h4>
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.0</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.2</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">
                             حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على خيار التثبيت من مصادر غير معروفة إن طُلب منك.
@@ -280,7 +308,6 @@
                 </div>
             </div>
 
-            <!-- دليل تثبيت الآيفون -->
             <div class="bg-panel border border-line rounded-xl p-4 space-y-3">
                 <div class="flex items-center gap-2 pb-2 border-b border-line">
                     <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
@@ -300,7 +327,6 @@
     <!-- ================= التطبيق الرئيسي (يظهر بعد التحقق من الاشتراك) ================= -->
     <div id="mainAppWrapper" class="hidden">
 
-        <!-- زر عائم للانتقال السريع للخبر القادم داخل تبويب الأخبار -->
         <button id="jumpNextFloatingBtn" onclick="scrollToNextUpcomingNews(true)" class="hidden px-3.5 py-2 rounded-full bg-maitha text-black text-xs font-black items-center gap-1.5 active:scale-95 transition">
             <span>🎯</span>
             <span>الخبر القادم</span>
@@ -325,12 +351,17 @@
                     </div>
                 </div>
 
-                <a href="https://t.me/K6633" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-maitha hover:opacity-95 text-black text-[11px] font-black flex items-center gap-1.5 active:scale-95 transition shadow-sm shrink-0">
-                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                    </svg>
-                    <span>الدعم VIP</span>
-                </a>
+                <!-- أدوات الشريط العلوي: جرس التنبيهات + أفاتار المشترك -->
+                <div class="flex items-center gap-2">
+                    <button onclick="openNotifModal()" class="relative w-9 h-9 rounded-lg bg-surface border border-line hover:border-maitha flex items-center justify-center text-zinc-200 active:scale-95 transition" title="مركز التنبيهات">
+                        <span class="text-base leading-none">🔔</span>
+                        <span id="notifBadgeCount" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center mono-num">0</span>
+                    </button>
+
+                    <button onclick="switchTab('account')" id="headerUserAvatar" class="w-9 h-9 rounded-lg bg-maitha text-black font-black text-xs tracking-wider uppercase flex items-center justify-center active:scale-95 transition shadow-sm mono-num" title="حسابي">
+                        MT
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -347,6 +378,18 @@
                     </div>
                 </div>
                 <button onclick="dismissBroadcast()" class="text-zinc-400 hover:text-white text-xs font-black px-1">✕</button>
+            </div>
+
+            <!-- شريط الترحيب السريع للمشترك -->
+            <div id="welcomeGreetingBanner" class="bg-panel border border-line rounded-lg px-3.5 py-2.5 flex items-center justify-between gap-2" style="border-right: 3px solid #F5C400;">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div id="welcomeAvatarMini" class="w-8 h-8 rounded-lg bg-maitha text-black font-black text-[11px] flex items-center justify-center shrink-0 uppercase mono-num">MT</div>
+                    <div class="truncate">
+                        <p id="welcomeGreetingText" class="text-xs font-black text-white truncate">مرحباً بك في M TRADE VIP</p>
+                        <p id="welcomeSubText" class="text-[10px] font-bold text-zinc-400 truncate">نتمنى لك جلسة تداول موفقة اليوم</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('welcomeGreetingBanner').classList.add('hidden')" class="text-zinc-500 hover:text-white text-xs font-bold px-1 shrink-0">✕</button>
             </div>
 
             <!-- شريط التوقيت والتاريخ (الإمارات والسعودية - نظام 12 ساعة) -->
@@ -627,7 +670,7 @@
                         <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
                         <h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2>
                     </div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.0</span>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.2</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -636,16 +679,14 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-white">
-                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.09-.52 2.72-1.3z"/>
-                                        </svg>
+                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.09-.52 2.72-1.3z"/></svg>
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4>
                                         <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                     </div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.0</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.2</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">
                                 يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة بدون حظر أو انتهاء شهادة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت أدناه.
@@ -662,16 +703,14 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-emerald-400">
-                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                                            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/>
-                                        </svg>
+                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-black text-white">نسخة الأندرويد</h4>
                                         <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                     </div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.0</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.2</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">
                                 حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على خيار التثبيت من مصادر غير معروفة إن طُلب منك.
@@ -699,7 +738,7 @@
                 </div>
             </section>
 
-            <!-- ================= 5. قسم حسابي (بيانات المشترك والإشعارات) ================= -->
+            <!-- ================= 5. قسم حسابي (بيانات المشترك + الأفاتار بالأحرف + التحديث الفوري) ================= -->
             <section id="tab-account" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2">
@@ -712,7 +751,10 @@
                 <!-- بطاقة بيانات المشترك -->
                 <div class="bg-panel border border-line rounded-xl p-5 space-y-4" style="border-top: 3px solid #F5C400;">
                     <div class="flex items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-xl bg-maitha text-black flex items-center justify-center text-xl font-black shrink-0">👤</div>
+                        <!-- صورة المشترك الذكية (أول حرفين أو رقمين من الاسم) -->
+                        <div id="accAvatar" class="w-14 h-14 rounded-2xl bg-maitha text-black flex items-center justify-center text-lg font-black tracking-wider uppercase shrink-0 shadow-lg mono-num" style="box-shadow: 0 0 18px rgba(245,196,0,0.28);">
+                            MT
+                        </div>
                         <div>
                             <h3 id="accName" class="text-base font-black text-white">--</h3>
                             <p class="text-[11px] text-zinc-400 font-bold">عضوية <span class="text-maitha">M TRADE VIP</span> • مرتبطة بهذا الجهاز 🔒</p>
@@ -749,10 +791,21 @@
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
                             <h4 class="text-xs font-black text-white">🔔 إشعارات الأسواق والإدارة</h4>
-                            <p class="text-[10px] text-zinc-400 mt-0.5">استقبال تنبيهات افتتاح وإغلاق الأسواق وإشعارات الإدارة على هاتفك.</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">استقبال تنبيهات افتتاح وإغلاق الأسواق، ذروة السيولة، وإشعارات الإدارة.</p>
                         </div>
                         <button onclick="requestPushPermission()" id="pushNotifBtn" class="px-3 py-2 rounded-lg bg-maitha text-black text-[11px] font-black shrink-0 active:scale-95 transition">
                             تفعيل
+                        </button>
+                    </div>
+
+                    <!-- زر التحديث الفوري للتطبيق (مسح الكاش) -->
+                    <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
+                        <div>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.2</span>)</h4>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع دون تخزين مؤقت.</p>
+                        </div>
+                        <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">
+                            تحديث الآن ↻
                         </button>
                     </div>
 
@@ -810,10 +863,15 @@
         const STORAGE_DEVICE_ID = "mtrade_device_uuid_v1";
         const STORAGE_SAVED_CODE = "mtrade_saved_sub_code";
         const STORAGE_LAST_BROADCAST = "mtrade_last_broadcast_id";
+        const STORAGE_NOTIF_LOG = "mtrade_notif_log_v1";
 
         let currentUserRecord = null;
         let appInitialized = false;
         let lastSessionStates = {};
+        let lastOverlapState = false;
+        let expiryWarningSent = false;
+        let notificationsLog = [];
+        let unreadNotifCount = 0;
 
         let currentCalendarFilter = 'today';
         let tvCalendarLoaded = false;
@@ -824,6 +882,104 @@
         let alarmedEventIds = new Set();
         let lastHashes = { news: '', calendar: '' };
         let appState = { newsFeed: [], economicEvents: [] };
+
+        // ================= استخراج أول حرفين أو رقمين من اسم المشترك =================
+        function getUserInitials(name) {
+            if (!name) return "MT";
+            // إبقاء الحروف العربية والإنجليزية والأرقام فقط
+            const cleaned = String(name).replace(/[^a-zA-Z0-9\u0621-\u064A]/g, "").trim();
+            if (!cleaned) return "MT";
+            return cleaned.slice(0, 2).toUpperCase();
+        }
+
+        // ================= تحديث التطبيق القسري (كسر الكاش) =================
+        function forceAppRefresh() {
+            showToast("جاري سحب أحدث نسخة من M TRADE...");
+            const url = new URL(window.location.href);
+            url.searchParams.set("v", APP_UI_VERSION + "_" + Date.now());
+            setTimeout(() => window.location.replace(url.toString()), 400);
+        }
+
+        // ================= مركز التنبيهات والإشعارات =================
+        function loadNotificationsLog() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_NOTIF_LOG) || "[]");
+                if (Array.isArray(saved)) notificationsLog = saved.slice(0, 30);
+            } catch (e) { notificationsLog = []; }
+            renderNotificationsLog();
+        }
+
+        function addNotification(title, body, type = "info", playSound = false) {
+            const nowTime = format12HourTime(new Date(), 'Asia/Dubai', false);
+            const item = { id: Date.now() + Math.random(), title, body, type, time: nowTime };
+            notificationsLog.unshift(item);
+            if (notificationsLog.length > 30) notificationsLog = notificationsLog.slice(0, 30);
+            try { localStorage.setItem(STORAGE_NOTIF_LOG, JSON.stringify(notificationsLog)); } catch (e) {}
+
+            unreadNotifCount++;
+            updateNotifBadge();
+            renderNotificationsLog();
+
+            showToast(`${title}: ${body}`);
+            if (playSound) playAlertSound();
+
+            if ("Notification" in window && Notification.permission === "granted") {
+                try { new Notification(title, { body, icon: 'https://r-trade.vip/icon-only.png' }); } catch (e) {}
+            }
+        }
+
+        function updateNotifBadge() {
+            const badge = document.getElementById('notifBadgeCount');
+            if (!badge) return;
+            if (unreadNotifCount > 0) {
+                badge.textContent = unreadNotifCount > 9 ? "9+" : unreadNotifCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderNotificationsLog() {
+            const container = document.getElementById('notifListContainer');
+            if (!container) return;
+            if (notificationsLog.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-zinc-500 py-8">لا توجد تنبيهات حالياً</p>`;
+                return;
+            }
+            const iconMap = { welcome: '👋', market: '🌍', warning: '⚠️', admin: '📢', update: '✨', news: '📰', info: '🔔' };
+            container.innerHTML = notificationsLog.map(n => `
+                <div class="bg-surface border border-line rounded-xl p-3 space-y-1">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-[11px] font-black text-maitha flex items-center gap-1.5">
+                            <span>${iconMap[n.type] || '🔔'}</span>
+                            <span>${n.title}</span>
+                        </span>
+                        <span class="text-[9px] font-bold text-zinc-500 mono-num">🇦🇪 ${n.time}</span>
+                    </div>
+                    <p class="text-[11px] text-zinc-200 font-semibold leading-relaxed">${n.body}</p>
+                </div>
+            `).join('');
+        }
+
+        function openNotifModal() {
+            unreadNotifCount = 0;
+            updateNotifBadge();
+            renderNotificationsLog();
+            document.getElementById('notifModal')?.classList.remove('hidden');
+        }
+
+        function closeNotifModal() {
+            document.getElementById('notifModal')?.classList.add('hidden');
+        }
+
+        function clearAllNotifications() {
+            notificationsLog = [];
+            unreadNotifCount = 0;
+            localStorage.removeItem(STORAGE_NOTIF_LOG);
+            updateNotifBadge();
+            renderNotificationsLog();
+            showToast("تم مسح سجل التنبيهات");
+        }
 
         // ================= التنقل بين تسجيل الدخول وصفحة التنزيل العامة =================
         function openPublicDownload() {
@@ -862,10 +1018,7 @@
             const rememberChk = document.getElementById('rememberCodeChk');
 
             const code = (autoCode || (inputEl ? inputEl.value : '')).trim().toUpperCase();
-            if (!code) {
-                showLoginError('يرجى إدخال كود الاشتراك أولاً.');
-                return;
-            }
+            if (!code) { showLoginError('يرجى إدخال كود الاشتراك أولاً.'); return; }
 
             if (errBox) errBox.classList.add('hidden');
             if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'جاري التحقق من الكود...'; }
@@ -879,13 +1032,11 @@
                     if (autoCode) localStorage.removeItem(STORAGE_SAVED_CODE);
                     return;
                 }
-
                 if (user.status !== 'active') {
                     showLoginError('🚫 تم إيقاف هذا الاشتراك من قبل الإدارة.');
                     localStorage.removeItem(STORAGE_SAVED_CODE);
                     return;
                 }
-
                 const nowMs = Date.now();
                 if (user.expires_at && nowMs > user.expires_at) {
                     showLoginError('⏳ انتهت مدة هذا الاشتراك. يرجى التواصل مع الإدارة للتجديد.');
@@ -900,7 +1051,6 @@
                     return;
                 }
 
-                // تفعيل الكود لأول مرة وربطه بالجهاز
                 const patchData = {};
                 if (!user.device_id) patchData.device_id = myDeviceId;
                 if (!user.activated_at) {
@@ -918,11 +1068,8 @@
                 }
 
                 currentUserRecord = user;
-                if (autoCode || (rememberChk && rememberChk.checked)) {
-                    localStorage.setItem(STORAGE_SAVED_CODE, code);
-                } else {
-                    localStorage.removeItem(STORAGE_SAVED_CODE);
-                }
+                if (autoCode || (rememberChk && rememberChk.checked)) localStorage.setItem(STORAGE_SAVED_CODE, code);
+                else localStorage.removeItem(STORAGE_SAVED_CODE);
 
                 unlockApp(user, !autoCode);
             } catch (err) {
@@ -932,15 +1079,52 @@
             }
         }
 
-        function unlockApp(user, showWelcome = true) {
+        function getTimeBasedGreeting(name) {
+            const uaeHour = getTimePartsInTZ(new Date(), 'Asia/Dubai').hour;
+            if (uaeHour >= 5 && uaeHour < 12) return { title: `صباح الخير يا ${name} ☀️`, sub: "بداية يوم موفق في الأسواق العالمية — التزم بخطتك." };
+            if (uaeHour >= 12 && uaeHour < 18) return { title: `مساء النور يا ${name} 🌤️`, sub: "أهلاً بك في M TRADE VIP — راقب تداخل الجلسات والسيولة." };
+            return { title: `مساء الخير يا ${name} 🌙`, sub: "أهلاً بك في M TRADE VIP — تداول بذكاء وإدارة مخاطر." };
+        }
+
+        function unlockApp(user, isManualLogin = true) {
             document.getElementById('loginGate').classList.add('hidden');
             document.getElementById('publicDownloadGate').classList.add('hidden');
             document.getElementById('mainAppWrapper').classList.remove('hidden');
             document.body.classList.add('app-unlocked');
+
+            loadNotificationsLog();
             renderAccountTab();
 
-            if (showWelcome) {
-                showToast(`مرحباً بك يا ${user.name || 'مشترك VIP'} في M TRADE 👋`);
+            const userName = user.name || 'مشترك VIP';
+            const initials = getUserInitials(userName);
+            const greet = getTimeBasedGreeting(userName);
+
+            document.getElementById('welcomeGreetingText').textContent = greet.title;
+            document.getElementById('welcomeSubText').textContent = greet.sub;
+            document.getElementById('welcomeAvatarMini').textContent = initials;
+            document.getElementById('headerUserAvatar').textContent = initials;
+
+            // إشعار التحديث الجديد إن وُجد
+            if (localStorage.getItem("mtrade_just_updated") === "1") {
+                localStorage.removeItem("mtrade_just_updated");
+                addNotification("تحديث جديد ✨", `تم تحديث تطبيق M TRADE تلقائياً إلى الإصدار v${APP_UI_VERSION}`, "update", false);
+            }
+
+            // إشعار ترحيبي بالمشترك
+            if (isManualLogin) {
+                addNotification("أهلاً بك في M TRADE VIP", `${greet.title} — تم تسجيل دخولك بنجاح.`, "welcome", true);
+            } else {
+                showToast(`${greet.title}`);
+            }
+
+            // تنبيه قرب انتهاء الاشتراك (إذا تبقى 3 أيام أو أقل)
+            if (user.expires_at && !expiryWarningSent) {
+                const remDays = (user.expires_at - Date.now()) / 86400000;
+                if (remDays > 0 && remDays <= 3) {
+                    expiryWarningSent = true;
+                    const daysTxt = remDays < 1 ? "أقل من 24 ساعة" : `${Math.ceil(remDays)} أيام`;
+                    addNotification("تنبيه انتهاء الاشتراك", `متبقي ${daysTxt} على انتهاء اشتراكك. بادر بالتجديد لضمان استمرار الخدمة.`, "warning", true);
+                }
             }
 
             if (!appInitialized) {
@@ -992,7 +1176,10 @@
             if (!currentUserRecord) return;
             const u = currentUserRecord;
             const fmtDate = (ms) => ms ? new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(ms)) : '--';
+            const initials = getUserInitials(u.name);
 
+            document.getElementById('accAvatar').textContent = initials;
+            document.getElementById('headerUserAvatar').textContent = initials;
             document.getElementById('accName').textContent = u.name || 'مشترك VIP';
             document.getElementById('accCode').textContent = u.code || '--';
             document.getElementById('accDays').textContent = `${u.days || 0} يوم`;
@@ -1013,22 +1200,13 @@
             }
             Notification.requestPermission().then(perm => {
                 if (perm === 'granted') {
-                    showToast('تم تفعيل إشعارات الهاتف بنجاح 🔔');
                     const btn = document.getElementById('pushNotifBtn');
                     if (btn) { btn.textContent = 'مُفعّلة ✓'; btn.style.background = '#10B981'; btn.style.color = '#fff'; }
-                    new Notification('M TRADE VIP', { body: 'تم تفعيل الإشعارات بنجاح! ستصلك تنبيهات الأسواق والإدارة.', icon: 'https://r-trade.vip/icon-only.png' });
+                    addNotification("تم تفعيل الإشعارات", "ستصلك الآن تنبيهات افتتاح وإغلاق الأسواق، ذروة السيولة، وإشعارات الإدارة.", "info", true);
                 } else {
                     showToast('لم يتم منح إذن الإشعارات.');
                 }
             });
-        }
-
-        function sendSystemNotification(title, body) {
-            showToast(`${title}: ${body}`);
-            playAlertSound();
-            if ("Notification" in window && Notification.permission === "granted") {
-                try { new Notification(title, { body, icon: 'https://r-trade.vip/icon-only.png' }); } catch (e) {}
-            }
         }
 
         async function checkAdminBroadcast() {
@@ -1041,8 +1219,10 @@
                     document.getElementById('broadcastMessage').textContent = data.message;
                     document.getElementById('broadcastTime').textContent = data.time || '';
                     document.getElementById('adminBroadcastBar').classList.remove('hidden');
-                    sendSystemNotification('إشعار M TRADE', data.message);
-                    window._currentBroadcastId = String(data.id);
+                    if (window._currentBroadcastId !== String(data.id)) {
+                        window._currentBroadcastId = String(data.id);
+                        addNotification("إشعار من الإدارة", data.message, "admin", true);
+                    }
                 }
             } catch (e) {}
         }
@@ -1233,7 +1413,12 @@
                 const isOpen = !isWeekendClosed && (spansMidnight ? (nowSec >= openSec || nowSec < closeSec) : (nowSec >= openSec && nowSec < closeSec));
 
                 if (lastSessionStates[s.id] !== undefined && lastSessionStates[s.id] !== isOpen) {
-                    sendSystemNotification('تنبيه الأسواق العالمية', isOpen ? `🟢 افتتحت الآن جلسة ${s.name} ${s.flag}` : `🔴 أُغلقت الآن جلسة ${s.name} ${s.flag}`);
+                    addNotification(
+                        'تنبيه الأسواق العالمية',
+                        isOpen ? `🟢 افتتحت الآن جلسة ${s.name} ${s.flag}` : `🔴 أُغلقت الآن جلسة ${s.name} ${s.flag}`,
+                        'market',
+                        true
+                    );
                 }
                 lastSessionStates[s.id] = isOpen;
 
@@ -1250,6 +1435,11 @@
 
             const openSessions = evaluated.filter(s => s.isOpen);
             const isOverlap = openSessions.length >= 2;
+            if (isOverlap && !lastOverlapState && Object.keys(lastSessionStates).length === 4) {
+                addNotification('ذروة السيولة 🔥', `بدأ الآن تداخل جلستي (${openSessions.map(x => x.name).join(' + ')}) — أعلى حركة في السوق.`, 'market', true);
+            }
+            lastOverlapState = isOverlap;
+
             let nextOpening = null;
 
             const cardsHtml = evaluated.map(s => {
@@ -1386,6 +1576,12 @@
             flagEl.textContent = info.flag; titleArEl.textContent = `${info.arTitle} (${info.country})`;
             titleEl.textContent = ev.title; timeEl.textContent = `🇦🇪 ${dt.uaeTime}`; cdEl.textContent = formatCountdownHMS(remainingSec);
             strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
+
+            const eventKey = `${ev.title}_${ev.date}`;
+            if (newsAlarmEnabled && remainingSec <= 300 && remainingSec > 0 && !alarmedEventIds.has(eventKey)) {
+                alarmedEventIds.add(eventKey);
+                addNotification("خبر اقتصادي وشيك 🚨", `متبقي أقل من 5 دقائق على صدور: ${info.arTitle} (${info.country})`, "news", true);
+            }
         }
 
         function loadChart(symbol) {
@@ -1585,7 +1781,6 @@
             } catch (e) {}
         }
 
-        // عند تحميل الصفحة: فحص وجود كود محفوظ للدخول التلقائي
         window.addEventListener('DOMContentLoaded', () => {
             const savedCode = localStorage.getItem(STORAGE_SAVED_CODE);
             if (savedCode) {
