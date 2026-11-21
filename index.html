@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
     <script>
-        const APP_UI_VERSION = "1.6";
+        const APP_UI_VERSION = "1.7";
         (function() {
             try {
                 const savedVer = localStorage.getItem("mtrade_ui_ver");
@@ -93,6 +93,7 @@
         .nav-inactive { color: #71717A !important; border-top: 2px solid transparent; }
 
         .mono-num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+        .code-blurred { filter: blur(5px); user-select: none; transition: filter 0.25s ease; }
 
         #toastBox {
             position: fixed;
@@ -237,7 +238,7 @@
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.6</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.7</span>
             </p>
         </div>
     </div>
@@ -250,7 +251,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.6</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.7</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -272,7 +273,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.6</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.7</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت.</p>
                     </div>
@@ -293,7 +294,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.6</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.7</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على التثبيت.</p>
                     </div>
@@ -437,18 +438,16 @@
                                 <span class="text-[9px] font-bold text-zinc-400 block">المتبقي للخبر</span>
                                 <span id="radarCountdown" class="text-xs font-black text-maitha mono-num">--:--:--</span>
                             </div>
-                            <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition">
-                                <span id="alarmIcon">🔕</span><span id="alarmText">تنبيه</span>
-                            </button>
                         </div>
                     </div>
 
-                    <div id="smartRiskBar" class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[11px]">
-                        <div class="flex items-center gap-1.5 flex-1">
-                            <span class="text-maitha font-black whitespace-nowrap">⚡ حالة التذبذب:</span>
-                            <span id="smartMarketAdvice" class="text-zinc-300 font-bold leading-snug">السوق مستقر — يُنصح بالالتزام بإدارة رأس المال ووضع وقف الخسارة.</span>
+                    <!-- ملخص تأثير الخبر على العملة والذهب والنتيجة -->
+                    <div id="newsImpactSummaryBar" class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                        <div class="flex items-center gap-1.5 flex-1 min-w-[180px]">
+                            <span class="text-maitha font-black whitespace-nowrap">🎯 تأثير الخبر:</span>
+                            <span id="radarImpactDetail" class="text-zinc-300 font-bold leading-snug">جاري تحليل العملة المتأثرة ونتيجة الخبر...</span>
                         </div>
-                        <span id="smartRiskBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400 whitespace-nowrap" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">مخاطرة طبيعية</span>
+                        <span id="radarImpactBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-maitha whitespace-nowrap" style="background: rgba(245,196,0,0.12); border: 1px solid rgba(245,196,0,0.35);">قيد المتابعة</span>
                     </div>
                 </div>
 
@@ -772,7 +771,7 @@
             <section id="tab-download" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2></div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.6</span>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.7</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
@@ -784,7 +783,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4><span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.6</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.7</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون</b> مدى الحياة بدون شهادة.</p>
                         </div>
@@ -799,7 +798,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الأندرويد</h4><span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.6</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.7</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة وثبّته على جهازك.</p>
                         </div>
@@ -830,17 +829,24 @@
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">🔑 كود الاشتراك</span><span id="accCode" class="font-black text-white mono-num" dir="ltr">--</span></div>
+                        <button type="button" onclick="revealAndCopyCode()" class="bg-surface border border-line hover:border-maitha rounded-lg p-3 flex items-center justify-between w-full text-right active:scale-[0.99] transition" title="اضغط لإظهار ونسخ الكود"><span class="text-zinc-400 font-bold">🔑 كود الاشتراك <span class="text-[9px] text-maitha">(اضغط للنسخ)</span></span><span id="accCode" class="font-black text-white mono-num code-blurred" dir="ltr">--</span></button>
                         <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">📆 مدة الباقة</span><span id="accDays" class="font-black text-maitha mono-num">-- يوم</span></div>
                         <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">🟢 تاريخ التفعيل</span><span id="accActivated" class="font-bold text-zinc-200 mono-num text-[11px]" dir="ltr">--</span></div>
                         <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">🔴 تاريخ الانتهاء</span><span id="accExpires" class="font-bold text-rose-300 mono-num text-[11px]" dir="ltr">--</span></div>
                     </div>
 
-                    <!-- تقييم نقاط نهاية الأسبوع (المعادن، المؤشرات، الفوركس، الكريبتو) -->
+                    <!-- تقييم النقاط والأرباح (اليوم / أمس / نهاية الأسبوع / الكل) -->
                     <div class="bg-surface border border-maitha/40 rounded-xl p-3.5 space-y-3">
-                        <div class="flex items-center justify-between pb-2 border-b border-line">
-                            <h4 class="text-xs font-black text-maitha">🏆 تقييم نقاط نهاية الأسبوع (آخر 7 أيام)</h4>
+                        <div class="flex items-center justify-between gap-2 pb-2 border-b border-line">
+                            <h4 id="ptsCardTitle" class="text-xs font-black text-maitha">🏆 تقييم النقاط (نهاية الأسبوع)</h4>
                             <span id="wkTotalPtsBadge" class="px-2.5 py-0.5 rounded bg-maitha text-black text-[11px] font-black mono-num" dir="ltr">+0 نقطة</span>
+                        </div>
+                        <!-- أزرار اختيار فترة تقييم النقاط -->
+                        <div class="grid grid-cols-4 gap-1 p-1 rounded-lg bg-panel border border-line">
+                            <button onclick="setPointsPeriod('today')" id="pflt-today" class="pts-flt py-1.5 rounded-md text-zinc-400 text-[10px] font-bold transition">اليوم</button>
+                            <button onclick="setPointsPeriod('yesterday')" id="pflt-yesterday" class="pts-flt py-1.5 rounded-md text-zinc-400 text-[10px] font-bold transition">أمس</button>
+                            <button onclick="setPointsPeriod('week')" id="pflt-week" class="pts-flt py-1.5 rounded-md bg-maitha text-black text-[10px] font-black transition">الأسبوع</button>
+                            <button onclick="setPointsPeriod('all')" id="pflt-all" class="pts-flt py-1.5 rounded-md text-zinc-400 text-[10px] font-bold transition">الكل</button>
                         </div>
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div class="bg-panel border border-line rounded-lg p-2.5 flex items-center justify-between">
@@ -860,7 +866,7 @@
                                 <span id="wkCryptoPts" class="font-black text-emerald-400 mono-num text-[11px]" dir="ltr">0</span>
                             </div>
                         </div>
-                        <p class="text-[10px] text-zinc-400 text-center font-semibold">يتم احتساب صافي النقاط تلقائياً من جميع التوصيات المحققة والمغلقة خلال الأسبوع.</p>
+                        <p class="text-[10px] text-zinc-400 text-center font-semibold">يتم احتساب صافي النقاط تلقائياً حسب الفترة المختارة لتقييم الأداء بدقة.</p>
                     </div>
 
                     <!-- لوحة تخصيص أصوات التنبيهات المستقلة -->
@@ -898,7 +904,7 @@
                     <!-- زر التحديث الفوري -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
-                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.6</span>)</h4>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.7</span>)</h4>
                             <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع.</p>
                         </div>
                         <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">تحديث الآن ↻</button>
@@ -1005,12 +1011,53 @@
             return 0;
         }
 
+        let currentPointsPeriod = 'week';
+        let codeBlurTimer = null;
+
+        function revealAndCopyCode() {
+            const el = document.getElementById('accCode');
+            if (!el || !currentUserRecord?.code) return;
+            el.classList.remove('code-blurred');
+            copyTextVal(currentUserRecord.code, 'كود الاشتراك');
+            if (codeBlurTimer) clearTimeout(codeBlurTimer);
+            codeBlurTimer = setTimeout(() => { el.classList.add('code-blurred'); }, 5000);
+        }
+
+        function setPointsPeriod(period) {
+            currentPointsPeriod = period;
+            ['today', 'yesterday', 'week', 'all'].forEach(p => {
+                const b = document.getElementById('pflt-' + p);
+                if (b) {
+                    b.classList.toggle('bg-maitha', p === period);
+                    b.classList.toggle('text-black', p === period);
+                    b.classList.toggle('font-black', p === period);
+                    b.classList.toggle('text-zinc-400', p !== period);
+                }
+            });
+            const titles = { today: '🏆 تقييم نقاط اليوم', yesterday: '🏆 تقييم نقاط أمس', week: '🏆 تقييم النقاط (نهاية الأسبوع)', all: '🏆 إجمالي النقاط (الكل)' };
+            const tEl = document.getElementById('ptsCardTitle');
+            if (tEl) tEl.textContent = titles[period] || titles.week;
+            renderWeeklyPointsCard();
+        }
+
         function renderWeeklyPointsCard() {
             const list = appState.signals || [];
-            const weekAgo = Date.now() - 7 * 86400000;
+            const now = new Date();
+            const todayKey = getUAEDayKey(now);
+            const yesterdayKey = getUAEDayKey(new Date(now.getTime() - 86400000));
+            const weekAgo = now.getTime() - 7 * 86400000;
             let metals = 0, indices = 0, forex = 0, crypto = 0;
 
-            list.filter(s => (s.updated_at || s.created_at || 0) >= weekAgo).forEach(s => {
+            list.filter(s => {
+                const ts = s.updated_at || s.created_at || 0;
+                if (!ts) return currentPointsPeriod === 'all';
+                if (currentPointsPeriod === 'all') return true;
+                if (currentPointsPeriod === 'week') return ts >= weekAgo;
+                const dKey = getUAEDayKey(new Date(ts));
+                if (currentPointsPeriod === 'today') return dKey === todayKey;
+                if (currentPointsPeriod === 'yesterday') return dKey === yesterdayKey;
+                return true;
+            }).forEach(s => {
                 const pts = getSignalPoints(s);
                 const sym = (s.symbol || '').toUpperCase();
                 if (s.is_crypto || /^(BTC|ETH|SOL|XRP|BNB|DOGE|ADA|AVAX|LINK|PEPE|SHIB)/i.test(sym)) crypto += pts;
@@ -1816,11 +1863,34 @@
             return { strength, cardStyle, statusTag, flag: flags[country] || '🌐', country, arTitle, verdict: { text: isFinished ? 'انتهى وقت الخبر' : 'بانتظار الصدور • تأثير مباشر على السوق', boxStyle: 'background: rgba(0,0,0,0.35); color: #D4D4D8;' } };
         }
 
+        function evaluateEventOutcome(ev) {
+            const ccy = (ev?.country || 'USD').toUpperCase();
+            const targetAssets = ccy === 'USD' ? 'الدولار (USD) والذهب (XAUUSD)' : `عملة (${ccy}) وأزواجها`;
+            if (ev?.actual && ev?.forecast) {
+                const actNum = parseFloat(String(ev.actual).replace(/[^0-9.-]/g, ''));
+                const fcsNum = parseFloat(String(ev.forecast).replace(/[^0-9.-]/g, ''));
+                if (!isNaN(actNum) && !isNaN(fcsNum)) {
+                    if (actNum === fcsNum) return { detail: `يؤثر على ${targetAssets} — النتيجة مطابقة للتوقعات (${ev.actual}).`, badge: 'محايد 🟡', color: '#F5C400' };
+                    const lowerIsBetter = /unemployment|jobless|claims/i.test(ev.title || '');
+                    const pos = lowerIsBetter ? (actNum < fcsNum) : (actNum > fcsNum);
+                    if (ccy === 'USD') {
+                        return pos
+                            ? { detail: `الفعلي ${ev.actual} مقابل ${ev.forecast} — إيجابي للدولار 🟢 وسلبي للذهب 🔴.`, badge: 'إيجابي للدولار 🟢', color: '#34D399' }
+                            : { detail: `الفعلي ${ev.actual} مقابل ${ev.forecast} — سلبي للدولار 🔴 وإيجابي للذهب 🟢.`, badge: 'إيجابي للذهب 🟢', color: '#34D399' };
+                    }
+                    return pos
+                        ? { detail: `يؤثر على ${targetAssets} — الفعلي ${ev.actual} إيجابي للعملة 🟢.`, badge: `إيجابي ${ccy} 🟢`, color: '#34D399' }
+                        : { detail: `يؤثر على ${targetAssets} — الفعلي ${ev.actual} سلبي للعملة 🔴.`, badge: `سلبي ${ccy} 🔴`, color: '#FDA4AF' };
+                }
+            }
+            return { detail: `يؤثر مباشرة على ${targetAssets} — بانتظار صدور النتيجة الفعلية.`, badge: `تأثير ${ccy}`, color: '#F5C400' };
+        }
+
         function updateNextNewsRadar(now, isWeekendClosed = false, rolloverOpenUAE = '', rolloverOpenKSA = '') {
             const badgeEl = document.getElementById('radarBadge'), strengthEl = document.getElementById('radarStrength'), timeEl = document.getElementById('radarUAETime');
             const flagEl = document.getElementById('radarFlag'), titleEl = document.getElementById('radarTitle'), titleArEl = document.getElementById('radarTitleAr');
             const cdEl = document.getElementById('radarCountdown'), cdBoxEl = document.getElementById('radarCountdownBox');
-            const adviceEl = document.getElementById('smartMarketAdvice'), riskBadgeEl = document.getElementById('smartRiskBadge');
+            const impDetailEl = document.getElementById('radarImpactDetail'), impBadgeEl = document.getElementById('radarImpactBadge');
             const sigWarnBox = document.getElementById('signalsNewsWarning'), sigWarnTxt = document.getElementById('signalsNewsWarningText');
             if (!titleArEl) return;
 
@@ -1834,18 +1904,21 @@
                 badgeEl.textContent = `ملخص الأخبار (${allEvents.length} خبر)`;
                 if (finished.length > 0) {
                     const lastEv = finished[0].ev, dt = formatEventDateTime(lastEv.date), info = analyzeEconomicEvent(lastEv, true, false);
+                    const outcome = evaluateEventOutcome(lastEv);
                     flagEl.textContent = info.flag; strengthEl.textContent = 'آخر خبر صدر';
                     timeEl.textContent = `🇦🇪 ${dt.uaeTime} | 🇸🇦 ${dt.ksaTime}`;
                     titleArEl.textContent = `آخر خبر: ${info.arTitle} (${info.country})`;
                     titleEl.textContent = isWeekendClosed ? `ننتظر افتتاح السوق يوم الإثنين (${rolloverOpenUAE} 🇦🇪).` : `انتهت أخبار اليوم — ننتظر افتتاح الجلسة القادمة.`;
+                    if (impDetailEl) impDetailEl.textContent = outcome.detail;
+                    if (impBadgeEl) { impBadgeEl.textContent = outcome.badge; impBadgeEl.style.color = outcome.color; }
                 } else {
                     flagEl.textContent = '📅'; strengthEl.textContent = isWeekendClosed ? 'عطلة السوق' : 'بانتظار الأجندة';
                     timeEl.textContent = `🇦🇪 ${format12HourTime(now, 'Asia/Dubai', false)}`;
                     titleArEl.textContent = `إجمالي الأخبار: ${allEvents.length} • ننتظر افتتاح السوق`;
                     titleEl.textContent = `يفتح السوق الساعة ${rolloverOpenUAE} 🇦🇪 (${rolloverOpenKSA} 🇸🇦).`;
+                    if (impDetailEl) impDetailEl.textContent = isWeekendClosed ? 'السوق التقليدي في عطلة — الكريبتو يعمل 24/7.' : 'لا توجد أخبار مؤثرة حالياً.';
+                    if (impBadgeEl) { impBadgeEl.textContent = isWeekendClosed ? 'عطلة الأسبوع' : 'مستقر'; impBadgeEl.style.color = '#F5C400'; }
                 }
-                if (adviceEl) adviceEl.textContent = isWeekendClosed ? 'السوق في عطلة نهاية الأسبوع — راقب افتتاح الإثنين.' : 'لا توجد أخبار وشيكة — التذبذب طبيعي.';
-                if (riskBadgeEl) riskBadgeEl.textContent = isWeekendClosed ? 'السوق مغلق' : 'تذبذب مستقر';
                 return;
             }
 
@@ -1853,9 +1926,12 @@
             const nextImportant = upcoming.find(i => ['high', 'medium'].includes((i.ev.impact || '').toLowerCase())) || upcoming[0];
             const ev = nextImportant.ev, remainingSec = Math.max(0, Math.floor((nextImportant.ts - nowMs) / 1000));
             const dt = formatEventDateTime(ev.date), info = analyzeEconomicEvent(ev, false, true);
+            const outcome = evaluateEventOutcome(ev);
             flagEl.textContent = info.flag; titleArEl.textContent = `${info.arTitle} (${info.country})`;
             titleEl.textContent = ev.title; timeEl.textContent = `🇦🇪 ${dt.uaeTime}`; cdEl.textContent = formatCountdownHMS(remainingSec);
             strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
+            if (impDetailEl) impDetailEl.textContent = outcome.detail;
+            if (impBadgeEl) { impBadgeEl.textContent = outcome.badge; impBadgeEl.style.color = outcome.color; }
 
             // تحذير تلقائي داخل قسم التوصيات قبل الأخبار القوية بـ 30 دقيقة
             if (sigWarnBox && sigWarnTxt) {
@@ -2178,28 +2254,43 @@
         async function loadCryptoNews() {
             const container = document.getElementById('cryptoNewsList');
             if (!container) return;
-            try {
-                const r = await fetchWithTimeout('https://min-api.cryptocompare.com/data/v2/news/?lang=EN', 7000);
-                const d = await r.json();
-                const items = (d?.Data || []).slice(0, 10);
-                if (items.length) {
-                    const translated = await Promise.all(items.map(async n => ({ ...n, arTitle: await translateToArabicLive(n.title) })));
-                    container.innerHTML = translated.map(n => {
-                        const dt = format12HourTime(new Date(n.published_on * 1000), 'Asia/Dubai', false);
-                        return `
-                            <a href="${n.url}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line hover:border-maitha rounded-xl p-3.5 space-y-1.5 transition">
-                                <div class="flex items-center justify-between text-[10px]">
-                                    <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${n.source_info?.name || n.source || 'Crypto'}</span>
-                                    <span class="text-zinc-400 mono-num">🇦🇪 ${dt}</span>
-                                </div>
-                                <h4 class="text-xs font-bold text-white leading-snug">${n.arTitle}</h4>
-                                <p class="text-[10px] text-zinc-500 truncate" dir="ltr">${n.title}</p>
-                            </a>`;
-                    }).join('');
-                    return;
-                }
-            } catch (e) {}
-            container.innerHTML = `<div class="bg-panel border border-line rounded-xl p-5 text-center text-xs text-zinc-400">تعذر جلب أخبار الكريبتو حالياً.</div>`;
+            const feeds = [
+                { name: 'CoinTelegraph', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://cointelegraph.com/rss') },
+                { name: 'CoinDesk', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.coindesk.com/arc/outboundfeeds/rss/') }
+            ];
+            for (const feed of feeds) {
+                try {
+                    const r = await fetchWithTimeout(feed.url, 6500);
+                    const d = await r.json();
+                    if (d?.status === 'ok' && Array.isArray(d.items) && d.items.length) {
+                        const items = d.items.slice(0, 10);
+                        const translated = await Promise.all(items.map(async n => ({ ...n, arTitle: await translateToArabicLive(n.title) })));
+                        container.innerHTML = translated.map(n => {
+                            const dt = formatEventDateTime(n.pubDate);
+                            return `
+                                <a href="${n.link || '#'}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line hover:border-maitha rounded-xl p-3.5 space-y-1.5 transition">
+                                    <div class="flex items-center justify-between text-[10px]">
+                                        <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${feed.name}</span>
+                                        <span class="text-zinc-400 mono-num">🇦🇪 ${dt.uaeTime}</span>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-white leading-snug">${n.arTitle}</h4>
+                                    <p class="text-[10px] text-zinc-500 truncate" dir="ltr">${n.title}</p>
+                                </a>`;
+                        }).join('');
+                        return;
+                    }
+                } catch (e) {}
+            }
+            // مصدر احتياطي مضمون 100% من TradingView في حال تعطل الـ RSS
+            container.innerHTML = `<div class="rounded-xl overflow-hidden border border-line bg-panel" style="height: 500px;"><div id="tv_crypto_news_fallback" class="w-full h-full"></div></div>`;
+            const fb = document.getElementById('tv_crypto_news_fallback');
+            if (fb) {
+                const s = document.createElement('script');
+                s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js';
+                s.async = true;
+                s.innerHTML = JSON.stringify({ "feedMode": "market", "market": "crypto", "isTransparent": true, "width": "100%", "height": "100%", "colorTheme": "dark", "locale": "ar_AE" });
+                fb.appendChild(s);
+            }
         }
 
         function toggleRiskCalc() { const p = document.getElementById('riskCalcPanel'); if (p) { p.classList.toggle('hidden'); calculateRisk(); } }
