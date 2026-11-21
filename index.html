@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
     <script>
-        const APP_UI_VERSION = "1.8";
+        const APP_UI_VERSION = "1.9";
         (function() {
             try {
                 const savedVer = localStorage.getItem("mtrade_ui_ver");
@@ -162,9 +162,9 @@
         </div>
     </div>
 
-    <!-- نافذة قراءة الخبر داخل التطبيق (بدون الخروج من التطبيق) -->
+    <!-- نافذة قراءة الخبر الكامل وترجمته داخل التطبيق -->
     <div id="newsReaderModal" class="hidden fixed inset-0 z-[120] bg-black/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-3">
-        <div class="bg-panel border border-line rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden shadow-2xl" style="border-top: 3px solid #F5C400;">
+        <div class="bg-panel border border-line rounded-2xl w-full max-w-lg max-h-[88vh] flex flex-col overflow-hidden shadow-2xl" style="border-top: 3px solid #F5C400;">
             <div class="px-4 py-3 border-b border-line flex items-center justify-between bg-surface">
                 <div class="flex items-center gap-2">
                     <span class="px-2 py-0.5 rounded text-[10px] font-black text-black bg-maitha" id="nrSource">أخبار</span>
@@ -173,13 +173,19 @@
                 <button onclick="closeNewsReader()" class="px-3 py-1.5 rounded-lg bg-panel border border-maitha text-maitha text-xs font-black active:scale-95 transition">← رجوع للتطبيق</button>
             </div>
             <div class="p-4 space-y-3 overflow-y-auto flex-1">
-                <h3 id="nrTitleAr" class="text-sm font-black text-white leading-relaxed"></h3>
+                <h3 id="nrTitleAr" class="text-sm font-black text-white leading-relaxed" dir="auto"></h3>
                 <p id="nrTitleOrig" class="text-[11px] font-bold text-zinc-400 leading-snug pb-2 border-b border-line" dir="ltr"></p>
-                <div id="nrBodyAr" class="text-xs text-zinc-200 leading-loose font-semibold whitespace-pre-line">جاري ترجمة تفاصيل الخبر...</div>
+                <div id="nrStatusTag" class="hidden text-[10px] font-extrabold text-maitha bg-surface border border-line rounded-lg px-2.5 py-1.5">⏳ جاري جلب نص الخبر بالكامل...</div>
+                <div id="nrBodyAr" class="text-xs text-zinc-200 leading-loose font-semibold whitespace-pre-line" dir="auto">جاري التحميل...</div>
             </div>
-            <div class="px-4 py-3 border-t border-line bg-surface flex items-center justify-between gap-2">
-                <button onclick="copyCurrentNewsLink()" class="px-3 py-2 rounded-lg bg-panel border border-line hover:border-maitha text-zinc-300 text-[11px] font-bold active:scale-95 transition">📋 نسخ رابط المصدر</button>
-                <button onclick="closeNewsReader()" class="px-4 py-2 rounded-lg bg-maitha text-black text-xs font-black active:scale-95 transition">إغلاق ✕</button>
+            <div class="px-3.5 py-3 border-t border-line bg-surface flex items-center justify-between gap-2 flex-wrap">
+                <div class="flex items-center gap-1.5">
+                    <button id="nrTranslateBtn" onclick="translateOpenArticle()" class="px-3 py-2 rounded-lg bg-maitha text-black text-[11px] font-black active:scale-95 transition flex items-center gap-1">
+                        <span>🌐</span><span>ترجمة للعربي</span>
+                    </button>
+                    <button onclick="copyCurrentNewsLink()" class="px-3 py-2 rounded-lg bg-panel border border-line hover:border-maitha text-zinc-300 text-[11px] font-bold active:scale-95 transition">📋 نسخ الرابط</button>
+                </div>
+                <button onclick="closeNewsReader()" class="px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-black active:scale-95 transition">إغلاق ✕</button>
             </div>
         </div>
     </div>
@@ -260,7 +266,7 @@
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.8</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.9</span>
             </p>
         </div>
     </div>
@@ -273,7 +279,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.8</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.9</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -295,7 +301,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.8</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.9</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت.</p>
                     </div>
@@ -316,7 +322,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.8</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.9</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على التثبيت.</p>
                     </div>
@@ -539,6 +545,10 @@
                     <p class="text-[11px] text-zinc-300 leading-relaxed font-semibold">
                         اللهم ارزقنا من واسع فضلك. تذكّر دائماً: <b class="text-white">التزم بإدارة رأس المال</b>، ضع وقف الخسارة فور الدخول، وأمّن صفقتك بعد تحقق الهدف الأول.
                     </p>
+                    <div class="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-white/10">
+                        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>الفحص التلقائي 24/7 يعمل بالخلفية</span></span>
+                        <span id="engineLastScanBadge" class="text-maitha font-bold mono-num">آخر فحص: --</span>
+                    </div>
                     <div id="signalsNewsWarning" class="hidden rounded-lg px-3 py-2 text-[11px] font-black text-rose-300 flex items-center gap-2" style="background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.45);">
                         <span>🚨</span>
                         <span id="signalsNewsWarningText">تحذير: يوجد خبر اقتصادي قوي قريب — يرجى الحذر وتقليل حجم العقد أو تأمين الصفقات!</span>
@@ -793,7 +803,7 @@
             <section id="tab-download" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2></div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.8</span>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.9</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
@@ -805,7 +815,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4><span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.8</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.9</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون</b> مدى الحياة بدون شهادة.</p>
                         </div>
@@ -820,7 +830,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الأندرويد</h4><span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.8</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.9</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة وثبّته على جهازك.</p>
                         </div>
@@ -926,7 +936,7 @@
                     <!-- زر التحديث الفوري -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
-                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.8</span>)</h4>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.9</span>)</h4>
                             <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع.</p>
                         </div>
                         <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">تحديث الآن ↻</button>
@@ -1133,32 +1143,175 @@
         }
 
 
-        // ================= قارئ الأخبار المدمج داخل التطبيق =================
+        // ================= قارئ الأخبار الكامل والترجمة الفورية عبر السيرفر =================
+        let workerBaseUrl = '';
         let currentReadingNewsLink = '';
+        let currentReadingOrigTitle = '';
+        let currentReadingFullText = '';
+        let currentReadingTranslatedText = '';
+        let currentReadingTranslatedTitle = '';
+        let isShowingArabicReader = false;
+
+        async function loadEngineMeta() {
+            try {
+                const r = await fetchWithTimeout(`${FIREBASE_DB_URL}/mtrade_engine_meta.json`, 5000);
+                const meta = await r.json();
+                if (meta?.worker_url) workerBaseUrl = meta.worker_url.replace(/\/+$/, '');
+                const badge = document.getElementById('engineLastScanBadge');
+                if (badge && meta?.last_scan_uae) {
+                    badge.textContent = `آخر فحص: ${meta.last_scan_uae} (${meta.trigger_type || 'تلقائي'})`;
+                }
+            } catch (e) {}
+        }
 
         function stripHtmlTags(str) {
             return String(str || '').replace(/<[^>]*>?/gm, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
         }
 
+        async function translateViaServerOrFallback(text) {
+            const raw = String(text || '').trim();
+            if (!raw) return '';
+            // 1. المحاولة الأولى: عبر سيرفر Cloudflare Worker الخاص بنا (بدون حظر CORS)
+            if (workerBaseUrl) {
+                try {
+                    const r = await fetch(`${workerBaseUrl}/translate`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: raw })
+                    });
+                    if (r.ok) {
+                        const d = await r.json();
+                        if (d?.ok && d.translated) return d.translated;
+                    }
+                } catch (e) {}
+            }
+            // 2. المحاولة الثانية: ترجمة مباشرة عبر Google / MyMemory
+            const parts = raw.split(/\n+/).filter(Boolean);
+            const out = [];
+            for (const p of parts.slice(0, 8)) {
+                let tr = await translateToArabicLive(p);
+                if (tr === p) {
+                    try {
+                        const r2 = await fetchWithTimeout(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(p.slice(0, 480))}&langpair=en|ar`, 5000);
+                        const d2 = await r2.json();
+                        if (d2?.responseData?.translatedText) tr = d2.responseData.translatedText;
+                    } catch (e) {}
+                }
+                out.push(tr);
+            }
+            return out.join('\n\n');
+        }
+
+        async function fetchFullArticleForReader(url, fallbackSummary) {
+            if (!url || url === '#') return fallbackSummary;
+            // 1. عبر سيرفر Cloudflare Worker الخاص بنا (أسرع وأنظف)
+            if (workerBaseUrl) {
+                try {
+                    const r = await fetchWithTimeout(`${workerBaseUrl}/article?url=${encodeURIComponent(url)}`, 9000);
+                    const d = await r.json();
+                    if (d?.ok && d.text && d.text.length > fallbackSummary.length) return d.text;
+                } catch (e) {}
+            }
+            // 2. احتياطي عبر AllOrigins
+            try {
+                const r2 = await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, 8500);
+                const html = await r2.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const root = doc.querySelector('article') || doc.body;
+                const ps = Array.from(root.querySelectorAll('p'))
+                    .map(p => (p.textContent || '').replace(/\s+/g, ' ').trim())
+                    .filter(t => t.length >= 45 && !/cookie|subscribe|sign up|all rights reserved/i.test(t))
+                    .slice(0, 16);
+                const full = ps.join('\n\n');
+                if (full.length > fallbackSummary.length) return full;
+            } catch (e) {}
+            return fallbackSummary;
+        }
+
         async function openNewsReader(type, idx) {
             const item = type === 'crypto' ? (window._cryptoNewsItems || [])[idx] : (appState.newsFeed || [])[idx];
             if (!item) return;
+
             currentReadingNewsLink = item.link || '';
+            currentReadingOrigTitle = item.orig || item.title || '';
+            currentReadingFullText = item.cleanDesc || item.title || '';
+            currentReadingTranslatedText = '';
+            currentReadingTranslatedTitle = '';
+            isShowingArabicReader = false;
+
+            const btn = document.getElementById('nrTranslateBtn');
+            const statusTag = document.getElementById('nrStatusTag');
+            const bodyEl = document.getElementById('nrBodyAr');
+
             document.getElementById('nrSource').textContent = item.sourceName || item.source || 'أخبار';
             document.getElementById('nrTime').textContent = `🇦🇪 ${item.uaeTime || '--:--'}`;
-            document.getElementById('nrTitleAr').textContent = item.arTitle || item.title || '';
-            document.getElementById('nrTitleOrig').textContent = item.orig || item.title || '';
-            const bodyEl = document.getElementById('nrBodyAr');
-            bodyEl.textContent = 'جاري ترجمة تفاصيل الخبر للغة العربية...';
+            document.getElementById('nrTitleAr').textContent = item.arTitle || currentReadingOrigTitle;
+            document.getElementById('nrTitleOrig').textContent = currentReadingOrigTitle;
+            if (btn) { btn.disabled = false; btn.innerHTML = '<span>🌐</span><span>ترجمة للعربي</span>'; }
+
+            bodyEl.dir = 'auto';
+            bodyEl.textContent = currentReadingFullText || 'جاري تحميل الخبر...';
+            if (statusTag) { statusTag.textContent = '⏳ جاري جلب نص الخبر بالكامل من المصدر...'; statusTag.classList.remove('hidden'); }
             document.getElementById('newsReaderModal')?.classList.remove('hidden');
 
-            const desc = (item.cleanDesc || '').slice(0, 900);
-            if (desc) {
-                const arBody = await translateToArabicLive(desc);
-                bodyEl.textContent = arBody || desc;
-            } else {
-                bodyEl.textContent = item.arTitle || 'لا توجد تفاصيل إضافية لهذا الخبر.';
+            // جلب الخبر بالكامل في الخلفية
+            if (!workerBaseUrl) await loadEngineMeta();
+            const fullText = await fetchFullArticleForReader(currentReadingNewsLink, currentReadingFullText);
+            currentReadingFullText = fullText;
+
+            if (!isShowingArabicReader) {
+                bodyEl.textContent = fullText;
             }
+            if (statusTag) {
+                statusTag.textContent = fullText.length > 350 ? '✅ تم جلب الخبر بالكامل — اضغط "ترجمة للعربي" بالأسفل للترجمة الفورية' : 'ℹ️ اضغط "ترجمة للعربي" بالأسفل لترجمة النص فوراً';
+            }
+        }
+
+        async function translateOpenArticle() {
+            const btn = document.getElementById('nrTranslateBtn');
+            const bodyEl = document.getElementById('nrBodyAr');
+            const titleEl = document.getElementById('nrTitleAr');
+            const statusTag = document.getElementById('nrStatusTag');
+
+            // التبديل بين العربي والأصلي
+            if (isShowingArabicReader) {
+                isShowingArabicReader = false;
+                bodyEl.dir = 'ltr';
+                bodyEl.textContent = currentReadingFullText;
+                titleEl.textContent = currentReadingOrigTitle;
+                if (btn) btn.innerHTML = '<span>🌐</span><span>ترجمة للعربي</span>';
+                return;
+            }
+
+            if (currentReadingTranslatedText) {
+                isShowingArabicReader = true;
+                bodyEl.dir = 'rtl';
+                bodyEl.textContent = currentReadingTranslatedText;
+                if (currentReadingTranslatedTitle) titleEl.textContent = currentReadingTranslatedTitle;
+                if (btn) btn.innerHTML = '<span>🇬🇧</span><span>النص الأصلي</span>';
+                return;
+            }
+
+            if (btn) { btn.disabled = true; btn.innerHTML = '<span>⏳</span><span>جاري الترجمة...</span>'; }
+            if (statusTag) { statusTag.textContent = '🌐 جاري ترجمة الخبر بالكامل إلى العربية...'; statusTag.classList.remove('hidden'); }
+
+            if (!workerBaseUrl) await loadEngineMeta();
+            const [trTitle, trBody] = await Promise.all([
+                translateViaServerOrFallback(currentReadingOrigTitle),
+                translateViaServerOrFallback(currentReadingFullText)
+            ]);
+
+            currentReadingTranslatedTitle = trTitle || currentReadingOrigTitle;
+            currentReadingTranslatedText = trBody || currentReadingFullText;
+            isShowingArabicReader = true;
+
+            titleEl.textContent = currentReadingTranslatedTitle;
+            bodyEl.dir = 'rtl';
+            bodyEl.textContent = currentReadingTranslatedText;
+
+            if (statusTag) statusTag.classList.add('hidden');
+            if (btn) { btn.disabled = false; btn.innerHTML = '<span>🇬🇧</span><span>النص الأصلي</span>'; }
+            showToast('تمت ترجمة الخبر بالكامل للعربية ✅');
         }
 
         function closeNewsReader() {
@@ -1413,11 +1566,13 @@
                 loadChart('OANDA:XAUUSD');
                 calculateRisk();
                 fetchFromFirebase(true);
+                loadEngineMeta();
                 fetchLiveSignals(false);
                 loadRealEconomicCalendar(false);
                 checkAdminBroadcast();
                 setInterval(() => {
                     fetchFromFirebase(false);
+                    loadEngineMeta();
                     fetchLiveSignals(false);
                     verifyActiveSession();
                     checkAdminBroadcast();
