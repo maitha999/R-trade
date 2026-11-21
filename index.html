@@ -14,8 +14,7 @@
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
     <script>
-        // الحل الجذري لتحديث التطبيقات تلقائياً عند كل تعديل (غيّر الرقم عند كل تحديث جديد)
-        const APP_UI_VERSION = "1.2";
+        const APP_UI_VERSION = "1.3";
         (function() {
             try {
                 const savedVer = localStorage.getItem("mtrade_ui_ver");
@@ -90,34 +89,22 @@
             padding-bottom: max(10px, env(safe-area-inset-bottom));
         }
 
-        .nav-active {
-            color: #F5C400 !important;
-            border-top: 2px solid #F5C400;
-        }
-        .nav-inactive {
-            color: #71717A !important;
-            border-top: 2px solid transparent;
-        }
+        .nav-active { color: #F5C400 !important; border-top: 2px solid #F5C400; }
+        .nav-inactive { color: #71717A !important; border-top: 2px solid transparent; }
 
-        .mono-num {
-            font-family: 'JetBrains Mono', monospace;
-            font-variant-numeric: tabular-nums;
-        }
+        .mono-num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
 
         #toastBox {
             position: fixed;
             top: calc(20px + env(safe-area-inset-top));
             left: 50%;
             transform: translateX(-50%) translateY(-20px);
-            z-index: 130;
+            z-index: 140;
             opacity: 0;
             pointer-events: none;
             transition: all 0.25s ease;
         }
-        #toastBox.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        #toastBox.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         #jumpNextFloatingBtn {
             position: fixed;
@@ -127,11 +114,17 @@
             box-shadow: 0 8px 24px rgba(245, 196, 0, 0.28);
         }
 
-        @keyframes pulseBorder {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.32); }
-            50% { box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.10); }
+        /* مفتاح التبديل للأصوات (Toggle Switch) */
+        .toggle-track {
+            width: 42px; height: 24px; border-radius: 999px;
+            background: #27272A; position: relative; transition: 0.2s; cursor: pointer; flex-shrink: 0;
         }
-        .urgent-radar { animation: pulseBorder 1.8s infinite; }
+        .toggle-track.on { background: #F5C400; }
+        .toggle-thumb {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #fff; position: absolute; top: 3px; right: 3px; transition: 0.2s;
+        }
+        .toggle-track.on .toggle-thumb { right: 21px; background: #000; }
 
         @keyframes nextCardGlow {
             0%, 100% { box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.22); }
@@ -149,7 +142,7 @@
         تم التحديث بنجاح
     </div>
 
-    <!-- نافذة مركز التنبيهات (Notification Center) -->
+    <!-- نافذة مركز التنبيهات -->
     <div id="notifModal" class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-3">
         <div class="bg-panel border border-line rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl" style="border-top: 3px solid #F5C400;">
             <div class="px-4 py-3 border-b border-line flex items-center justify-between bg-surface">
@@ -168,7 +161,7 @@
         </div>
     </div>
 
-    <!-- ================= شاشة تسجيل الدخول المحمية (تظهر أولاً) ================= -->
+    <!-- ================= شاشة تسجيل الدخول المحمية ================= -->
     <div id="loginGate" class="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-obsidian relative overflow-hidden">
         <div class="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-10 blur-3xl bg-maitha"></div>
         <div class="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full opacity-10 blur-3xl bg-maitha"></div>
@@ -188,13 +181,23 @@
             <div class="bg-panel border border-line rounded-2xl p-5 space-y-4 shadow-2xl" style="border-top: 3px solid #F5C400;">
                 <div class="space-y-1">
                     <h2 class="text-sm font-black text-white">تسجيل الدخول بكود الاشتراك</h2>
-                    <p class="text-[11px] text-zinc-400">أدخل مفتاح التفعيل الخاص بك للوصول إلى الشارت، الجلسات العالمية، والأخبار المباشرة.</p>
+                    <p class="text-[11px] text-zinc-400">أدخل مفتاح التفعيل الخاص بك للوصول إلى التوصيات الحية، الشارت، والأخبار المباشرة.</p>
                 </div>
 
+                <!-- مربع الكود مع أيقونة اللصق بداخله -->
                 <div class="space-y-2">
                     <label class="text-[11px] font-extrabold text-zinc-300 block">🔑 كود الاشتراك (Activation Key)</label>
-                    <input id="loginCodeInput" type="text" dir="ltr" placeholder="MT-XXXX-XXXX" autocomplete="off"
-                        class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-4 py-3 text-center text-sm font-black text-maitha tracking-widest uppercase mono-num outline-none transition">
+                    <div class="relative flex items-center">
+                        <input id="loginCodeInput" type="text" dir="ltr" placeholder="MT-XXXX-XXXX" autocomplete="off"
+                            class="w-full bg-surface border border-line focus:border-maitha rounded-xl pl-16 pr-4 py-3 text-center text-sm font-black text-maitha tracking-widest uppercase mono-num outline-none transition">
+                        <button type="button" onclick="pasteLoginCode()" title="لصق الكود"
+                            class="absolute left-2 px-2.5 py-1.5 rounded-lg bg-panel border border-line hover:border-maitha text-maitha text-[10px] font-black flex items-center gap-1 active:scale-95 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                            <span>لصق</span>
+                        </button>
+                    </div>
                 </div>
 
                 <label class="flex items-center gap-2.5 cursor-pointer select-none">
@@ -209,7 +212,7 @@
                 </button>
             </div>
 
-            <!-- زر الانتقال السريع لصفحة تحميل التطبيق قبل تسجيل الدخول -->
+            <!-- زر لتحميل التطبيق -->
             <button onclick="openPublicDownload()" class="w-full py-3 rounded-2xl bg-panel border border-line hover:border-maitha text-white text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition shadow-md">
                 <svg class="w-4 h-4 text-maitha" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -223,25 +226,23 @@
                     <h3 class="text-xs font-black text-white">ليس لديك كود اشتراك؟</h3>
                 </div>
                 <ol class="space-y-1.5 text-[11px] text-zinc-400 leading-relaxed">
-                    <li>1. تواصل مباشرة مع الإدارة عبر تيليجرام لاختيار باقة الاشتراك المناسبة (تجريبي، أسبوعي، شهري، أو ربع سنوي).</li>
-                    <li>2. سيتم إنشاء <b class="text-zinc-200">كود تفعيل خاص بك</b> مكون من حروف وأرقام ويرتبط بجهازك لحماية اشتراكك.</li>
-                    <li>3. أدخل الكود في الأعلى واستمتع بجميع مميزات <b class="text-maitha">M TRADE VIP</b> فوراً.</li>
+                    <li>1. تواصل مباشرة مع الإدارة عبر تيليجرام لاختيار باقة الاشتراك المناسبة.</li>
+                    <li>2. سيتم إنشاء <b class="text-zinc-200">كود تفعيل خاص بك</b> يرتبط بجهازك لحماية اشتراكك.</li>
+                    <li>3. الصق الكود في الأعلى واستمتع بجميع مميزات <b class="text-maitha">M TRADE VIP</b> فوراً.</li>
                 </ol>
                 <a href="https://t.me/K6633" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 rounded-xl bg-surface border border-maitha text-maitha hover:bg-maitha hover:text-black text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                    </svg>
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     <span>الحصول على كود الاشتراك</span>
                 </a>
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.2</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.3</span>
             </p>
         </div>
     </div>
 
-    <!-- ================= صفحة التنزيل العامة (متاحة من شاشة تسجيل الدخول) ================= -->
+    <!-- ================= صفحة التنزيل العامة ================= -->
     <div id="publicDownloadGate" class="hidden min-h-screen px-4 py-6 bg-obsidian">
         <div class="max-w-3xl mx-auto space-y-4">
             <div class="flex items-center justify-between bg-panel border border-line rounded-xl p-3.5">
@@ -249,7 +250,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.2</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.3</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -271,15 +272,12 @@
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.2</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.3</span>
                         </div>
-                        <p class="text-[11px] text-zinc-400 leading-relaxed">
-                            يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة بدون حظر أو انتهاء شهادة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت أدناه.
-                        </p>
+                        <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت.</p>
                     </div>
                     <a href="https://r-trade.vip/M-Trade.mobileconfig" class="w-full py-2.5 rounded-lg bg-maitha hover:opacity-95 text-black text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition">
-                        <span>تثبيت مباشر للآيفون (iOS)</span>
-                        <span>⬇</span>
+                        <span>تثبيت مباشر للآيفون (iOS)</span><span>⬇</span>
                     </a>
                 </div>
 
@@ -295,15 +293,12 @@
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.2</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.3</span>
                         </div>
-                        <p class="text-[11px] text-zinc-400 leading-relaxed">
-                            حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على خيار التثبيت من مصادر غير معروفة إن طُلب منك.
-                        </p>
+                        <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على التثبيت.</p>
                     </div>
                     <a href="https://github.com/maitha999/R-trade/releases/download/v1.0/M-Trade.apk" class="w-full py-2.5 rounded-lg text-white text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition" style="background: #10B981;">
-                        <span>تحميل للأندرويد (APK)</span>
-                        <span>⬇</span>
+                        <span>تحميل للأندرويد (APK)</span><span>⬇</span>
                     </a>
                 </div>
             </div>
@@ -314,22 +309,21 @@
                     <h4 class="text-xs font-black text-white">طريقة تثبيت نسخة الآيفون (iOS) في 5 خطوات سريعة</h4>
                 </div>
                 <ol class="space-y-2 text-[11px] text-zinc-300 leading-relaxed">
-                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>افتح الموقع من متصفح <b class="text-white">Safari</b> واضغط على زر <b class="text-maitha">تثبيت مباشر للآيفون</b>، ثم اضغط <b class="text-white">Allow (سماح)</b>.</span></li>
-                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>عند ظهور رسالة <b class="text-white">Profile Downloaded</b> اضغط <b class="text-white">Close (إغلاق)</b>، ثم افتح <b class="text-white">الإعدادات (Settings)</b>.</span></li>
-                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>توجه إلى <b class="text-white">عام (General)</b> ← <b class="text-white">VPN وإدارة الجهاز</b>، واضغط على <b class="text-maitha">M-Trade VIP</b>.</span></li>
-                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>اضغط على <b class="text-white">Install (تثبيت)</b> في الأعلى وأدخل رمز قفل الشاشة.</span></li>
-                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span><span>اضغط <b class="text-white">Install (تثبيت)</b> مرة أخرى لتأكيد التثبيت، وستظهر أيقونة <b class="text-maitha">M TRADE</b> فوراً.</span></li>
+                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>افتح الموقع من <b class="text-white">Safari</b> واضغط <b class="text-maitha">تثبيت مباشر للآيفون</b>، ثم اضغط <b class="text-white">Allow (سماح)</b>.</span></li>
+                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>اضغط <b class="text-white">Close</b> ثم افتح <b class="text-white">الإعدادات (Settings)</b>.</span></li>
+                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>توجه إلى <b class="text-white">عام</b> ← <b class="text-white">VPN وإدارة الجهاز</b> ← اضغط <b class="text-maitha">M-Trade VIP</b>.</span></li>
+                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>اضغط <b class="text-white">Install (تثبيت)</b> وأدخل رمز القفل.</span></li>
+                    <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span><span>أكّد التثبيت بالضغط على <b class="text-white">Install</b>، وستظهر أيقونة <b class="text-maitha">M TRADE</b> فوراً.</span></li>
                 </ol>
             </div>
         </div>
     </div>
 
-    <!-- ================= التطبيق الرئيسي (يظهر بعد التحقق من الاشتراك) ================= -->
+    <!-- ================= التطبيق الرئيسي ================= -->
     <div id="mainAppWrapper" class="hidden">
 
         <button id="jumpNextFloatingBtn" onclick="scrollToNextUpcomingNews(true)" class="hidden px-3.5 py-2 rounded-full bg-maitha text-black text-xs font-black items-center gap-1.5 active:scale-95 transition">
-            <span>🎯</span>
-            <span>الخبر القادم</span>
+            <span>🎯</span><span>الخبر القادم</span>
         </button>
 
         <!-- الشريط العلوي الثابت -->
@@ -339,9 +333,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-10 h-10 rounded-lg border border-maitha object-cover bg-black shrink-0">
                     <div>
                         <div class="flex items-center gap-1.5">
-                            <h1 class="font-black text-base tracking-wide text-white uppercase leading-none">
-                                M <span class="text-maitha">TRADE</span>
-                            </h1>
+                            <h1 class="font-black text-base tracking-wide text-white uppercase leading-none">M <span class="text-maitha">TRADE</span></h1>
                             <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold text-maitha uppercase tracking-wider" style="background: rgba(245,196,0,0.14); border: 1px solid rgba(245,196,0,0.4);">VIP</span>
                         </div>
                         <div class="flex items-center gap-1.5 mt-1">
@@ -351,48 +343,55 @@
                     </div>
                 </div>
 
-                <!-- أدوات الشريط العلوي: جرس التنبيهات + أفاتار المشترك -->
                 <div class="flex items-center gap-2">
                     <button onclick="openNotifModal()" class="relative w-9 h-9 rounded-lg bg-surface border border-line hover:border-maitha flex items-center justify-center text-zinc-200 active:scale-95 transition" title="مركز التنبيهات">
                         <span class="text-base leading-none">🔔</span>
                         <span id="notifBadgeCount" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center mono-num">0</span>
                     </button>
-
-                    <button onclick="switchTab('account')" id="headerUserAvatar" class="w-9 h-9 rounded-lg bg-maitha text-black font-black text-xs tracking-wider uppercase flex items-center justify-center active:scale-95 transition shadow-sm mono-num" title="حسابي">
-                        MT
-                    </button>
+                    <button onclick="switchTab('account')" id="headerUserAvatar" class="w-9 h-9 rounded-lg bg-maitha text-black font-black text-xs tracking-wider uppercase flex items-center justify-center active:scale-95 transition shadow-sm mono-num" title="حسابي">MT</button>
                 </div>
             </div>
         </header>
 
-        <!-- المحتوى الرئيسي -->
         <main class="relative z-10 max-w-5xl mx-auto px-4 pt-3 space-y-4">
 
-            <!-- شريط إشعارات الإدارة الفورية (Broadcast) -->
+            <!-- شريط الرسالة الخاصة للمشترك من الإدارة (VIP Private Message) -->
+            <div id="privateAdminMsgBar" class="hidden rounded-xl px-3.5 py-3 flex items-start justify-between gap-2.5" style="background: linear-gradient(135deg, rgba(16,185,129,0.16) 0%, rgba(13,13,13,0.95) 100%); border: 1px solid rgba(16,185,129,0.5);">
+                <div class="flex items-start gap-2.5 text-xs">
+                    <span class="text-base">📩</span>
+                    <div>
+                        <span class="font-black text-emerald-400 block text-[10px]">رسالة خاصة لك من إدارة M TRADE • <span id="privateMsgTime" class="mono-num"></span></span>
+                        <p id="privateMsgText" class="font-bold text-white leading-snug mt-0.5"></p>
+                    </div>
+                </div>
+                <button onclick="dismissPrivateMsg()" class="text-zinc-400 hover:text-white text-xs font-black px-1">✕</button>
+            </div>
+
+            <!-- شريط الإشعار العام من الإدارة -->
             <div id="adminBroadcastBar" class="hidden rounded-lg px-3.5 py-2.5 flex items-start justify-between gap-2.5" style="background: rgba(245,196,0,0.12); border: 1px solid rgba(245,196,0,0.45);">
                 <div class="flex items-start gap-2 text-xs">
                     <span>📢</span>
                     <div>
-                        <span class="font-black text-maitha block text-[10px]">إشعار من إدارة M TRADE • <span id="broadcastTime" class="mono-num"></span></span>
+                        <span class="font-black text-maitha block text-[10px]">إشعار عام من إدارة M TRADE • <span id="broadcastTime" class="mono-num"></span></span>
                         <p id="broadcastMessage" class="font-bold text-white leading-snug mt-0.5"></p>
                     </div>
                 </div>
                 <button onclick="dismissBroadcast()" class="text-zinc-400 hover:text-white text-xs font-black px-1">✕</button>
             </div>
 
-            <!-- شريط الترحيب السريع للمشترك -->
+            <!-- شريط الترحيب -->
             <div id="welcomeGreetingBanner" class="bg-panel border border-line rounded-lg px-3.5 py-2.5 flex items-center justify-between gap-2" style="border-right: 3px solid #F5C400;">
                 <div class="flex items-center gap-2.5 min-w-0">
                     <div id="welcomeAvatarMini" class="w-8 h-8 rounded-lg bg-maitha text-black font-black text-[11px] flex items-center justify-center shrink-0 uppercase mono-num">MT</div>
                     <div class="truncate">
                         <p id="welcomeGreetingText" class="text-xs font-black text-white truncate">مرحباً بك في M TRADE VIP</p>
-                        <p id="welcomeSubText" class="text-[10px] font-bold text-zinc-400 truncate">نتمنى لك جلسة تداول موفقة اليوم</p>
+                        <p id="welcomeSubText" class="text-[10px] font-bold text-zinc-400 truncate">توكل على الله، والتزم بإدارة رأس المال</p>
                     </div>
                 </div>
                 <button onclick="document.getElementById('welcomeGreetingBanner').classList.add('hidden')" class="text-zinc-500 hover:text-white text-xs font-bold px-1 shrink-0">✕</button>
             </div>
 
-            <!-- شريط التوقيت والتاريخ (الإمارات والسعودية - نظام 12 ساعة) -->
+            <!-- شريط التوقيت -->
             <div class="bg-panel border border-line rounded-lg px-3.5 py-2.5 space-y-2">
                 <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-line">
                     <span class="text-zinc-400 font-bold">📅 التاريخ اليوم:</span>
@@ -415,8 +414,7 @@
 
             <!-- ================= 1. قسم الرئيسية ================= -->
             <section id="tab-home" class="space-y-4">
-
-                <!-- رادار الأخبار (في الرئيسية فقط) -->
+                <!-- رادار الأخبار -->
                 <div id="botAlertBanner" class="bg-panel border border-line rounded-lg px-3.5 py-3 space-y-2.5 transition" style="border-right: 4px solid #F5C400;">
                     <div id="nextNewsRadar" class="flex flex-wrap items-center justify-between gap-2.5">
                         <div class="flex-1 min-w-[200px]">
@@ -440,8 +438,7 @@
                                 <span id="radarCountdown" class="text-xs font-black text-maitha mono-num">--:--:--</span>
                             </div>
                             <button onclick="toggleNewsAlarm()" id="alarmToggleBtn" class="px-2.5 py-2 rounded-lg bg-surface border border-line text-zinc-300 text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition">
-                                <span id="alarmIcon">🔕</span>
-                                <span id="alarmText">تنبيه</span>
+                                <span id="alarmIcon">🔕</span><span id="alarmText">تنبيه</span>
                             </button>
                         </div>
                     </div>
@@ -449,45 +446,27 @@
                     <div id="smartRiskBar" class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[11px]">
                         <div class="flex items-center gap-1.5 flex-1">
                             <span class="text-maitha font-black whitespace-nowrap">⚡ حالة التذبذب:</span>
-                            <span id="smartMarketAdvice" class="text-zinc-300 font-bold leading-snug">
-                                السوق مستقر — يُنصح بالالتزام بإدارة رأس المال ووضع وقف الخسارة.
-                            </span>
+                            <span id="smartMarketAdvice" class="text-zinc-300 font-bold leading-snug">السوق مستقر — يُنصح بالالتزام بإدارة رأس المال ووضع وقف الخسارة.</span>
                         </div>
-                        <span id="smartRiskBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400 whitespace-nowrap" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">
-                            مخاطرة طبيعية
-                        </span>
+                        <span id="smartRiskBadge" class="px-2 py-0.5 rounded text-[10px] font-extrabold text-emerald-400 whitespace-nowrap" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">مخاطرة طبيعية</span>
                     </div>
                 </div>
 
-                <!-- جلسات الأسواق العالمية (مربعات رباعية مرتبة للجوال) -->
+                <!-- جلسات الأسواق العالمية -->
                 <div class="bg-panel border border-line rounded-lg p-3 space-y-2.5">
                     <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line">
                         <div class="flex items-center gap-2">
                             <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
                             <span class="text-xs font-black text-white">جلسات الأسواق العالمية</span>
                         </div>
-                        <div id="nextSessionBanner" class="px-2.5 py-1 rounded text-[10px] font-extrabold text-black bg-maitha">
-                            جاري الحساب...
-                        </div>
+                        <div id="nextSessionBanner" class="px-2.5 py-1 rounded text-[10px] font-extrabold text-black bg-maitha">جاري الحساب...</div>
                     </div>
-
                     <div class="flex flex-wrap items-center justify-between gap-1.5 px-2 py-1.5 rounded bg-surface border border-line text-[9px] font-bold">
-                        <span class="flex items-center gap-1 text-emerald-400">
-                            <span class="w-2 h-2 rounded-sm" style="background: rgba(16,185,129,0.35); border: 1px solid #10B981;"></span>
-                            مفتوح / جديد
-                        </span>
-                        <span class="flex items-center gap-1 text-amber-400">
-                            <span class="w-2 h-2 rounded-sm" style="background: rgba(245,158,11,0.3); border: 1px solid #F59E0B;"></span>
-                            تداخل جلستين
-                        </span>
-                        <span class="flex items-center gap-1 text-rose-400">
-                            <span class="w-2 h-2 rounded-sm" style="background: rgba(153,27,27,0.45); border: 1px solid #DC2626;"></span>
-                            مغلق / عطلة
-                        </span>
+                        <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-sm" style="background: rgba(16,185,129,0.35); border: 1px solid #10B981;"></span>مفتوح / جديد</span>
+                        <span class="flex items-center gap-1 text-amber-400"><span class="w-2 h-2 rounded-sm" style="background: rgba(245,158,11,0.3); border: 1px solid #F59E0B;"></span>تداخل جلستين</span>
+                        <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-sm" style="background: rgba(153,27,27,0.45); border: 1px solid #DC2626;"></span>مغلق / عطلة</span>
                     </div>
-
                     <div id="sessionsContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
-
                     <div id="marketStatusNote" class="rounded-md px-3 py-2 text-[10px] font-bold bg-surface border border-line text-zinc-300 flex flex-wrap items-center justify-between gap-1.5">
                         <span>⏳ جاري حساب حالة الإغلاق اليومي وعطلة الأسبوع...</span>
                     </div>
@@ -497,10 +476,11 @@
                 <div class="flex gap-2 overflow-x-auto pb-1">
                     <button onclick="changeSymbol('OANDA:XAUUSD', 'الذهب XAUUSD', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-extrabold whitespace-nowrap transition">XAUUSD الذهب</button>
                     <button onclick="changeSymbol('BINANCE:BTCUSDT', 'بيتكوين BTC', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">BTCUSDT بيتكوين</button>
+                    <button onclick="changeSymbol('NASDAQ:NDX', 'ناسداك NAS100', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">NAS100 ناسداك</button>
+                    <button onclick="changeSymbol('TVC:DJI', 'الداو جونز US30', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">US30 الداو</button>
                     <button onclick="changeSymbol('FX:EURUSD', 'يورو EURUSD', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">EURUSD يورو</button>
-                    <button onclick="changeSymbol('NASDAQ:NDX', 'ناسداك US100', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">US100 ناسداك</button>
+                    <button onclick="changeSymbol('FX:GBPJPY', 'المجنون GBPJPY', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">GBPJPY المجنون</button>
                     <button onclick="changeSymbol('TVC:USOIL', 'النفط USOIL', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">USOIL النفط</button>
-                    <button onclick="changeSymbol('TVC:DXY', 'مؤشر الدولار DXY', this)" class="symbol-btn px-3.5 py-2 rounded-lg bg-panel border border-line text-zinc-300 text-xs font-bold whitespace-nowrap transition">DXY الدولار</button>
                 </div>
 
                 <!-- الشارت -->
@@ -516,18 +496,51 @@
                 </div>
             </section>
 
-            <!-- ================= 2. قسم الأهداف ================= -->
-            <section id="tab-signals" class="hidden space-y-4">
+            <!-- ================= 2. قسم التوصيات الحية (30m & 1H) ================= -->
+            <section id="tab-signals" class="hidden space-y-3.5">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2">
                         <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
-                        <h2 class="text-sm font-black text-white">الأهداف والصفقات VIP</h2>
+                        <h2 class="text-sm font-black text-white">التوصيات والصفقات VIP</h2>
                     </div>
-                    <button onclick="toggleRiskCalc()" class="px-3 py-1.5 rounded-lg bg-surface border border-maitha text-maitha text-[11px] font-black active:scale-95 transition">
-                        🧮 حاسبة اللوت
-                    </button>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="toggleRiskCalc()" class="px-2.5 py-1.5 rounded-lg bg-surface border border-maitha text-maitha text-[11px] font-black active:scale-95 transition">🧮 حاسبة اللوت</button>
+                        <button onclick="fetchLiveSignals(true)" class="px-2.5 py-1.5 rounded-lg bg-maitha text-black text-[11px] font-black active:scale-95 transition">تحديث ↻</button>
+                    </div>
                 </div>
 
+                <!-- رسالة التوكل على الله وتحذير وقت الأخبار -->
+                <div id="signalsMindsetBox" class="rounded-xl p-3.5 space-y-2" style="background: linear-gradient(135deg, rgba(245,196,0,0.10) 0%, #0D0D0D 100%); border: 1px solid rgba(245,196,0,0.35);">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs font-black text-maitha">🤲 بسم الله وتوكلنا على الله</span>
+                        <span class="px-2 py-0.5 rounded bg-black/60 text-[10px] font-extrabold text-zinc-300">فريم 30m &amp; 1H</span>
+                    </div>
+                    <p class="text-[11px] text-zinc-300 leading-relaxed font-semibold">
+                        اللهم ارزقنا من واسع فضلك. تذكّر دائماً: <b class="text-white">التزم بإدارة رأس المال</b>، ضع وقف الخسارة فور الدخول، وأمّن صفقتك بعد تحقق الهدف الأول.
+                    </p>
+                    <div id="signalsNewsWarning" class="hidden rounded-lg px-3 py-2 text-[11px] font-black text-rose-300 flex items-center gap-2" style="background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.45);">
+                        <span>🚨</span>
+                        <span id="signalsNewsWarningText">تحذير: يوجد خبر اقتصادي قوي قريب — يرجى الحذر وتقليل حجم العقد أو تأمين الصفقات!</span>
+                    </div>
+                </div>
+
+                <!-- شريط إحصائيات التوصيات -->
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-panel border border-line rounded-xl p-2.5 text-center">
+                        <span class="text-[10px] text-zinc-400 font-bold block">صفقات نشطة</span>
+                        <span id="statActiveSigs" class="text-base font-black text-maitha mono-num">0</span>
+                    </div>
+                    <div class="bg-panel border border-line rounded-xl p-2.5 text-center">
+                        <span class="text-[10px] text-zinc-400 font-bold block">أهداف محققة ✅</span>
+                        <span id="statHitTargets" class="text-base font-black text-emerald-400 mono-num">0</span>
+                    </div>
+                    <div class="bg-panel border border-line rounded-xl p-2.5 text-center">
+                        <span class="text-[10px] text-zinc-400 font-bold block">إجمالي التوصيات</span>
+                        <span id="statTotalSigs" class="text-base font-black text-white mono-num">0</span>
+                    </div>
+                </div>
+
+                <!-- حاسبة اللوت وإدارة المخاطر -->
                 <div id="riskCalcPanel" class="hidden bg-panel border border-maitha rounded-lg p-3.5 space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-black text-maitha">حاسبة إدارة المخاطر وحجم اللوت</span>
@@ -559,44 +572,21 @@
                     </div>
                 </div>
 
-                <div class="bg-panel border border-line rounded-xl p-5 space-y-4" style="border-top: 3px solid #F5C400;">
-                    <div class="text-center space-y-2">
-                        <span class="inline-block px-3 py-1 rounded-full text-[11px] font-black text-black bg-maitha">🚀 قريباً في M TRADE VIP</span>
-                        <h3 class="text-base font-black text-white">نعمل على تجهيز منظومة تداول متكاملة تليق بكم</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed max-w-xl mx-auto">
-                            قريباً سيتم تفعيل قسم الصفقات والأهداف المباشرة بمميزات احترافية حصرية تشمل التوصيات الدقيقة، الربط الفوري مع بوت تيليجرام، وتنبيهات السوق الذكية.
-                        </p>
-                    </div>
+                <!-- فلاتر التوصيات (الفريم + الحالة) -->
+                <div class="flex gap-1.5 overflow-x-auto pb-1">
+                    <button onclick="setSignalFilter('all')" id="sflt-all" class="sig-flt px-3 py-1.5 rounded-md bg-maitha text-black text-[11px] font-extrabold whitespace-nowrap transition">الكل</button>
+                    <button onclick="setSignalFilter('active')" id="sflt-active" class="sig-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">🟢 النشطة فقط</button>
+                    <button onclick="setSignalFilter('30m')" id="sflt-30m" class="sig-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">⚡ فريم 30m</button>
+                    <button onclick="setSignalFilter('1h')" id="sflt-1h" class="sig-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">👑 فريم 1H</button>
+                    <button onclick="setSignalFilter('closed')" id="sflt-closed" class="sig-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">المنتهية</button>
+                </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                        <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
-                            <span class="text-xl">🎯</span>
-                            <div>
-                                <h4 class="text-xs font-black text-maitha">صفقات وأهداف مباشرة</h4>
-                                <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">نقاط دخول دقيقة، أهداف متعددة (TP1 / TP2 / TP3)، ووقف خسارة مدروس للذهب والعملات.</p>
-                            </div>
-                        </div>
-                        <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
-                            <span class="text-xl">🤖</span>
-                            <div>
-                                <h4 class="text-xs font-black text-maitha">بوت تيليجرام VIP التلقائي</h4>
-                                <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">إشعارات فورية لحظة صدور الصفقة أو تحديث الأهداف وتأمين الدخول مباشرة على هاتفك.</p>
-                            </div>
-                        </div>
-                        <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
-                            <span class="text-xl">⚡</span>
-                            <div>
-                                <h4 class="text-xs font-black text-maitha">رادار الأخبار والسيولة</h4>
-                                <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">تحليل فوري لنتائج الأخبار الاقتصادية وتأثيرها المباشر على الذهب XAUUSD والدولار.</p>
-                            </div>
-                        </div>
-                        <div class="bg-surface border border-line rounded-lg p-3.5 flex items-start gap-3">
-                            <span class="text-xl">📊</span>
-                            <div>
-                                <h4 class="text-xs font-black text-maitha">إحصائيات وأدوات ذكية</h4>
-                                <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">سجل شفاف لنسب النجاح الشهرية، حاسبة مخاطر متقدمة، ومناطق العرض والطلب اليومية.</p>
-                            </div>
-                        </div>
+                <!-- قائمة بطاقات التوصيات -->
+                <div id="signalsListContainer" class="space-y-3.5">
+                    <div class="bg-panel border border-line rounded-xl p-6 text-center space-y-2">
+                        <span class="text-2xl block">📡</span>
+                        <p class="text-xs font-black text-white">محرك التوصيات الذكي يراقب السوق الآن...</p>
+                        <p class="text-[11px] text-zinc-400">فور إغلاق شمعة تأكيد على أي من الـ 11 أداة مالية (فريم 30m أو 1H)، ستنزل الصفقة هنا تلقائياً مع تنبيه فوري.</p>
                     </div>
                 </div>
             </section>
@@ -609,13 +599,8 @@
                         <h2 class="text-sm font-black text-white">الأخبار الاقتصادية المباشرة</h2>
                     </div>
                     <div class="flex items-center gap-1.5">
-                        <button onclick="scrollToNextUpcomingNews(true)" class="px-2.5 py-1.5 rounded-lg bg-surface border border-maitha text-maitha text-[11px] font-black flex items-center gap-1 active:scale-95 transition">
-                            <span>🎯</span>
-                            <span>الخبر القادم</span>
-                        </button>
-                        <button onclick="refreshAllRealNews()" id="refreshNewsBtn" class="px-3 py-1.5 rounded-lg bg-maitha text-black text-[11px] font-black flex items-center gap-1.5 active:scale-95 transition">
-                            <span>تحديث ↻</span>
-                        </button>
+                        <button onclick="scrollToNextUpcomingNews(true)" class="px-2.5 py-1.5 rounded-lg bg-surface border border-maitha text-maitha text-[11px] font-black flex items-center gap-1 active:scale-95 transition"><span>🎯</span><span>الخبر القادم</span></button>
+                        <button onclick="refreshAllRealNews()" id="refreshNewsBtn" class="px-3 py-1.5 rounded-lg bg-maitha text-black text-[11px] font-black active:scale-95 transition">تحديث ↻</button>
                     </div>
                 </div>
 
@@ -635,44 +620,30 @@
                         <button onclick="setCalendarFilter('high')" id="flt-high" class="cal-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">قوي جداً 95%</button>
                         <button onclick="setCalendarFilter('usd')" id="flt-usd" class="cal-flt px-3 py-1.5 rounded-md bg-panel border border-line text-zinc-300 text-[11px] font-bold whitespace-nowrap transition">🇺🇸 الدولار USD</button>
                     </div>
-
                     <div id="newsCountSummary" class="bg-panel border border-line rounded-lg px-3.5 py-2 flex items-center justify-between text-[11px] font-bold">
                         <span class="text-zinc-400">📊 إجمالي الأخبار في هذا القسم:</span>
                         <span id="newsTotalCountBadge" class="px-2.5 py-0.5 rounded bg-maitha text-black font-black mono-num">0 خبر</span>
                     </div>
-
                     <div id="economicCalendarList" class="space-y-3">
-                        <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">
-                            جاري جلب البيانات الاقتصادية الحقيقية...
-                        </div>
+                        <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">جاري جلب البيانات الاقتصادية الحقيقية...</div>
                     </div>
                 </div>
 
                 <div id="news-live-view" class="hidden space-y-2">
-                    <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 520px;">
-                        <div id="tv_calendar_container" class="w-full h-full"></div>
-                    </div>
+                    <div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 520px;"><div id="tv_calendar_container" class="w-full h-full"></div></div>
                 </div>
 
                 <div id="news-feed-view" class="hidden space-y-2.5">
-                    <div id="newsFeedList" class="space-y-2.5">
-                        <div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">
-                            جاري جلب الأخبار العاجلة للأسواق...
-                        </div>
-                    </div>
+                    <div id="newsFeedList" class="space-y-2.5"><div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">جاري جلب الأخبار العاجلة...</div></div>
                 </div>
             </section>
 
             <!-- ================= 4. قسم التنزيل ================= -->
             <section id="tab-download" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
-                        <h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2>
-                    </div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.2</span>
+                    <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2></div>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.3</span>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
                         <div class="space-y-2.5">
@@ -681,23 +652,14 @@
                                     <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-white">
                                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.09-.52 2.72-1.3z"/></svg>
                                     </div>
-                                    <div>
-                                        <h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4>
-                                        <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
-                                    </div>
+                                    <div><h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4><span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.2</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.3</span>
                             </div>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed">
-                                يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة بدون حظر أو انتهاء شهادة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت أدناه.
-                            </p>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون</b> مدى الحياة بدون شهادة.</p>
                         </div>
-                        <a href="https://r-trade.vip/M-Trade.mobileconfig" class="w-full py-2.5 rounded-lg bg-maitha hover:opacity-95 text-black text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition">
-                            <span>تثبيت مباشر للآيفون (iOS)</span>
-                            <span>⬇</span>
-                        </a>
+                        <a href="https://r-trade.vip/M-Trade.mobileconfig" class="w-full py-2.5 rounded-lg bg-maitha hover:opacity-95 text-black text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition"><span>تثبيت مباشر للآيفون (iOS)</span><span>⬇</span></a>
                     </div>
-
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
                         <div class="space-y-2.5">
                             <div class="flex items-center justify-between">
@@ -705,141 +667,109 @@
                                     <div class="w-10 h-10 rounded-lg bg-surface border border-line flex items-center justify-center text-emerald-400">
                                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>
                                     </div>
-                                    <div>
-                                        <h4 class="text-sm font-black text-white">نسخة الأندرويد</h4>
-                                        <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
-                                    </div>
+                                    <div><h4 class="text-sm font-black text-white">نسخة الأندرويد</h4><span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.2</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.3</span>
                             </div>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed">
-                                حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على خيار التثبيت من مصادر غير معروفة إن طُلب منك.
-                            </p>
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة وثبّته على جهازك.</p>
                         </div>
-                        <a href="https://github.com/maitha999/R-trade/releases/download/v1.0/M-Trade.apk" class="w-full py-2.5 rounded-lg text-white text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition" style="background: #10B981;">
-                            <span>تحميل للأندرويد (APK)</span>
-                            <span>⬇</span>
-                        </a>
+                        <a href="https://github.com/maitha999/R-trade/releases/download/v1.0/M-Trade.apk" class="w-full py-2.5 rounded-lg text-white text-xs font-black flex items-center justify-center gap-2 active:scale-95 transition" style="background: #10B981;"><span>تحميل للأندرويد (APK)</span><span>⬇</span></a>
                     </div>
-                </div>
-
-                <div class="bg-panel border border-line rounded-xl p-4 space-y-3">
-                    <div class="flex items-center gap-2 pb-2 border-b border-line">
-                        <span class="w-1.5 h-4 rounded-sm bg-maitha"></span>
-                        <h4 class="text-xs font-black text-white">طريقة تثبيت نسخة الآيفون (iOS) في 5 خطوات سريعة</h4>
-                    </div>
-                    <ol class="space-y-2 text-[11px] text-zinc-300 leading-relaxed">
-                        <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>افتح الموقع من متصفح <b class="text-white">Safari</b> واضغط على زر <b class="text-maitha">تثبيت مباشر للآيفون</b>، ثم اضغط <b class="text-white">Allow (سماح)</b>.</span></li>
-                        <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>عند ظهور رسالة <b class="text-white">Profile Downloaded</b> اضغط <b class="text-white">Close (إغلاق)</b>، ثم افتح <b class="text-white">الإعدادات (Settings)</b>.</span></li>
-                        <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>توجه إلى <b class="text-white">عام (General)</b> ← <b class="text-white">VPN وإدارة الجهاز</b>، واضغط على <b class="text-maitha">M-Trade VIP</b>.</span></li>
-                        <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>اضغط على <b class="text-white">Install (تثبيت)</b> في الأعلى وأدخل رمز قفل الشاشة.</span></li>
-                        <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-maitha text-black font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span><span>اضغط <b class="text-white">Install (تثبيت)</b> مرة أخرى لتأكيد التثبيت، وستظهر أيقونة <b class="text-maitha">M TRADE</b> فوراً.</span></li>
-                    </ol>
                 </div>
             </section>
 
-            <!-- ================= 5. قسم حسابي (بيانات المشترك + الأفاتار بالأحرف + التحديث الفوري) ================= -->
+            <!-- ================= 5. قسم حسابي (البيانات + تخصيص الأصوات + التحديث) ================= -->
             <section id="tab-account" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="w-1.5 h-5 rounded-sm bg-maitha"></span>
-                        <h2 class="text-sm font-black text-white">حسابي واشتراكي VIP</h2>
-                    </div>
+                    <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">حسابي واشتراكي VIP</h2></div>
                     <span class="px-2.5 py-0.5 rounded text-[10px] font-black text-emerald-400" style="background: rgba(16,185,129,0.14); border: 1px solid rgba(16,185,129,0.35);">نشط ✓</span>
                 </div>
 
-                <!-- بطاقة بيانات المشترك -->
                 <div class="bg-panel border border-line rounded-xl p-5 space-y-4" style="border-top: 3px solid #F5C400;">
                     <div class="flex items-center gap-3.5">
-                        <!-- صورة المشترك الذكية (أول حرفين أو رقمين من الاسم) -->
-                        <div id="accAvatar" class="w-14 h-14 rounded-2xl bg-maitha text-black flex items-center justify-center text-lg font-black tracking-wider uppercase shrink-0 shadow-lg mono-num" style="box-shadow: 0 0 18px rgba(245,196,0,0.28);">
-                            MT
-                        </div>
+                        <div id="accAvatar" class="w-14 h-14 rounded-2xl bg-maitha text-black flex items-center justify-center text-lg font-black tracking-wider uppercase shrink-0 shadow-lg mono-num" style="box-shadow: 0 0 18px rgba(245,196,0,0.28);">MT</div>
                         <div>
                             <h3 id="accName" class="text-base font-black text-white">--</h3>
                             <p class="text-[11px] text-zinc-400 font-bold">عضوية <span class="text-maitha">M TRADE VIP</span> • مرتبطة بهذا الجهاز 🔒</p>
                         </div>
                     </div>
 
-                    <!-- العداد التنازلي للاشتراك -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 text-center space-y-1">
                         <span class="text-[10px] font-bold text-zinc-400 block">⏳ المتبقي على انتهاء الاشتراك</span>
                         <span id="accRemaining" class="text-lg font-black text-maitha mono-num">--</span>
                     </div>
 
-                    <!-- تفاصيل التواريخ والكود -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between">
-                            <span class="text-zinc-400 font-bold">🔑 كود الاشتراك</span>
-                            <span id="accCode" class="font-black text-white mono-num" dir="ltr">--</span>
+                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">🔑 كود الاشتراك</span><span id="accCode" class="font-black text-white mono-num" dir="ltr">--</span></div>
+                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">📆 مدة الباقة</span><span id="accDays" class="font-black text-maitha mono-num">-- يوم</span></div>
+                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">🟢 تاريخ التفعيل</span><span id="accActivated" class="font-bold text-zinc-200 mono-num text-[11px]" dir="ltr">--</span></div>
+                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between"><span class="text-zinc-400 font-bold">🔴 تاريخ الانتهاء</span><span id="accExpires" class="font-bold text-rose-300 mono-num text-[11px]" dir="ltr">--</span></div>
+                    </div>
+
+                    <!-- لوحة تخصيص أصوات التنبيهات المستقلة -->
+                    <div class="bg-surface border border-line rounded-xl p-3.5 space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-line">
+                            <h4 class="text-xs font-black text-maitha">🔊 تخصيص أصوات التنبيهات</h4>
+                            <button onclick="requestPushPermission()" id="pushNotifBtn" class="px-2.5 py-1 rounded-md bg-maitha text-black text-[10px] font-black active:scale-95 transition">تفعيل إشعارات الهاتف 🔔</button>
                         </div>
-                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between">
-                            <span class="text-zinc-400 font-bold">📆 مدة الباقة</span>
-                            <span id="accDays" class="font-black text-maitha mono-num">-- يوم</span>
+
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold text-white block">🎯 صوت التوصيات والأهداف</span>
+                                <span class="text-[10px] text-zinc-400">عند صدور صفقة جديدة أو تحقق هدف أو ستوب</span>
+                            </div>
+                            <div id="sndToggle-signals" onclick="toggleSoundPref('signals')" class="toggle-track on"><div class="toggle-thumb"></div></div>
                         </div>
-                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between">
-                            <span class="text-zinc-400 font-bold">🟢 تاريخ التفعيل</span>
-                            <span id="accActivated" class="font-bold text-zinc-200 mono-num text-[11px]" dir="ltr">--</span>
+
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold text-white block">📰 صوت الأخبار الاقتصادية</span>
+                                <span class="text-[10px] text-zinc-400">تحذير صوتي قبل صدور الخبر القوي بـ 5 دقائق</span>
+                            </div>
+                            <div id="sndToggle-news" onclick="toggleSoundPref('news')" class="toggle-track on"><div class="toggle-thumb"></div></div>
                         </div>
-                        <div class="bg-surface border border-line rounded-lg p-3 flex items-center justify-between">
-                            <span class="text-zinc-400 font-bold">🔴 تاريخ الانتهاء</span>
-                            <span id="accExpires" class="font-bold text-rose-300 mono-num text-[11px]" dir="ltr">--</span>
+
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold text-white block">🌍 صوت الجلسات العالمية</span>
+                                <span class="text-[10px] text-zinc-400">عند افتتاح أو إغلاق الجلسات وذروة السيولة</span>
+                            </div>
+                            <div id="sndToggle-sessions" onclick="toggleSoundPref('sessions')" class="toggle-track on"><div class="toggle-thumb"></div></div>
                         </div>
                     </div>
 
-                    <!-- تفعيل إشعارات الهاتف/المتصفح -->
+                    <!-- زر التحديث الفوري -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
-                            <h4 class="text-xs font-black text-white">🔔 إشعارات الأسواق والإدارة</h4>
-                            <p class="text-[10px] text-zinc-400 mt-0.5">استقبال تنبيهات افتتاح وإغلاق الأسواق، ذروة السيولة، وإشعارات الإدارة.</p>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.3</span>)</h4>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع.</p>
                         </div>
-                        <button onclick="requestPushPermission()" id="pushNotifBtn" class="px-3 py-2 rounded-lg bg-maitha text-black text-[11px] font-black shrink-0 active:scale-95 transition">
-                            تفعيل
-                        </button>
+                        <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">تحديث الآن ↻</button>
                     </div>
 
-                    <!-- زر التحديث الفوري للتطبيق (مسح الكاش) -->
-                    <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
-                        <div>
-                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.2</span>)</h4>
-                            <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع دون تخزين مؤقت.</p>
-                        </div>
-                        <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">
-                            تحديث الآن ↻
-                        </button>
-                    </div>
-
-                    <!-- أزرار التجديد وتسجيل الخروج -->
                     <div class="grid grid-cols-2 gap-2.5 pt-1">
-                        <a href="https://t.me/K6633" target="_blank" rel="noopener noreferrer" class="py-2.5 rounded-lg bg-maitha text-black text-xs font-black text-center active:scale-95 transition">
-                            🔄 تجديد الاشتراك
-                        </a>
-                        <button onclick="logoutUser(false)" class="py-2.5 rounded-lg bg-surface border border-rose-500/40 text-rose-400 text-xs font-black active:scale-95 transition">
-                            تسجيل الخروج 🚪
-                        </button>
+                        <a href="https://t.me/K6633" target="_blank" rel="noopener noreferrer" class="py-2.5 rounded-lg bg-maitha text-black text-xs font-black text-center active:scale-95 transition">🔄 تجديد الاشتراك</a>
+                        <button onclick="logoutUser(false)" class="py-2.5 rounded-lg bg-surface border border-rose-500/40 text-rose-400 text-xs font-black active:scale-95 transition">تسجيل الخروج 🚪</button>
                     </div>
                 </div>
             </section>
 
-            <!-- تذييل حقوق الملكية -->
             <footer class="pt-4 pb-2 text-center border-t border-line">
-                <p class="text-[11px] font-bold text-zinc-500">
-                    جميع الحقوق محفوظة © 2026 لدى
-                    <span class="text-maitha font-extrabold">R-Trade.VIP</span>
-                </p>
+                <p class="text-[11px] font-bold text-zinc-500">جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha font-extrabold">R-Trade.VIP</span></p>
             </footer>
         </main>
 
-        <!-- شريط التنقل السفلي الثابت (5 تبويبات) -->
+        <!-- شريط التنقل السفلي (تم تغيير الأهداف إلى التوصيات) -->
         <nav class="app-nav">
             <div class="grid grid-cols-5 max-w-5xl mx-auto">
                 <button onclick="switchTab('home')" id="nav-home" class="nav-active flex flex-col items-center justify-center py-2.5 gap-1 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span class="text-[10px] font-extrabold">الرئيسية</span>
                 </button>
-                <button onclick="switchTab('signals')" id="nav-signals" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span class="text-[10px] font-extrabold">الأهداف</span>
+                <button onclick="switchTab('signals')" id="nav-signals" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 relative transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <span class="text-[10px] font-extrabold">التوصيات</span>
+                    <span id="navSignalsDot" class="hidden absolute top-2 right-5 w-2 h-2 rounded-full bg-maitha"></span>
                 </button>
                 <button onclick="switchTab('news')" id="nav-news" class="nav-inactive flex flex-col items-center justify-center py-2.5 gap-1 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
@@ -859,11 +789,12 @@
 
     <script>
         const FIREBASE_DB_URL = "https://maitha-trade-default-rtdb.firebaseio.com";
-        const CACHE_KEY_CALENDAR = "maitha_trade_calendar_cache_v8";
         const STORAGE_DEVICE_ID = "mtrade_device_uuid_v1";
         const STORAGE_SAVED_CODE = "mtrade_saved_sub_code";
         const STORAGE_LAST_BROADCAST = "mtrade_last_broadcast_id";
+        const STORAGE_LAST_PRIVATE = "mtrade_last_private_msg_id";
         const STORAGE_NOTIF_LOG = "mtrade_notif_log_v1";
+        const STORAGE_SOUND_PREFS = "mtrade_sound_prefs_v1";
 
         let currentUserRecord = null;
         let appInitialized = false;
@@ -873,6 +804,11 @@
         let notificationsLog = [];
         let unreadNotifCount = 0;
 
+        let soundPrefs = { signals: true, news: true, sessions: true };
+        let currentSignalFilter = 'all';
+        let signalsSnapshot = {};
+        let signalsFirstLoaded = false;
+
         let currentCalendarFilter = 'today';
         let tvCalendarLoaded = false;
         let fallbackCalendarMounted = false;
@@ -880,19 +816,60 @@
         let isFetchingCalendar = false;
         let newsAlarmEnabled = localStorage.getItem('maitha_news_alarm') === 'on';
         let alarmedEventIds = new Set();
-        let lastHashes = { news: '', calendar: '' };
-        let appState = { newsFeed: [], economicEvents: [] };
+        let lastHashes = { calendar: '' };
+        let appState = { newsFeed: [], economicEvents: [], signals: [] };
 
-        // ================= استخراج أول حرفين أو رقمين من اسم المشترك =================
-        function getUserInitials(name) {
-            if (!name) return "MT";
-            // إبقاء الحروف العربية والإنجليزية والأرقام فقط
-            const cleaned = String(name).replace(/[^a-zA-Z0-9\u0621-\u064A]/g, "").trim();
-            if (!cleaned) return "MT";
-            return cleaned.slice(0, 2).toUpperCase();
+        // ================= زر لصق الكود في شاشة الدخول =================
+        async function pasteLoginCode() {
+            const input = document.getElementById('loginCodeInput');
+            if (!input) return;
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text && text.trim()) {
+                    input.value = text.trim().toUpperCase();
+                    showToast("تم لصق الكود بنجاح 📋");
+                } else {
+                    showToast("الحافظة فارغة — انسخ الكود أولاً");
+                }
+            } catch (e) {
+                input.focus();
+                showToast("اضغط مطولاً داخل المربع واختر لصق (Paste)");
+            }
         }
 
-        // ================= تحديث التطبيق القسري (كسر الكاش) =================
+        function copyTextVal(val, label) {
+            navigator.clipboard?.writeText(String(val)).then(() => {
+                showToast(`تم نسخ ${label}: ${val} 📋`);
+            }).catch(() => showToast(`${label}: ${val}`));
+        }
+
+        // ================= تخصيص الأصوات المستقلة =================
+        function loadSoundPrefs() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_SOUND_PREFS) || "null");
+                if (saved) soundPrefs = { ...soundPrefs, ...saved };
+            } catch (e) {}
+            ['signals', 'news', 'sessions'].forEach(k => {
+                document.getElementById(`sndToggle-${k}`)?.classList.toggle('on', Boolean(soundPrefs[k]));
+            });
+        }
+
+        function toggleSoundPref(key) {
+            soundPrefs[key] = !soundPrefs[key];
+            localStorage.setItem(STORAGE_SOUND_PREFS, JSON.stringify(soundPrefs));
+            document.getElementById(`sndToggle-${key}`)?.classList.toggle('on', Boolean(soundPrefs[key]));
+            if (soundPrefs[key]) playAlertSound();
+            const names = { signals: 'التوصيات', news: 'الأخبار', sessions: 'الجلسات' };
+            showToast(soundPrefs[key] ? `تم تفعيل صوت تنبيهات ${names[key]} 🔊` : `تم كتم صوت تنبيهات ${names[key]} 🔇`);
+        }
+
+        // ================= استخراج أول حرفين أو رقمين =================
+        function getUserInitials(name) {
+            if (!name) return "MT";
+            const cleaned = String(name).replace(/[^a-zA-Z0-9\u0621-\u064A]/g, "").trim();
+            return cleaned ? cleaned.slice(0, 2).toUpperCase() : "MT";
+        }
+
         function forceAppRefresh() {
             showToast("جاري سحب أحدث نسخة من M TRADE...");
             const url = new URL(window.location.href);
@@ -900,28 +877,28 @@
             setTimeout(() => window.location.replace(url.toString()), 400);
         }
 
-        // ================= مركز التنبيهات والإشعارات =================
+        // ================= مركز التنبيهات =================
         function loadNotificationsLog() {
             try {
                 const saved = JSON.parse(localStorage.getItem(STORAGE_NOTIF_LOG) || "[]");
-                if (Array.isArray(saved)) notificationsLog = saved.slice(0, 30);
+                if (Array.isArray(saved)) notificationsLog = saved.slice(0, 35);
             } catch (e) { notificationsLog = []; }
             renderNotificationsLog();
         }
 
-        function addNotification(title, body, type = "info", playSound = false) {
+        function addNotification(title, body, type = "info", soundCategory = null) {
             const nowTime = format12HourTime(new Date(), 'Asia/Dubai', false);
-            const item = { id: Date.now() + Math.random(), title, body, type, time: nowTime };
-            notificationsLog.unshift(item);
-            if (notificationsLog.length > 30) notificationsLog = notificationsLog.slice(0, 30);
+            notificationsLog.unshift({ id: Date.now() + Math.random(), title, body, type, time: nowTime });
+            if (notificationsLog.length > 35) notificationsLog = notificationsLog.slice(0, 35);
             try { localStorage.setItem(STORAGE_NOTIF_LOG, JSON.stringify(notificationsLog)); } catch (e) {}
 
             unreadNotifCount++;
             updateNotifBadge();
             renderNotificationsLog();
-
             showToast(`${title}: ${body}`);
-            if (playSound) playAlertSound();
+
+            const shouldPlay = soundCategory === "force" || (soundCategory && soundPrefs[soundCategory]);
+            if (shouldPlay) playAlertSound();
 
             if ("Notification" in window && Notification.permission === "granted") {
                 try { new Notification(title, { body, icon: 'https://r-trade.vip/icon-only.png' }); } catch (e) {}
@@ -931,92 +908,47 @@
         function updateNotifBadge() {
             const badge = document.getElementById('notifBadgeCount');
             if (!badge) return;
-            if (unreadNotifCount > 0) {
-                badge.textContent = unreadNotifCount > 9 ? "9+" : unreadNotifCount;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
+            badge.textContent = unreadNotifCount > 9 ? "9+" : unreadNotifCount;
+            badge.classList.toggle('hidden', unreadNotifCount === 0);
         }
 
         function renderNotificationsLog() {
             const container = document.getElementById('notifListContainer');
             if (!container) return;
-            if (notificationsLog.length === 0) {
+            if (!notificationsLog.length) {
                 container.innerHTML = `<p class="text-center text-xs text-zinc-500 py-8">لا توجد تنبيهات حالياً</p>`;
                 return;
             }
-            const iconMap = { welcome: '👋', market: '🌍', warning: '⚠️', admin: '📢', update: '✨', news: '📰', info: '🔔' };
+            const iconMap = { welcome: '👋', market: '🌍', warning: '⚠️', admin: '📢', private: '📩', signal: '🎯', update: '✨', news: '📰', info: '🔔' };
             container.innerHTML = notificationsLog.map(n => `
                 <div class="bg-surface border border-line rounded-xl p-3 space-y-1">
                     <div class="flex items-center justify-between gap-2">
-                        <span class="text-[11px] font-black text-maitha flex items-center gap-1.5">
-                            <span>${iconMap[n.type] || '🔔'}</span>
-                            <span>${n.title}</span>
-                        </span>
+                        <span class="text-[11px] font-black text-maitha flex items-center gap-1.5"><span>${iconMap[n.type] || '🔔'}</span><span>${n.title}</span></span>
                         <span class="text-[9px] font-bold text-zinc-500 mono-num">🇦🇪 ${n.time}</span>
                     </div>
                     <p class="text-[11px] text-zinc-200 font-semibold leading-relaxed">${n.body}</p>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
-        function openNotifModal() {
-            unreadNotifCount = 0;
-            updateNotifBadge();
-            renderNotificationsLog();
-            document.getElementById('notifModal')?.classList.remove('hidden');
-        }
+        function openNotifModal() { unreadNotifCount = 0; updateNotifBadge(); renderNotificationsLog(); document.getElementById('notifModal')?.classList.remove('hidden'); }
+        function closeNotifModal() { document.getElementById('notifModal')?.classList.add('hidden'); }
+        function clearAllNotifications() { notificationsLog = []; unreadNotifCount = 0; localStorage.removeItem(STORAGE_NOTIF_LOG); updateNotifBadge(); renderNotificationsLog(); showToast("تم مسح سجل التنبيهات"); }
 
-        function closeNotifModal() {
-            document.getElementById('notifModal')?.classList.add('hidden');
-        }
+        function openPublicDownload() { document.getElementById('loginGate').classList.add('hidden'); document.getElementById('publicDownloadGate').classList.remove('hidden'); window.scrollTo(0, 0); }
+        function closePublicDownload() { document.getElementById('publicDownloadGate').classList.add('hidden'); document.getElementById('loginGate').classList.remove('hidden'); window.scrollTo(0, 0); }
 
-        function clearAllNotifications() {
-            notificationsLog = [];
-            unreadNotifCount = 0;
-            localStorage.removeItem(STORAGE_NOTIF_LOG);
-            updateNotifBadge();
-            renderNotificationsLog();
-            showToast("تم مسح سجل التنبيهات");
-        }
-
-        // ================= التنقل بين تسجيل الدخول وصفحة التنزيل العامة =================
-        function openPublicDownload() {
-            document.getElementById('loginGate').classList.add('hidden');
-            document.getElementById('publicDownloadGate').classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        function closePublicDownload() {
-            document.getElementById('publicDownloadGate').classList.add('hidden');
-            document.getElementById('loginGate').classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        // ================= 1. نظام الحماية وتسجيل الدخول =================
+        // ================= نظام تسجيل الدخول والرسائل الخاصة =================
         function getOrCreateDeviceId() {
             let id = localStorage.getItem(STORAGE_DEVICE_ID);
-            if (!id) {
-                id = 'DEV-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
-                localStorage.setItem(STORAGE_DEVICE_ID, id);
-            }
+            if (!id) { id = 'DEV-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase(); localStorage.setItem(STORAGE_DEVICE_ID, id); }
             return id;
         }
 
-        function showLoginError(msg) {
-            const box = document.getElementById('loginErrorBox');
-            if (!box) return;
-            box.textContent = msg;
-            box.classList.remove('hidden');
-        }
+        function showLoginError(msg) { const box = document.getElementById('loginErrorBox'); if (box) { box.textContent = msg; box.classList.remove('hidden'); } }
 
         async function attemptLogin(autoCode = null) {
-            const inputEl = document.getElementById('loginCodeInput');
-            const btnEl = document.getElementById('loginSubmitBtn');
-            const errBox = document.getElementById('loginErrorBox');
-            const rememberChk = document.getElementById('rememberCodeChk');
-
+            const inputEl = document.getElementById('loginCodeInput'), btnEl = document.getElementById('loginSubmitBtn');
+            const errBox = document.getElementById('loginErrorBox'), rememberChk = document.getElementById('rememberCodeChk');
             const code = (autoCode || (inputEl ? inputEl.value : '')).trim().toUpperCase();
             if (!code) { showLoginError('يرجى إدخال كود الاشتراك أولاً.'); return; }
 
@@ -1026,44 +958,19 @@
             try {
                 const res = await fetchWithTimeout(`${FIREBASE_DB_URL}/mtrade_users/${encodeURIComponent(code)}.json`, 7000);
                 const user = await res.json();
-
-                if (!user) {
-                    showLoginError('❌ كود الاشتراك غير صحيح. يرجى التواصل مع الإدارة.');
-                    if (autoCode) localStorage.removeItem(STORAGE_SAVED_CODE);
-                    return;
-                }
-                if (user.status !== 'active') {
-                    showLoginError('🚫 تم إيقاف هذا الاشتراك من قبل الإدارة.');
-                    localStorage.removeItem(STORAGE_SAVED_CODE);
-                    return;
-                }
+                if (!user) { showLoginError('❌ كود الاشتراك غير صحيح. يرجى التواصل مع الإدارة.'); if (autoCode) localStorage.removeItem(STORAGE_SAVED_CODE); return; }
+                if (user.status !== 'active') { showLoginError('🚫 تم إيقاف هذا الاشتراك من قبل الإدارة.'); localStorage.removeItem(STORAGE_SAVED_CODE); return; }
                 const nowMs = Date.now();
-                if (user.expires_at && nowMs > user.expires_at) {
-                    showLoginError('⏳ انتهت مدة هذا الاشتراك. يرجى التواصل مع الإدارة للتجديد.');
-                    localStorage.removeItem(STORAGE_SAVED_CODE);
-                    return;
-                }
+                if (user.expires_at && nowMs > user.expires_at) { showLoginError('⏳ انتهت مدة هذا الاشتراك. يرجى التواصل مع الإدارة للتجديد.'); localStorage.removeItem(STORAGE_SAVED_CODE); return; }
 
                 const myDeviceId = getOrCreateDeviceId();
-                if (user.device_id && user.device_id !== myDeviceId) {
-                    showLoginError('🔒 هذا الكود مرتبط بجهاز آخر! تواصل مع الإدارة لفك الارتباط.');
-                    if (autoCode) localStorage.removeItem(STORAGE_SAVED_CODE);
-                    return;
-                }
+                if (user.device_id && user.device_id !== myDeviceId) { showLoginError('🔒 هذا الكود مرتبط بجهاز آخر! تواصل مع الإدارة لفك الارتباط.'); if (autoCode) localStorage.removeItem(STORAGE_SAVED_CODE); return; }
 
                 const patchData = {};
                 if (!user.device_id) patchData.device_id = myDeviceId;
-                if (!user.activated_at) {
-                    patchData.activated_at = nowMs;
-                    patchData.expires_at = nowMs + ((user.days || 30) * 86400 * 1000);
-                }
-
+                if (!user.activated_at) { patchData.activated_at = nowMs; patchData.expires_at = nowMs + ((user.days || 30) * 86400 * 1000); }
                 if (Object.keys(patchData).length > 0) {
-                    await fetch(`${FIREBASE_DB_URL}/mtrade_users/${encodeURIComponent(code)}.json`, {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(patchData)
-                    });
+                    await fetch(`${FIREBASE_DB_URL}/mtrade_users/${encodeURIComponent(code)}.json`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patchData) });
                     Object.assign(user, patchData);
                 }
 
@@ -1080,10 +987,29 @@
         }
 
         function getTimeBasedGreeting(name) {
-            const uaeHour = getTimePartsInTZ(new Date(), 'Asia/Dubai').hour;
-            if (uaeHour >= 5 && uaeHour < 12) return { title: `صباح الخير يا ${name} ☀️`, sub: "بداية يوم موفق في الأسواق العالمية — التزم بخطتك." };
-            if (uaeHour >= 12 && uaeHour < 18) return { title: `مساء النور يا ${name} 🌤️`, sub: "أهلاً بك في M TRADE VIP — راقب تداخل الجلسات والسيولة." };
-            return { title: `مساء الخير يا ${name} 🌙`, sub: "أهلاً بك في M TRADE VIP — تداول بذكاء وإدارة مخاطر." };
+            const h = getTimePartsInTZ(new Date(), 'Asia/Dubai').hour;
+            if (h >= 5 && h < 12) return { title: `صباح الخير يا ${name} ☀️`, sub: "بسم الله وتوكلنا على الله — بداية يوم موفق." };
+            if (h >= 12 && h < 18) return { title: `مساء النور يا ${name} 🌤️`, sub: "أهلاً بك في M TRADE VIP — راقب التوصيات والسيولة." };
+            return { title: `مساء الخير يا ${name} 🌙`, sub: "أهلاً بك في M TRADE VIP — التزم بإدارة رأس المال." };
+        }
+
+        function checkPrivateMessage(user) {
+            if (!user || !user.private_msg || !user.private_msg.message || !user.private_msg.id) return;
+            const lastSeen = localStorage.getItem(STORAGE_LAST_PRIVATE);
+            if (String(user.private_msg.id) !== String(lastSeen)) {
+                document.getElementById('privateMsgText').textContent = user.private_msg.message;
+                document.getElementById('privateMsgTime').textContent = user.private_msg.time || '';
+                document.getElementById('privateAdminMsgBar').classList.remove('hidden');
+                if (window._currentPrivateId !== String(user.private_msg.id)) {
+                    window._currentPrivateId = String(user.private_msg.id);
+                    addNotification("رسالة خاصة من الإدارة 📩", user.private_msg.message, "private", "force");
+                }
+            }
+        }
+
+        function dismissPrivateMsg() {
+            document.getElementById('privateAdminMsgBar').classList.add('hidden');
+            if (window._currentPrivateId) localStorage.setItem(STORAGE_LAST_PRIVATE, window._currentPrivateId);
         }
 
         function unlockApp(user, isManualLogin = true) {
@@ -1092,38 +1018,29 @@
             document.getElementById('mainAppWrapper').classList.remove('hidden');
             document.body.classList.add('app-unlocked');
 
+            loadSoundPrefs();
             loadNotificationsLog();
             renderAccountTab();
+            checkPrivateMessage(user);
 
-            const userName = user.name || 'مشترك VIP';
-            const initials = getUserInitials(userName);
-            const greet = getTimeBasedGreeting(userName);
-
+            const userName = user.name || 'مشترك VIP', initials = getUserInitials(userName), greet = getTimeBasedGreeting(userName);
             document.getElementById('welcomeGreetingText').textContent = greet.title;
             document.getElementById('welcomeSubText').textContent = greet.sub;
             document.getElementById('welcomeAvatarMini').textContent = initials;
             document.getElementById('headerUserAvatar').textContent = initials;
 
-            // إشعار التحديث الجديد إن وُجد
             if (localStorage.getItem("mtrade_just_updated") === "1") {
                 localStorage.removeItem("mtrade_just_updated");
-                addNotification("تحديث جديد ✨", `تم تحديث تطبيق M TRADE تلقائياً إلى الإصدار v${APP_UI_VERSION}`, "update", false);
+                addNotification("تحديث جديد ✨", `تم تحديث تطبيق M TRADE إلى الإصدار v${APP_UI_VERSION}`, "update", null);
             }
+            if (isManualLogin) addNotification("أهلاً بك في M TRADE VIP", `${greet.title} — تم تسجيل دخولك بنجاح.`, "welcome", "force");
+            else showToast(greet.title);
 
-            // إشعار ترحيبي بالمشترك
-            if (isManualLogin) {
-                addNotification("أهلاً بك في M TRADE VIP", `${greet.title} — تم تسجيل دخولك بنجاح.`, "welcome", true);
-            } else {
-                showToast(`${greet.title}`);
-            }
-
-            // تنبيه قرب انتهاء الاشتراك (إذا تبقى 3 أيام أو أقل)
             if (user.expires_at && !expiryWarningSent) {
                 const remDays = (user.expires_at - Date.now()) / 86400000;
                 if (remDays > 0 && remDays <= 3) {
                     expiryWarningSent = true;
-                    const daysTxt = remDays < 1 ? "أقل من 24 ساعة" : `${Math.ceil(remDays)} أيام`;
-                    addNotification("تنبيه انتهاء الاشتراك", `متبقي ${daysTxt} على انتهاء اشتراكك. بادر بالتجديد لضمان استمرار الخدمة.`, "warning", true);
+                    addNotification("تنبيه انتهاء الاشتراك", `متبقي ${remDays < 1 ? "أقل من 24 ساعة" : Math.ceil(remDays) + " أيام"} على انتهاء اشتراكك.`, "warning", "force");
                 }
             }
 
@@ -1134,10 +1051,12 @@
                 loadChart('OANDA:XAUUSD');
                 calculateRisk();
                 fetchFromFirebase(true);
+                fetchLiveSignals(false);
                 loadRealEconomicCalendar(false);
                 checkAdminBroadcast();
                 setInterval(() => {
                     fetchFromFirebase(false);
+                    fetchLiveSignals(false);
                     verifyActiveSession();
                     checkAdminBroadcast();
                 }, 15000);
@@ -1156,6 +1075,7 @@
                 }
                 currentUserRecord = fresh;
                 renderAccountTab();
+                checkPrivateMessage(fresh);
             } catch (e) {}
         }
 
@@ -1177,7 +1097,6 @@
             const u = currentUserRecord;
             const fmtDate = (ms) => ms ? new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(ms)) : '--';
             const initials = getUserInitials(u.name);
-
             document.getElementById('accAvatar').textContent = initials;
             document.getElementById('headerUserAvatar').textContent = initials;
             document.getElementById('accName').textContent = u.name || 'مشترك VIP';
@@ -1185,27 +1104,147 @@
             document.getElementById('accDays').textContent = `${u.days || 0} يوم`;
             document.getElementById('accActivated').textContent = fmtDate(u.activated_at);
             document.getElementById('accExpires').textContent = fmtDate(u.expires_at);
-
-            if (u.expires_at) {
-                const remSec = Math.max(0, Math.floor((u.expires_at - Date.now()) / 1000));
-                document.getElementById('accRemaining').textContent = formatCountdownHMS(remSec);
-            }
+            if (u.expires_at) document.getElementById('accRemaining').textContent = formatCountdownHMS(Math.max(0, Math.floor((u.expires_at - Date.now()) / 1000)));
         }
 
-        // ================= 2. نظام الإشعارات (إدارة + أسواق + متصفح) =================
-        function requestPushPermission() {
-            if (!("Notification" in window)) {
-                showToast('المتصفح الحالي يدعم الإشعارات داخل التطبيق فقط.');
+        // ================= قسم التوصيات الحية (مزامنة + تنبيهات الأهداف والستوب) =================
+        function setSignalFilter(flt) {
+            currentSignalFilter = flt;
+            document.querySelectorAll('.sig-flt').forEach(b => { b.classList.remove('bg-maitha', 'text-black', 'font-extrabold'); b.classList.add('bg-panel', 'border', 'border-line', 'text-zinc-300', 'font-bold'); });
+            const active = document.getElementById('sflt-' + flt);
+            if (active) { active.classList.remove('bg-panel', 'border', 'border-line', 'text-zinc-300', 'font-bold'); active.classList.add('bg-maitha', 'text-black', 'font-extrabold'); }
+            renderSignalsList();
+        }
+
+        async function fetchLiveSignals(manual = false) {
+            try {
+                const res = await fetchWithTimeout(`${FIREBASE_DB_URL}/mtrade_signals.json`, 6500);
+                const data = await res.json();
+                const list = data ? Object.values(data).filter(Boolean).sort((a, b) => (b.updated_at || 0) - (a.updated_at || 0)) : [];
+
+                // فحص التنبيهات التلقائية عند دخول صفقة جديدة أو ضرب هدف أو ستوب
+                if (signalsFirstLoaded) {
+                    for (const s of list) {
+                        const prev = signalsSnapshot[s.id];
+                        if (!prev) {
+                            addNotification(`توصية جديدة 🚀 ${s.symbol} (${s.timeframe})`, `${s.direction === 'BUY' ? 'شراء 🟢' : 'بيع 🔴'} | الدخول: ${s.entry} | الوقف: ${s.sl}`, 'signal', 'signals');
+                            document.getElementById('navSignalsDot')?.classList.remove('hidden');
+                        } else {
+                            if ((s.targets_hit || 0) > (prev.targets_hit || 0)) {
+                                addNotification(`تحقق الهدف ${s.targets_hit} ✅`, `${s.symbol} (${s.timeframe}) حقق الهدف رقم ${s.targets_hit} بنجاح!`, 'signal', 'signals');
+                            }
+                            if (s.status !== prev.status && s.status === 'closed_sl') {
+                                addNotification(`تحديث صفقة ${s.symbol} 🔴`, `تم ضرب وقف الخسارة على فريم ${s.timeframe}.`, 'warning', 'signals');
+                            }
+                        }
+                    }
+                }
+                signalsSnapshot = {};
+                list.forEach(s => { signalsSnapshot[s.id] = { targets_hit: s.targets_hit || 0, status: s.status }; });
+                signalsFirstLoaded = true;
+
+                appState.signals = list;
+                renderSignalsList();
+                if (manual) showToast('تم تحديث قائمة التوصيات الحية ↻');
+            } catch (e) {}
+        }
+
+        function renderSignalsList() {
+            const container = document.getElementById('signalsListContainer');
+            if (!container) return;
+            const all = appState.signals || [];
+
+            const activeCount = all.filter(s => s.status === 'active').length;
+            const totalHits = all.reduce((acc, s) => acc + (s.targets_hit || 0), 0);
+            document.getElementById('statActiveSigs').textContent = activeCount;
+            document.getElementById('statHitTargets').textContent = totalHits;
+            document.getElementById('statTotalSigs').textContent = all.length;
+
+            const filtered = all.filter(s => {
+                if (currentSignalFilter === 'active') return s.status === 'active';
+                if (currentSignalFilter === '30m') return s.timeframe === '30m';
+                if (currentSignalFilter === '1h') return s.timeframe === '1h';
+                if (currentSignalFilter === 'closed') return s.status !== 'active';
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-panel border border-line rounded-xl p-6 text-center space-y-2">
+                        <span class="text-2xl block">📡</span>
+                        <p class="text-xs font-black text-white">لا توجد توصيات في هذا القسم حالياً</p>
+                        <p class="text-[11px] text-zinc-400">محرك M TRADE يراقب الـ 11 أداة مالية على فريم 30m و 1H تلقائياً، وسيصلك تنبيه فور صدور أي فرصة مؤكدة.</p>
+                    </div>`;
                 return;
             }
+
+            container.innerHTML = filtered.map(s => {
+                const isBuy = s.direction === 'BUY';
+                const isActive = s.status === 'active';
+                const dirBadge = isBuy
+                    ? `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-black text-emerald-300" style="background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.45);">شراء 🟢 BUY</span>`
+                    : `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-black text-rose-300" style="background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.45);">بيع 🔴 SELL</span>`;
+
+                const statusBadge = isActive
+                    ? `<span class="px-2 py-0.5 rounded text-[10px] font-black text-black bg-maitha">مفعلة الآن</span>`
+                    : (s.status === 'closed_win'
+                        ? `<span class="px-2 py-0.5 rounded text-[10px] font-black text-emerald-300 bg-emerald-950 border border-emerald-600/40">مغلقة بربح ✅</span>`
+                        : `<span class="px-2 py-0.5 rounded text-[10px] font-black text-rose-300 bg-rose-950 border border-rose-600/40">مغلقة ستوب 🔴</span>`);
+
+                const borderCol = isActive ? (isBuy ? '#10B981' : '#F43F5E') : '#27272A';
+                const targetsHtml = (s.targets || []).map(t => `
+                    <button onclick="copyTextVal('${t.price}', 'الهدف ${t.num}')" class="rounded-lg p-2 text-center transition active:scale-95 ${t.hit ? 'border border-emerald-500/50' : 'bg-surface border border-line hover:border-maitha'}" style="${t.hit ? 'background: rgba(16,185,129,0.14);' : ''}">
+                        <span class="text-[9px] font-bold ${t.hit ? 'text-emerald-300' : 'text-zinc-400'} block">${t.hit ? '✅' : '⏳'} TP${t.num}</span>
+                        <span class="text-[11px] font-black ${t.hit ? 'text-white' : 'text-zinc-200'} mono-num">${t.price}</span>
+                    </button>`).join('');
+
+                return `
+                    <div class="bg-panel border border-line rounded-xl p-4 space-y-3 shadow-lg" style="border-right: 4px solid ${borderCol};">
+                        <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-line">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-black text-white mono-num">${s.symbol}</span>
+                                <span class="text-[11px] font-bold text-zinc-400">(${s.name_ar || s.symbol})</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-black text-maitha mono-num">${s.timeframe}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">${dirBadge}${statusBadge}</div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button onclick="copyTextVal('${s.entry}', 'سعر الدخول')" class="bg-surface border border-line hover:border-maitha rounded-xl p-2.5 flex items-center justify-between active:scale-95 transition">
+                                <span class="text-[10px] font-bold text-zinc-400">🎯 الدخول</span>
+                                <span class="text-xs font-black text-white mono-num">${s.entry} 📋</span>
+                            </button>
+                            <button onclick="copyTextVal('${s.sl}', 'وقف الخسارة')" class="bg-surface border border-rose-500/35 hover:border-rose-400 rounded-xl p-2.5 flex items-center justify-between active:scale-95 transition">
+                                <span class="text-[10px] font-bold text-rose-300">🛑 الوقف</span>
+                                <span class="text-xs font-black text-rose-300 mono-num">${s.sl} 📋</span>
+                            </button>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between text-[10px] font-bold text-zinc-400">
+                                <span>الأهداف المتدرجة (اضغط على أي هدف لنسخه):</span>
+                                <span class="text-maitha mono-num">تحقق ${s.targets_hit || 0} / ${(s.targets || []).length}</span>
+                            </div>
+                            <div class="grid grid-cols-4 gap-1.5">${targetsHtml}</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
+                            <span class="font-bold text-zinc-300">${s.close_reason || s.note || 'توكل على الله والتزم بإدارة المخاطر.'}</span>
+                            <span class="mono-num">🇦🇪 ${s.time_uae || ''}</span>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        // ================= الإشعارات العامة والأخبار والجلسات =================
+        function requestPushPermission() {
+            if (!("Notification" in window)) { showToast('المتصفح الحالي يدعم الإشعارات داخل التطبيق فقط.'); return; }
             Notification.requestPermission().then(perm => {
                 if (perm === 'granted') {
                     const btn = document.getElementById('pushNotifBtn');
                     if (btn) { btn.textContent = 'مُفعّلة ✓'; btn.style.background = '#10B981'; btn.style.color = '#fff'; }
-                    addNotification("تم تفعيل الإشعارات", "ستصلك الآن تنبيهات افتتاح وإغلاق الأسواق، ذروة السيولة، وإشعارات الإدارة.", "info", true);
-                } else {
-                    showToast('لم يتم منح إذن الإشعارات.');
-                }
+                    addNotification("تم تفعيل الإشعارات", "ستصلك تنبيهات التوصيات، الأخبار، والجلسات فوراً.", "info", "force");
+                } else showToast('لم يتم منح إذن الإشعارات.');
             });
         }
 
@@ -1221,20 +1260,14 @@
                     document.getElementById('adminBroadcastBar').classList.remove('hidden');
                     if (window._currentBroadcastId !== String(data.id)) {
                         window._currentBroadcastId = String(data.id);
-                        addNotification("إشعار من الإدارة", data.message, "admin", true);
+                        addNotification("إشعار عام من الإدارة", data.message, "admin", "force");
                     }
                 }
             } catch (e) {}
         }
 
-        function dismissBroadcast() {
-            document.getElementById('adminBroadcastBar').classList.add('hidden');
-            if (window._currentBroadcastId) {
-                localStorage.setItem(STORAGE_LAST_BROADCAST, window._currentBroadcastId);
-            }
-        }
+        function dismissBroadcast() { document.getElementById('adminBroadcastBar').classList.add('hidden'); if (window._currentBroadcastId) localStorage.setItem(STORAGE_LAST_BROADCAST, window._currentBroadcastId); }
 
-        // ================= 3. وظائف المنصة والشارت والأخبار =================
         const ECONOMIC_TERM_DICT = [
             [/President Trump Speaks/gi, "خطاب الرئيس الأمريكي دونالد ترامب"],
             [/UoM Consumer Sentiment/gi, "مؤشر ثقة المستهلك (جامعة ميشيغان)"],
@@ -1257,19 +1290,11 @@
         function translateEconomicTitleToArabic(title) {
             if (!title) return '';
             let translated = String(title), matched = false;
-            ECONOMIC_TERM_DICT.forEach(([regex, ar]) => {
-                if (regex.test(translated)) { matched = true; translated = translated.replace(regex, ar); }
-            });
+            ECONOMIC_TERM_DICT.forEach(([regex, ar]) => { if (regex.test(translated)) { matched = true; translated = translated.replace(regex, ar); } });
             return matched ? translated.replace(/\s+/g, ' ').trim() : "بيان اقتصادي مؤثر على حركة العملة والذهب";
         }
 
-        function showToast(msg) {
-            const box = document.getElementById('toastBox');
-            if (!box) return;
-            box.textContent = msg;
-            box.classList.add('show');
-            setTimeout(() => box.classList.remove('show'), 2800);
-        }
+        function showToast(msg) { const box = document.getElementById('toastBox'); if (!box) return; box.textContent = msg; box.classList.add('show'); setTimeout(() => box.classList.remove('show'), 2800); }
 
         function playAlertSound() {
             try {
@@ -1290,13 +1315,8 @@
         function updateAlarmButtonUI() {
             const btn = document.getElementById('alarmToggleBtn'), icon = document.getElementById('alarmIcon'), txt = document.getElementById('alarmText');
             if (!btn || !icon || !txt) return;
-            if (newsAlarmEnabled) {
-                btn.style.background = 'rgba(245,196,0,0.16)'; btn.style.borderColor = '#F5C400'; btn.style.color = '#F5C400';
-                icon.textContent = '🔔'; txt.textContent = 'مُفعّل';
-            } else {
-                btn.style.background = '#151515'; btn.style.borderColor = '#242424'; btn.style.color = '#D4D4D8';
-                icon.textContent = '🔕'; txt.textContent = 'تنبيه';
-            }
+            if (newsAlarmEnabled) { btn.style.background = 'rgba(245,196,0,0.16)'; btn.style.borderColor = '#F5C400'; btn.style.color = '#F5C400'; icon.textContent = '🔔'; txt.textContent = 'مُفعّل'; }
+            else { btn.style.background = '#151515'; btn.style.borderColor = '#242424'; btn.style.color = '#D4D4D8'; icon.textContent = '🔕'; txt.textContent = 'تنبيه'; }
         }
 
         function toggleNewsAlarm() {
@@ -1315,14 +1335,9 @@
         }
 
         async function fetchWithTimeout(url, ms = 6000) {
-            const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), ms);
-            try {
-                const res = await fetch(url, { signal: controller.signal });
-                clearTimeout(timer);
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                return res;
-            } catch (e) { clearTimeout(timer); throw e; }
+            const controller = new AbortController(), timer = setTimeout(() => controller.abort(), ms);
+            try { const res = await fetch(url, { signal: controller.signal }); clearTimeout(timer); if (!res.ok) throw new Error('HTTP ' + res.status); return res; }
+            catch (e) { clearTimeout(timer); throw e; }
         }
 
         function format12HourTime(dateObj, timeZone, includeSeconds = false) {
@@ -1331,34 +1346,15 @@
             return new Intl.DateTimeFormat('en-US', opts).format(dateObj).replace('AM', 'ص').replace('PM', 'م');
         }
 
-        function formatHourTo12(hour24) {
-            const h = ((Math.round(hour24) % 24) + 24) % 24;
-            const period = h >= 12 ? 'م' : 'ص';
-            const h12 = h % 12 === 0 ? 12 : h % 12;
-            return `${String(h12).padStart(2, '0')}:00 ${period}`;
-        }
-
+        function formatHourTo12(hour24) { const h = ((Math.round(hour24) % 24) + 24) % 24; return `${String(h % 12 === 0 ? 12 : h % 12).padStart(2, '0')}:00 ${h >= 12 ? 'م' : 'ص'}`; }
         function formatCountdownHMS(totalSeconds) {
-            const safe = Math.max(0, Math.floor(totalSeconds));
-            const d = Math.floor(safe / 86400);
-            const h = Math.floor((safe % 86400) / 3600);
-            const m = Math.floor((safe % 3600) / 60);
-            const s = safe % 60;
+            const safe = Math.max(0, Math.floor(totalSeconds)), d = Math.floor(safe / 86400), h = Math.floor((safe % 86400) / 3600), m = Math.floor((safe % 3600) / 60), s = safe % 60;
             const hms = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
             return d > 0 ? `${d}ي ${hms}` : hms;
         }
 
-        function getTimeZoneOffsetHours(dateObj, timeZone) {
-            const utcDate = new Date(dateObj.toLocaleString('en-US', { timeZone: 'UTC' }));
-            const tzDate = new Date(dateObj.toLocaleString('en-US', { timeZone }));
-            return Math.round((tzDate.getTime() - utcDate.getTime()) / 3600000);
-        }
-
-        function getSessionHoursInUAE(dateObj, tz, localOpenH, localCloseH) {
-            const diff = 4 - getTimeZoneOffsetHours(dateObj, tz);
-            return { openH: ((localOpenH + diff) % 24 + 24) % 24, closeH: ((localCloseH + diff) % 24 + 24) % 24 };
-        }
-
+        function getTimeZoneOffsetHours(dateObj, timeZone) { return Math.round((new Date(dateObj.toLocaleString('en-US', { timeZone })).getTime() - new Date(dateObj.toLocaleString('en-US', { timeZone: 'UTC' })).getTime()) / 3600000); }
+        function getSessionHoursInUAE(dateObj, tz, localOpenH, localCloseH) { const diff = 4 - getTimeZoneOffsetHours(dateObj, tz); return { openH: ((localOpenH + diff) % 24 + 24) % 24, closeH: ((localCloseH + diff) % 24 + 24) % 24 }; }
         function getTimePartsInTZ(dateObj, timeZone) {
             const parts = new Intl.DateTimeFormat('en-GB', { timeZone, weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).formatToParts(dateObj);
             const map = {}; parts.forEach(p => { map[p.type] = p.value; });
@@ -1367,15 +1363,12 @@
 
         function updateClocksAndSessions() {
             const now = new Date();
-            const uaeEl = document.getElementById('clockUAE'), ksaEl = document.getElementById('clockKSA'), dateEl = document.getElementById('currentDateAr');
-            if (uaeEl) uaeEl.textContent = format12HourTime(now, 'Asia/Dubai', true);
-            if (ksaEl) ksaEl.textContent = format12HourTime(now, 'Asia/Riyadh', true);
-            if (dateEl) dateEl.textContent = new Intl.DateTimeFormat('ar-AE', { timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+            document.getElementById('clockUAE').textContent = format12HourTime(now, 'Asia/Dubai', true);
+            document.getElementById('clockKSA').textContent = format12HourTime(now, 'Asia/Riyadh', true);
+            document.getElementById('currentDateAr').textContent = new Intl.DateTimeFormat('ar-AE', { timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now);
 
-            if (currentUserRecord && currentUserRecord.expires_at) {
-                const remSec = Math.max(0, Math.floor((currentUserRecord.expires_at - now.getTime()) / 1000));
-                const accRem = document.getElementById('accRemaining');
-                if (accRem) accRem.textContent = formatCountdownHMS(remSec);
+            if (currentUserRecord?.expires_at) {
+                document.getElementById('accRemaining').textContent = formatCountdownHMS(Math.max(0, Math.floor((currentUserRecord.expires_at - now.getTime()) / 1000)));
             }
 
             const uae = getTimePartsInTZ(now, 'Asia/Dubai'), ny = getTimePartsInTZ(now, 'America/New_York');
@@ -1413,42 +1406,26 @@
                 const isOpen = !isWeekendClosed && (spansMidnight ? (nowSec >= openSec || nowSec < closeSec) : (nowSec >= openSec && nowSec < closeSec));
 
                 if (lastSessionStates[s.id] !== undefined && lastSessionStates[s.id] !== isOpen) {
-                    addNotification(
-                        'تنبيه الأسواق العالمية',
-                        isOpen ? `🟢 افتتحت الآن جلسة ${s.name} ${s.flag}` : `🔴 أُغلقت الآن جلسة ${s.name} ${s.flag}`,
-                        'market',
-                        true
-                    );
+                    addNotification('تنبيه الأسواق العالمية', isOpen ? `🟢 افتتحت الآن جلسة ${s.name} ${s.flag}` : `🔴 أُغلقت الآن جلسة ${s.name} ${s.flag}`, 'market', 'sessions');
                 }
                 lastSessionStates[s.id] = isOpen;
 
                 let elapsedSec = 0, remainingSec = 0, progressPct = 0;
-                if (isOpen) {
-                    elapsedSec = nowSec >= openSec ? (nowSec - openSec) : (86400 - openSec + nowSec);
-                    remainingSec = durationSec - elapsedSec;
-                    progressPct = Math.min(100, Math.max(0, (elapsedSec / durationSec) * 100));
-                } else {
-                    remainingSec = openSec > nowSec ? (openSec - nowSec) : (86400 - nowSec + openSec);
-                }
+                if (isOpen) { elapsedSec = nowSec >= openSec ? (nowSec - openSec) : (86400 - openSec + nowSec); remainingSec = durationSec - elapsedSec; progressPct = Math.min(100, Math.max(0, (elapsedSec / durationSec) * 100)); }
+                else remainingSec = openSec > nowSec ? (openSec - nowSec) : (86400 - nowSec + openSec);
                 return { ...s, isOpen, elapsedSec, remainingSec, progressPct };
             });
 
-            const openSessions = evaluated.filter(s => s.isOpen);
-            const isOverlap = openSessions.length >= 2;
+            const openSessions = evaluated.filter(s => s.isOpen), isOverlap = openSessions.length >= 2;
             if (isOverlap && !lastOverlapState && Object.keys(lastSessionStates).length === 4) {
-                addNotification('ذروة السيولة 🔥', `بدأ الآن تداخل جلستي (${openSessions.map(x => x.name).join(' + ')}) — أعلى حركة في السوق.`, 'market', true);
+                addNotification('ذروة السيولة 🔥', `بدأ الآن تداخل جلستي (${openSessions.map(x => x.name).join(' + ')}) — استعد لحركة قوية.`, 'market', 'sessions');
             }
             lastOverlapState = isOverlap;
 
             let nextOpening = null;
-
-            const cardsHtml = evaluated.map(s => {
-                if (!s.isOpen && !isWeekendClosed && (!nextOpening || s.remainingSec < nextOpening.sec)) {
-                    nextOpening = { name: s.name, flag: s.flag, sec: s.remainingSec, openLabel: formatHourTo12(s.openH) };
-                }
-                const openUAE = formatHourTo12(s.openH), closeUAE = formatHourTo12(s.closeH);
-                const openKSA = formatHourTo12((s.openH + 23) % 24), closeKSA = formatHourTo12((s.closeH + 23) % 24);
-
+            document.getElementById('sessionsContainer').innerHTML = evaluated.map(s => {
+                if (!s.isOpen && !isWeekendClosed && (!nextOpening || s.remainingSec < nextOpening.sec)) nextOpening = { name: s.name, flag: s.flag, sec: s.remainingSec, openLabel: formatHourTo12(s.openH) };
+                const openUAE = formatHourTo12(s.openH), closeUAE = formatHourTo12(s.closeH), openKSA = formatHourTo12((s.openH + 23) % 24), closeKSA = formatHourTo12((s.closeH + 23) % 24);
                 let cardStyle = '', statusBadge = '', barColor = '#DC2626', timerLine = '';
                 if (!s.isOpen || isWeekendClosed) {
                     cardStyle = 'background: linear-gradient(145deg, rgba(127, 29, 29, 0.30) 0%, #11090A 100%); border: 1px solid rgba(220, 38, 38, 0.45);';
@@ -1461,62 +1438,48 @@
                     barColor = '#F59E0B';
                     timerLine = `<span class="text-amber-300">يُغلق: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 } else {
-                    const isNewlyOpened = s.elapsedSec <= 3600;
                     cardStyle = 'background: linear-gradient(145deg, rgba(6, 95, 70, 0.28) 0%, #09120E 100%); border: 1px solid rgba(16, 185, 129, 0.5);';
-                    statusBadge = isNewlyOpened ? '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-emerald-300" style="background: rgba(16,185,129,0.22); border: 1px solid rgba(16,185,129,0.45);">✨ جديد</span>' : '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-emerald-300" style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4);">🟢 مفتوح</span>';
+                    statusBadge = s.elapsedSec <= 3600 ? '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-emerald-300" style="background: rgba(16,185,129,0.22);">✨ جديد</span>' : '<span class="px-1.5 py-0.5 rounded text-[8px] font-black text-emerald-300" style="background: rgba(16,185,129,0.2);">🟢 مفتوح</span>';
                     barColor = '#10B981';
                     timerLine = `<span class="text-emerald-300">يُغلق: <b class="mono-num text-white">${formatCountdownHMS(s.remainingSec)}</b></span>`;
                 }
-
-                return `
-                    <div class="rounded-lg p-2 space-y-1 transition" style="${cardStyle}">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-[11px] font-extrabold text-white flex items-center gap-1"><span>${s.flag}</span><span>${s.name}</span></span>
-                            ${statusBadge}
-                        </div>
-                        <div class="space-y-0.5 text-[9px] text-zinc-300">
-                            <div class="flex items-center justify-between"><span class="text-zinc-400">🇦🇪</span><span class="font-bold mono-num">${openUAE} ← ${closeUAE}</span></div>
-                            <div class="flex items-center justify-between"><span class="text-zinc-400">🇸🇦</span><span class="font-bold mono-num">${openKSA} ← ${closeKSA}</span></div>
-                        </div>
-                        <div class="w-full h-1 rounded-full overflow-hidden bg-black/40"><div class="h-full transition-all" style="width: ${s.isOpen ? s.progressPct.toFixed(1) : 0}%; background: ${barColor};"></div></div>
-                        <div class="text-[9px] font-bold pt-0.5 truncate">${timerLine}</div>
-                    </div>`;
+                return `<div class="rounded-lg p-2 space-y-1 transition" style="${cardStyle}">
+                    <div class="flex items-center justify-between gap-1"><span class="text-[11px] font-extrabold text-white flex items-center gap-1"><span>${s.flag}</span><span>${s.name}</span></span>${statusBadge}</div>
+                    <div class="space-y-0.5 text-[9px] text-zinc-300">
+                        <div class="flex items-center justify-between"><span class="text-zinc-400">🇦🇪</span><span class="font-bold mono-num">${openUAE} ← ${closeUAE}</span></div>
+                        <div class="flex items-center justify-between"><span class="text-zinc-400">🇸🇦</span><span class="font-bold mono-num">${openKSA} ← ${closeKSA}</span></div>
+                    </div>
+                    <div class="w-full h-1 rounded-full overflow-hidden bg-black/40"><div class="h-full transition-all" style="width: ${s.isOpen ? s.progressPct.toFixed(1) : 0}%; background: ${barColor};"></div></div>
+                    <div class="text-[9px] font-bold pt-0.5 truncate">${timerLine}</div>
+                </div>`;
             }).join('');
 
-            const sessEl = document.getElementById('sessionsContainer');
-            if (sessEl) sessEl.innerHTML = cardsHtml;
-
             const bannerEl = document.getElementById('nextSessionBanner'), noteEl = document.getElementById('marketStatusNote');
-            if (bannerEl) {
-                if (isWeekendClosed) {
-                    bannerEl.style.background = 'rgba(220,38,38,0.25)'; bannerEl.style.color = '#FCA5A5'; bannerEl.style.border = '1px solid rgba(220,38,38,0.5)';
-                    bannerEl.textContent = `السوق مغلق (عطلة الأسبوع) • يفتح بعد ${formatCountdownHMS(weekendReopenSec)}`;
-                } else if (isOverlap) {
-                    bannerEl.style.background = '#F59E0B'; bannerEl.style.color = '#000000'; bannerEl.style.border = 'none';
-                    bannerEl.textContent = `🔥 تداخل نشط (${openSessions.map(x => x.name).join(' + ')}) — ذروة السيولة`;
-                } else if (nextOpening) {
-                    bannerEl.style.background = '#F5C400'; bannerEl.style.color = '#000000'; bannerEl.style.border = 'none';
-                    bannerEl.textContent = `الافتتاح القادم: ${nextOpening.flag} ${nextOpening.name} (${nextOpening.openLabel} 🇦🇪) بعد ${formatCountdownHMS(nextOpening.sec)}`;
-                }
-            }
-            if (noteEl) {
-                noteEl.innerHTML = isWeekendClosed
-                    ? `<span class="text-rose-300">⛔ <b>عطلة نهاية الأسبوع:</b> تفتح الأسواق يوم الإثنين <b class="text-white mono-num">${rolloverOpenUAE} 🇦🇪</b> (<b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b>).</span><span class="text-maitha">BTC يعمل 24/7</span>`
-                    : `<span>📌 <b>الإغلاق اليومي (Rollover):</b> <b class="text-maitha mono-num">${rolloverOpenUAE} 🇦🇪</b> | <b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b> (ارتفاع السبريد).</span>`;
+            if (isWeekendClosed) {
+                bannerEl.style.background = 'rgba(220,38,38,0.25)'; bannerEl.style.color = '#FCA5A5'; bannerEl.style.border = '1px solid rgba(220,38,38,0.5)';
+                bannerEl.textContent = `السوق مغلق (عطلة الأسبوع) • يفتح بعد ${formatCountdownHMS(weekendReopenSec)}`;
+                noteEl.innerHTML = `<span class="text-rose-300">⛔ <b>عطلة نهاية الأسبوع:</b> تفتح الأسواق الإثنين <b class="text-white mono-num">${rolloverOpenUAE} 🇦🇪</b>.</span><span class="text-maitha">BTC &amp; ETH تعمل 24/7</span>`;
+            } else if (isOverlap) {
+                bannerEl.style.background = '#F59E0B'; bannerEl.style.color = '#000'; bannerEl.style.border = 'none';
+                bannerEl.textContent = `🔥 تداخل نشط (${openSessions.map(x => x.name).join(' + ')}) — ذروة السيولة`;
+                noteEl.innerHTML = `<span>📌 <b>الإغلاق اليومي (Rollover):</b> <b class="text-maitha mono-num">${rolloverOpenUAE} 🇦🇪</b> | <b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b></span>`;
+            } else if (nextOpening) {
+                bannerEl.style.background = '#F5C400'; bannerEl.style.color = '#000'; bannerEl.style.border = 'none';
+                bannerEl.textContent = `الافتتاح القادم: ${nextOpening.flag} ${nextOpening.name} (${nextOpening.openLabel} 🇦🇪) بعد ${formatCountdownHMS(nextOpening.sec)}`;
+                noteEl.innerHTML = `<span>📌 <b>الإغلاق اليومي (Rollover):</b> <b class="text-maitha mono-num">${rolloverOpenUAE} 🇦🇪</b> | <b class="text-white mono-num">${rolloverOpenKSA} 🇸🇦</b></span>`;
             }
         }
         setInterval(() => { if (currentUserRecord) updateClocksAndSessions(); }, 1000);
 
         function getUAEDayKey(d) { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai' }).format(d); }
-
         function formatEventDateTime(isoStr) {
             const d = new Date(isoStr);
-            if (isNaN(d.getTime())) return { uaeTime: '--:--', ksaTime: '--:--', dayKey: 'unknown', shortDayDate: '--', isFinishedByTime: false, dayCategory: 'other', timestamp: 0 };
+            if (isNaN(d.getTime())) return { uaeTime: '--:--', ksaTime: '--:--', shortDayDate: '--', isFinishedByTime: false, dayCategory: 'other', timestamp: 0 };
             const uaeTime = format12HourTime(d, 'Asia/Dubai', false), ksaTime = format12HourTime(d, 'Asia/Riyadh', false);
             const now = new Date(), todayKey = getUAEDayKey(now), yesterdayKey = getUAEDayKey(new Date(now.getTime() - 86400000)), eventKey = getUAEDayKey(d);
             let dayCategory = eventKey === todayKey ? 'today' : eventKey === yesterdayKey ? 'yesterday' : eventKey > todayKey ? 'upcoming' : 'past';
             const shortDayDate = new Intl.DateTimeFormat('ar-AE', { timeZone: 'Asia/Dubai', weekday: 'long', day: 'numeric', month: 'short' }).format(d);
-            return { uaeTime, ksaTime, dayKey: eventKey, shortDayDate, isFinishedByTime: (d.getTime() - now.getTime()) < 0, dayCategory, timestamp: d.getTime() };
+            return { uaeTime, ksaTime, shortDayDate, isFinishedByTime: (d.getTime() - now.getTime()) < 0, dayCategory, timestamp: d.getTime() };
         }
 
         function analyzeEconomicEvent(ev, isFinishedByTime = false, isNextUpcoming = false) {
@@ -1527,15 +1490,11 @@
 
             const country = (ev.country || 'USD').toUpperCase(), arTitle = translateEconomicTitleToArabic(ev.title);
             const isFinished = isFinishedByTime || Boolean(ev.actual);
-            const cardStyle = isFinished
-                ? 'background: linear-gradient(145deg, rgba(244,63,94,0.08) 0%, #0E0D0E 100%); border: 1px solid rgba(244,63,94,0.32);'
+            const cardStyle = isFinished ? 'background: linear-gradient(145deg, rgba(244,63,94,0.08) 0%, #0E0D0E 100%); border: 1px solid rgba(244,63,94,0.32);'
                 : (isNextUpcoming ? 'background: linear-gradient(145deg, rgba(245,196,0,0.10) 0%, #0F0F10 100%); border: 1.5px solid #F5C400;' : 'background: linear-gradient(145deg, rgba(56,189,248,0.07) 0%, #0D0E10 100%); border: 1px solid rgba(56,189,248,0.28);');
-            const statusTag = isFinished
-                ? { text: 'انتهى', style: 'background: rgba(244,63,94,0.16); color: #FDA4AF; border: 1px solid rgba(244,63,94,0.35);' }
-                : (isNextUpcoming ? { text: '🎯 الخبر القادم الآن', style: 'background: #F5C400; color: #000000;' } : { text: 'قادم', style: 'background: rgba(56,189,248,0.14); color: #7DD3FC;' });
-            const verdict = { text: isFinished ? 'انتهى وقت الخبر' : 'بانتظار الصدور • تأثير مباشر على السوق', boxStyle: 'background: rgba(0,0,0,0.35); color: #D4D4D8;' };
+            const statusTag = isFinished ? { text: 'انتهى', style: 'background: rgba(244,63,94,0.16); color: #FDA4AF;' } : (isNextUpcoming ? { text: '🎯 الخبر القادم الآن', style: 'background: #F5C400; color: #000;' } : { text: 'قادم', style: 'background: rgba(56,189,248,0.14); color: #7DD3FC;' });
             const flags = { USD: '🇺🇸', EUR: '🇪🇺', GBP: '🇬🇧', JPY: '🇯🇵', AUD: '🇦🇺', CAD: '🇨🇦', CHF: '🇨🇭' };
-            return { strength, verdict, cardStyle, statusTag, flag: flags[country] || '🌐', country, arTitle };
+            return { strength, cardStyle, statusTag, flag: flags[country] || '🌐', country, arTitle, verdict: { text: isFinished ? 'انتهى وقت الخبر' : 'بانتظار الصدور • تأثير مباشر على السوق', boxStyle: 'background: rgba(0,0,0,0.35); color: #D4D4D8;' } };
         }
 
         function updateNextNewsRadar(now, isWeekendClosed = false, rolloverOpenUAE = '', rolloverOpenKSA = '') {
@@ -1543,6 +1502,7 @@
             const flagEl = document.getElementById('radarFlag'), titleEl = document.getElementById('radarTitle'), titleArEl = document.getElementById('radarTitleAr');
             const cdEl = document.getElementById('radarCountdown'), cdBoxEl = document.getElementById('radarCountdownBox');
             const adviceEl = document.getElementById('smartMarketAdvice'), riskBadgeEl = document.getElementById('smartRiskBadge');
+            const sigWarnBox = document.getElementById('signalsNewsWarning'), sigWarnTxt = document.getElementById('signalsNewsWarningText');
             if (!titleArEl) return;
 
             const allEvents = appState.economicEvents || [], nowMs = now.getTime();
@@ -1550,6 +1510,7 @@
 
             if (upcoming.length === 0) {
                 if (cdBoxEl) cdBoxEl.classList.add('hidden');
+                if (sigWarnBox) sigWarnBox.classList.add('hidden');
                 const finished = allEvents.map(ev => ({ ev, ts: new Date(ev.date).getTime() })).filter(i => !isNaN(i.ts) && i.ts <= nowMs).sort((a, b) => b.ts - a.ts);
                 badgeEl.textContent = `ملخص الأخبار (${allEvents.length} خبر)`;
                 if (finished.length > 0) {
@@ -1577,34 +1538,36 @@
             titleEl.textContent = ev.title; timeEl.textContent = `🇦🇪 ${dt.uaeTime}`; cdEl.textContent = formatCountdownHMS(remainingSec);
             strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
 
+            // تحذير تلقائي داخل قسم التوصيات قبل الأخبار القوية بـ 30 دقيقة
+            if (sigWarnBox && sigWarnTxt) {
+                if (remainingSec <= 1800 && (ev.impact || '').toLowerCase() === 'high') {
+                    sigWarnBox.classList.remove('hidden');
+                    sigWarnTxt.textContent = `تحذير وقت الأخبار: خبر (${info.arTitle}) بعد ${Math.ceil(remainingSec / 60)} دقيقة — يرجى الاستعداد وتأمين صفقاتك!`;
+                } else {
+                    sigWarnBox.classList.add('hidden');
+                }
+            }
+
             const eventKey = `${ev.title}_${ev.date}`;
             if (newsAlarmEnabled && remainingSec <= 300 && remainingSec > 0 && !alarmedEventIds.has(eventKey)) {
                 alarmedEventIds.add(eventKey);
-                addNotification("خبر اقتصادي وشيك 🚨", `متبقي أقل من 5 دقائق على صدور: ${info.arTitle} (${info.country})`, "news", true);
+                addNotification("تحذير خبر اقتصادي 🚨", `متبقي أقل من 5 دقائق على صدور: ${info.arTitle} (${info.country}) — استعد وأمّن صفقاتك!`, "news", "news");
             }
         }
 
         function loadChart(symbol) {
-            const container = document.getElementById('tv_chart_container');
-            if (!container) return;
-            container.innerHTML = '';
-            const script = document.createElement('script');
-            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-            script.async = true;
-            script.innerHTML = JSON.stringify({ "autosize": true, "symbol": symbol, "interval": "15", "timezone": "Asia/Dubai", "theme": "dark", "style": "1", "locale": "ar_AE", "allow_symbol_change": true, "studies": ["STD;RSI"], "support_host": "https://www.tradingview.com" });
-            container.appendChild(script);
+            const c = document.getElementById('tv_chart_container'); if (!c) return; c.innerHTML = '';
+            const s = document.createElement('script'); s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; s.async = true;
+            s.innerHTML = JSON.stringify({ "autosize": true, "symbol": symbol, "interval": "15", "timezone": "Asia/Dubai", "theme": "dark", "style": "1", "locale": "ar_AE", "allow_symbol_change": true, "studies": ["STD;RSI"], "support_host": "https://www.tradingview.com" });
+            c.appendChild(s);
         }
 
         function loadTradingViewCalendar(targetId = 'tv_calendar_container', force = false) {
-            const container = document.getElementById(targetId);
-            if (!container || (targetId === 'tv_calendar_container' && tvCalendarLoaded && !force)) return;
+            const c = document.getElementById(targetId); if (!c || (targetId === 'tv_calendar_container' && tvCalendarLoaded && !force)) return;
             if (targetId === 'tv_calendar_container') tvCalendarLoaded = true;
-            container.innerHTML = '';
-            const script = document.createElement('script');
-            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
-            script.async = true;
-            script.innerHTML = JSON.stringify({ "colorTheme": "dark", "isTransparent": true, "width": "100%", "height": "100%", "locale": "ar_AE", "importanceFilter": "-1,0,1", "currencyFilter": "USD,EUR,GBP,JPY,AUD,CAD,CHF" });
-            container.appendChild(script);
+            c.innerHTML = ''; const s = document.createElement('script'); s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js'; s.async = true;
+            s.innerHTML = JSON.stringify({ "colorTheme": "dark", "isTransparent": true, "width": "100%", "height": "100%", "locale": "ar_AE", "importanceFilter": "-1,0,1", "currencyFilter": "USD,EUR,GBP,JPY,AUD,CAD,CHF" });
+            c.appendChild(s);
         }
 
         function changeSymbol(symbol, label, btnEl) {
@@ -1616,18 +1579,19 @@
 
         function switchTab(tabName) {
             ['home', 'signals', 'news', 'download', 'account'].forEach(t => {
-                const sec = document.getElementById('tab-' + t), navBtn = document.getElementById('nav-' + t);
-                if (sec) sec.classList.add('hidden');
-                if (navBtn) { navBtn.classList.remove('nav-active'); navBtn.classList.add('nav-inactive'); }
+                document.getElementById('tab-' + t)?.classList.add('hidden');
+                const nb = document.getElementById('nav-' + t);
+                if (nb) { nb.classList.remove('nav-active'); nb.classList.add('nav-inactive'); }
             });
             document.getElementById('tab-' + tabName)?.classList.remove('hidden');
-            const activeBtn = document.getElementById('nav-' + tabName);
-            if (activeBtn) { activeBtn.classList.add('nav-active'); activeBtn.classList.remove('nav-inactive'); }
+            const ab = document.getElementById('nav-' + tabName);
+            if (ab) { ab.classList.add('nav-active'); ab.classList.remove('nav-inactive'); }
 
             const floatBtn = document.getElementById('jumpNextFloatingBtn');
             if (floatBtn) { floatBtn.classList.toggle('hidden', tabName !== 'news'); floatBtn.classList.toggle('flex', tabName === 'news'); }
 
-            if (tabName === 'news') { setCalendarFilter('today', false); loadTradingViewCalendar('tv_calendar_container', false); loadRealEconomicCalendar(false); loadLiveNews(false); }
+            if (tabName === 'signals') { document.getElementById('navSignalsDot')?.classList.add('hidden'); fetchLiveSignals(false); window.scrollTo(0, 0); }
+            else if (tabName === 'news') { setCalendarFilter('today'); loadTradingViewCalendar('tv_calendar_container', false); loadRealEconomicCalendar(false); loadLiveNews(false); }
             else if (tabName === 'account') { renderAccountTab(); window.scrollTo(0, 0); }
             else window.scrollTo(0, 0);
         }
@@ -1640,12 +1604,7 @@
             document.getElementById('calcLotSize').textContent = `${Math.max(0.01, sl > 0 ? riskUsd / (sl * 10) : 0).toFixed(2)} Lot`;
         }
 
-        async function refreshAllRealNews() {
-            await Promise.allSettled([fetchFromFirebase(true), loadRealEconomicCalendar(true), loadLiveNews(true)]);
-            loadTradingViewCalendar('tv_calendar_container', true);
-            showToast('تم تحديث الأخبار والبيانات المباشرة');
-        }
-
+        async function refreshAllRealNews() { await Promise.allSettled([fetchFromFirebase(true), loadRealEconomicCalendar(true), loadLiveNews(true)]); loadTradingViewCalendar('tv_calendar_container', true); showToast('تم تحديث الأخبار'); }
         function switchNewsSubTab(sub) {
             ['calendar', 'live', 'feed'].forEach(k => {
                 document.getElementById(`news-${k}-view`)?.classList.toggle('hidden', k !== sub);
@@ -1665,15 +1624,11 @@
         }
 
         async function loadRealEconomicCalendar(forceRefresh = false) {
-            if (isFetchingCalendar) return;
-            isFetchingCalendar = true;
+            if (isFetchingCalendar) return; isFetchingCalendar = true;
             try {
                 const r = await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://nfs.faireconomy.media/ff_calendar_thisweek.json')}`, 7500);
-                const fetchedData = await r.json();
-                if (Array.isArray(fetchedData) && fetchedData.length > 0) {
-                    appState.economicEvents = fetchedData.filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday').sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-                    renderEconomicCalendar(true);
-                }
+                const data = await r.json();
+                if (Array.isArray(data) && data.length) { appState.economicEvents = data.filter(ev => ev && ev.impact && ev.impact.toLowerCase() !== 'holiday').sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); renderEconomicCalendar(true); }
             } catch (e) { renderEconomicCalendar(false); }
             finally { isFetchingCalendar = false; }
         }
@@ -1686,13 +1641,11 @@
                 if (fallbackCalendarMounted && !forceRedraw) return;
                 fallbackCalendarMounted = true;
                 container.innerHTML = `<div class="rounded-lg overflow-hidden border border-line bg-panel" style="height: 500px;"><div id="tv_calendar_fallback" class="w-full h-full"></div></div>`;
-                loadTradingViewCalendar('tv_calendar_fallback', true);
-                return;
+                loadTradingViewCalendar('tv_calendar_fallback', true); return;
             }
             fallbackCalendarMounted = false;
             const nowMs = Date.now(), upcomingSorted = appState.economicEvents.map(ev => ({ ev, ts: new Date(ev.date).getTime() })).filter(x => !isNaN(x.ts) && x.ts > nowMs).sort((a, b) => a.ts - b.ts);
-            const nextUpcomingEvent = upcomingSorted.length > 0 ? upcomingSorted[0].ev : null;
-
+            const nextUpcomingEvent = upcomingSorted.length ? upcomingSorted[0].ev : null;
             const enriched = appState.economicEvents.map(ev => {
                 const dt = formatEventDateTime(ev.date), isNextUpcoming = nextUpcomingEvent !== null && ev === nextUpcomingEvent;
                 return { ev, dt, isNextUpcoming, info: analyzeEconomicEvent(ev, dt.isFinishedByTime, isNextUpcoming) };
@@ -1708,7 +1661,7 @@
 
             const totalCount = enriched.length;
             if (totalBadge) totalBadge.textContent = `${totalCount} خبر`;
-            if (totalCount === 0) { container.innerHTML = `<div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">لا توجد أخبار مطابقة لهذا الفلتر حالياً.</div>`; return; }
+            if (!totalCount) { container.innerHTML = `<div class="bg-panel border border-line rounded-lg p-6 text-center text-xs text-zinc-400">لا توجد أخبار مطابقة لهذا الفلتر حالياً.</div>`; return; }
 
             container.innerHTML = enriched.map(({ ev, dt, info, isNextUpcoming }, idx) => `
                 <div ${isNextUpcoming ? 'id="nextUpcomingCard"' : ''} class="rounded-lg p-3.5 space-y-2.5 transition" style="${info.cardStyle}">
@@ -1733,23 +1686,19 @@
         }
 
         async function loadLiveNews(forceRefresh = false) {
-            if (appState.newsFeed.length > 0 && !forceRefresh) { renderNewsFeed(false); return; }
+            if (appState.newsFeed.length && !forceRefresh) { renderNewsFeed(false); return; }
             try {
                 const res = await fetchWithTimeout(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://www.fxstreet.com/rss/news')}`, 6000);
                 const data = await res.json();
                 if (data?.status === 'ok' && Array.isArray(data.items)) {
-                    appState.newsFeed = data.items.slice(0, 12).map(item => {
-                        const dt = formatEventDateTime(item.pubDate);
-                        return { title: item.title, source: 'FXStreet', uaeTime: dt.uaeTime, ksaTime: dt.ksaTime, link: item.link || '#' };
-                    });
+                    appState.newsFeed = data.items.slice(0, 12).map(item => { const dt = formatEventDateTime(item.pubDate); return { title: item.title, source: 'FXStreet', uaeTime: dt.uaeTime, ksaTime: dt.ksaTime, link: item.link || '#' }; });
                     renderNewsFeed(true);
                 }
             } catch (e) { renderNewsFeed(false); }
         }
 
         function renderNewsFeed(forceRedraw = false) {
-            const list = document.getElementById('newsFeedList');
-            if (!list) return;
+            const list = document.getElementById('newsFeedList'); if (!list) return;
             if (!appState.newsFeed.length) {
                 if (fallbackNewsMounted && !forceRedraw) return;
                 fallbackNewsMounted = true;
@@ -1788,9 +1737,7 @@
                 if (inputEl) inputEl.value = savedCode;
                 attemptLogin(savedCode);
             }
-            document.getElementById('loginCodeInput')?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') attemptLogin();
-            });
+            document.getElementById('loginCodeInput')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
         });
     </script>
 </body>
