@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
     <script>
-        const APP_UI_VERSION = "1.7";
+        const APP_UI_VERSION = "1.8";
         (function() {
             try {
                 const savedVer = localStorage.getItem("mtrade_ui_ver");
@@ -162,6 +162,28 @@
         </div>
     </div>
 
+    <!-- نافذة قراءة الخبر داخل التطبيق (بدون الخروج من التطبيق) -->
+    <div id="newsReaderModal" class="hidden fixed inset-0 z-[120] bg-black/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-3">
+        <div class="bg-panel border border-line rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden shadow-2xl" style="border-top: 3px solid #F5C400;">
+            <div class="px-4 py-3 border-b border-line flex items-center justify-between bg-surface">
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black text-black bg-maitha" id="nrSource">أخبار</span>
+                    <span class="text-[10px] font-bold text-zinc-400 mono-num" id="nrTime">🇦🇪 --:--</span>
+                </div>
+                <button onclick="closeNewsReader()" class="px-3 py-1.5 rounded-lg bg-panel border border-maitha text-maitha text-xs font-black active:scale-95 transition">← رجوع للتطبيق</button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto flex-1">
+                <h3 id="nrTitleAr" class="text-sm font-black text-white leading-relaxed"></h3>
+                <p id="nrTitleOrig" class="text-[11px] font-bold text-zinc-400 leading-snug pb-2 border-b border-line" dir="ltr"></p>
+                <div id="nrBodyAr" class="text-xs text-zinc-200 leading-loose font-semibold whitespace-pre-line">جاري ترجمة تفاصيل الخبر...</div>
+            </div>
+            <div class="px-4 py-3 border-t border-line bg-surface flex items-center justify-between gap-2">
+                <button onclick="copyCurrentNewsLink()" class="px-3 py-2 rounded-lg bg-panel border border-line hover:border-maitha text-zinc-300 text-[11px] font-bold active:scale-95 transition">📋 نسخ رابط المصدر</button>
+                <button onclick="closeNewsReader()" class="px-4 py-2 rounded-lg bg-maitha text-black text-xs font-black active:scale-95 transition">إغلاق ✕</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= شاشة تسجيل الدخول المحمية ================= -->
     <div id="loginGate" class="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-obsidian relative overflow-hidden">
         <div class="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-10 blur-3xl bg-maitha"></div>
@@ -238,7 +260,7 @@
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.7</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v1.8</span>
             </p>
         </div>
     </div>
@@ -251,7 +273,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.7</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v1.8</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -273,7 +295,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.7</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.8</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت.</p>
                     </div>
@@ -294,7 +316,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.7</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.8</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على التثبيت.</p>
                     </div>
@@ -427,8 +449,8 @@
                             <div class="flex items-start gap-2 mt-1.5">
                                 <span id="radarFlag" class="text-base leading-none mt-0.5">🌐</span>
                                 <div>
-                                    <p id="radarTitleAr" class="text-xs font-black text-white leading-snug">جاري جلب أقرب خبر اقتصادي قادم...</p>
-                                    <p id="radarTitle" class="text-[10px] font-semibold text-zinc-400 leading-snug mt-0.5"></p>
+                                    <p id="radarTitle" class="text-sm font-black text-white leading-snug" dir="auto">جاري جلب أقرب خبر اقتصادي قادم...</p>
+                                    <p id="radarTitleAr" class="text-[10px] font-semibold text-zinc-400 leading-snug mt-0.5"></p>
                                 </div>
                             </div>
                         </div>
@@ -771,7 +793,7 @@
             <section id="tab-download" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2></div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.7</span>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v1.8</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
@@ -783,7 +805,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4><span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.7</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v1.8</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون</b> مدى الحياة بدون شهادة.</p>
                         </div>
@@ -798,7 +820,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الأندرويد</h4><span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.7</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v1.8</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة وثبّته على جهازك.</p>
                         </div>
@@ -904,7 +926,7 @@
                     <!-- زر التحديث الفوري -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
-                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.7</span>)</h4>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v1.8</span>)</h4>
                             <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع.</p>
                         </div>
                         <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">تحديث الآن ↻</button>
@@ -1108,6 +1130,43 @@
                 }
             } catch (e) {}
             return text;
+        }
+
+
+        // ================= قارئ الأخبار المدمج داخل التطبيق =================
+        let currentReadingNewsLink = '';
+
+        function stripHtmlTags(str) {
+            return String(str || '').replace(/<[^>]*>?/gm, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+
+        async function openNewsReader(type, idx) {
+            const item = type === 'crypto' ? (window._cryptoNewsItems || [])[idx] : (appState.newsFeed || [])[idx];
+            if (!item) return;
+            currentReadingNewsLink = item.link || '';
+            document.getElementById('nrSource').textContent = item.sourceName || item.source || 'أخبار';
+            document.getElementById('nrTime').textContent = `🇦🇪 ${item.uaeTime || '--:--'}`;
+            document.getElementById('nrTitleAr').textContent = item.arTitle || item.title || '';
+            document.getElementById('nrTitleOrig').textContent = item.orig || item.title || '';
+            const bodyEl = document.getElementById('nrBodyAr');
+            bodyEl.textContent = 'جاري ترجمة تفاصيل الخبر للغة العربية...';
+            document.getElementById('newsReaderModal')?.classList.remove('hidden');
+
+            const desc = (item.cleanDesc || '').slice(0, 900);
+            if (desc) {
+                const arBody = await translateToArabicLive(desc);
+                bodyEl.textContent = arBody || desc;
+            } else {
+                bodyEl.textContent = item.arTitle || 'لا توجد تفاصيل إضافية لهذا الخبر.';
+            }
+        }
+
+        function closeNewsReader() {
+            document.getElementById('newsReaderModal')?.classList.add('hidden');
+        }
+
+        function copyCurrentNewsLink() {
+            if (currentReadingNewsLink) copyTextVal(currentReadingNewsLink, 'رابط الخبر');
         }
 
         // ================= زر لصق الكود في شاشة الدخول =================
@@ -1907,15 +1966,15 @@
                     const outcome = evaluateEventOutcome(lastEv);
                     flagEl.textContent = info.flag; strengthEl.textContent = 'آخر خبر صدر';
                     timeEl.textContent = `🇦🇪 ${dt.uaeTime} | 🇸🇦 ${dt.ksaTime}`;
-                    titleArEl.textContent = `آخر خبر: ${info.arTitle} (${info.country})`;
-                    titleEl.textContent = isWeekendClosed ? `ننتظر افتتاح السوق يوم الإثنين (${rolloverOpenUAE} 🇦🇪).` : `انتهت أخبار اليوم — ننتظر افتتاح الجلسة القادمة.`;
+                    titleEl.textContent = `${lastEv.title} (${info.country})`;
+                    titleArEl.textContent = `${info.arTitle} • ` + (isWeekendClosed ? `ننتظر افتتاح السوق الإثنين (${rolloverOpenUAE} 🇦🇪).` : `آخر خبر صدر اليوم.`);
                     if (impDetailEl) impDetailEl.textContent = outcome.detail;
                     if (impBadgeEl) { impBadgeEl.textContent = outcome.badge; impBadgeEl.style.color = outcome.color; }
                 } else {
                     flagEl.textContent = '📅'; strengthEl.textContent = isWeekendClosed ? 'عطلة السوق' : 'بانتظار الأجندة';
                     timeEl.textContent = `🇦🇪 ${format12HourTime(now, 'Asia/Dubai', false)}`;
-                    titleArEl.textContent = `إجمالي الأخبار: ${allEvents.length} • ننتظر افتتاح السوق`;
-                    titleEl.textContent = `يفتح السوق الساعة ${rolloverOpenUAE} 🇦🇪 (${rolloverOpenKSA} 🇸🇦).`;
+                    titleEl.textContent = `بانتظار افتتاح السوق (${rolloverOpenUAE} 🇦🇪)`;
+                    titleArEl.textContent = `إجمالي الأخبار: ${allEvents.length} • يفتح السوق الساعة ${rolloverOpenKSA} 🇸🇦.`;
                     if (impDetailEl) impDetailEl.textContent = isWeekendClosed ? 'السوق التقليدي في عطلة — الكريبتو يعمل 24/7.' : 'لا توجد أخبار مؤثرة حالياً.';
                     if (impBadgeEl) { impBadgeEl.textContent = isWeekendClosed ? 'عطلة الأسبوع' : 'مستقر'; impBadgeEl.style.color = '#F5C400'; }
                 }
@@ -1927,8 +1986,8 @@
             const ev = nextImportant.ev, remainingSec = Math.max(0, Math.floor((nextImportant.ts - nowMs) / 1000));
             const dt = formatEventDateTime(ev.date), info = analyzeEconomicEvent(ev, false, true);
             const outcome = evaluateEventOutcome(ev);
-            flagEl.textContent = info.flag; titleArEl.textContent = `${info.arTitle} (${info.country})`;
-            titleEl.textContent = ev.title; timeEl.textContent = `🇦🇪 ${dt.uaeTime}`; cdEl.textContent = formatCountdownHMS(remainingSec);
+            flagEl.textContent = info.flag; titleEl.textContent = `${ev.title} (${info.country})`;
+            titleArEl.textContent = info.arTitle; timeEl.textContent = `🇦🇪 ${dt.uaeTime}`; cdEl.textContent = formatCountdownHMS(remainingSec);
             strengthEl.textContent = `${info.strength.label} ${info.strength.percent}%`;
             if (impDetailEl) impDetailEl.textContent = outcome.detail;
             if (impBadgeEl) { impBadgeEl.textContent = outcome.badge; impBadgeEl.style.color = outcome.color; }
@@ -2264,19 +2323,23 @@
                     const d = await r.json();
                     if (d?.status === 'ok' && Array.isArray(d.items) && d.items.length) {
                         const items = d.items.slice(0, 10);
-                        const translated = await Promise.all(items.map(async n => ({ ...n, arTitle: await translateToArabicLive(n.title) })));
-                        container.innerHTML = translated.map(n => {
-                            const dt = formatEventDateTime(n.pubDate);
-                            return `
-                                <a href="${n.link || '#'}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line hover:border-maitha rounded-xl p-3.5 space-y-1.5 transition">
-                                    <div class="flex items-center justify-between text-[10px]">
-                                        <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${feed.name}</span>
-                                        <span class="text-zinc-400 mono-num">🇦🇪 ${dt.uaeTime}</span>
-                                    </div>
-                                    <h4 class="text-xs font-bold text-white leading-snug">${n.arTitle}</h4>
-                                    <p class="text-[10px] text-zinc-500 truncate" dir="ltr">${n.title}</p>
-                                </a>`;
-                        }).join('');
+                        const translated = await Promise.all(items.map(async n => ({
+                            ...n,
+                            arTitle: await translateToArabicLive(n.title),
+                            cleanDesc: stripHtmlTags(n.description || n.content || n.title || ''),
+                            sourceName: feed.name,
+                            uaeTime: formatEventDateTime(n.pubDate).uaeTime
+                        })));
+                        window._cryptoNewsItems = translated;
+                        container.innerHTML = translated.map((n, idx) => `
+                            <div onclick="openNewsReader('crypto', ${idx})" class="cursor-pointer bg-panel border border-line hover:border-maitha rounded-xl p-3.5 space-y-1.5 active:scale-[0.99] transition">
+                                <div class="flex items-center justify-between text-[10px]">
+                                    <span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${n.sourceName}</span>
+                                    <span class="text-zinc-400 mono-num">🇦🇪 ${n.uaeTime}</span>
+                                </div>
+                                <h4 class="text-[13px] font-black text-white leading-snug">${n.arTitle}</h4>
+                                <p class="text-[10px] text-zinc-500 truncate" dir="ltr">${n.title}</p>
+                            </div>`).join('');
                         return;
                     }
                 } catch (e) {}
@@ -2376,7 +2439,7 @@
                     </div>
                     <div class="flex items-start gap-2.5">
                         <span class="text-xl leading-none">${info.flag}</span>
-                        <div><h3 class="text-xs font-black text-white">${info.arTitle}</h3><p class="text-[10px] text-zinc-400" dir="ltr">${ev.title}</p></div>
+                        <div><h3 class="text-sm font-black text-white leading-snug" dir="ltr">${ev.title}</h3><p class="text-[10px] font-semibold text-zinc-400 mt-0.5">${info.arTitle}</p></div>
                     </div>
                     <div class="rounded-md px-3 py-2 text-[11px] font-extrabold text-center" style="${info.verdict.boxStyle}">${info.verdict.text}</div>
                 </div>`).join('');
@@ -2392,7 +2455,12 @@
                     appState.newsFeed = await Promise.all(rawItems.map(async item => {
                         const dt = formatEventDateTime(item.pubDate);
                         const arTitle = await translateToArabicLive(item.title);
-                        return { title: arTitle, orig: item.title, source: 'FXStreet', uaeTime: dt.uaeTime, ksaTime: dt.ksaTime, link: item.link || '#' };
+                        return {
+                            arTitle, title: arTitle, orig: item.title,
+                            cleanDesc: stripHtmlTags(item.description || item.content || item.title || ''),
+                            source: 'FXStreet', sourceName: 'FXStreet',
+                            uaeTime: dt.uaeTime, ksaTime: dt.ksaTime, link: item.link || '#'
+                        };
                     }));
                     renderNewsFeed(true);
                 }
@@ -2410,13 +2478,14 @@
                 return;
             }
             list.innerHTML = appState.newsFeed.map((item, idx) => `
-                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="block bg-panel border border-line rounded-lg p-3.5">
+                <div onclick="openNewsReader('fx', ${idx})" class="cursor-pointer bg-panel border border-line hover:border-maitha rounded-lg p-3.5 active:scale-[0.99] transition">
                     <div class="flex items-center justify-between mb-1.5 text-[10px]">
                         <div class="flex items-center gap-1.5"><span class="px-1.5 py-0.5 rounded bg-surface text-maitha font-black mono-num">#${idx + 1}</span><span class="px-2 py-0.5 rounded text-maitha font-extrabold" style="background: rgba(245,196,0,0.14);">${item.source}</span></div>
                         <span class="mono-num text-zinc-400">🇦🇪 ${item.uaeTime} | 🇸🇦 ${item.ksaTime}</span>
                     </div>
-                    <h3 class="text-xs font-bold text-white" dir="auto">${item.title}</h3>
-                </a>`).join('');
+                    <h3 class="text-[13px] font-black text-white leading-snug" dir="auto">${item.title}</h3>
+                    <p class="text-[10px] text-zinc-500 truncate mt-1" dir="ltr">${item.orig || ''}</p>
+                </div>`).join('');
         }
 
         async function fetchFromFirebase(force = false) {
