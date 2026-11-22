@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
     <script>
-        const APP_UI_VERSION = "2.7";
+        const APP_UI_VERSION = "2.8";
         (function() {
             try {
                 const savedVer = localStorage.getItem("mtrade_ui_ver");
@@ -42,7 +42,8 @@
             --accent-yellow-hover: #FFE047;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; touch-action: manipulation; }
+        button, a { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 
         html, body {
             font-family: 'Cairo', sans-serif;
@@ -492,7 +493,7 @@
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v2.7</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v2.8</span>
             </p>
         </div>
     </div>
@@ -557,9 +558,9 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
-                    <a href="https://t.me/K6633" target="_blank" rel="noopener noreferrer" class="py-2.5 rounded-xl bg-surface border border-maitha text-maitha text-xs font-black flex items-center justify-center gap-1">
+                    <button type="button" onclick="contactAdminWithPendingDetails()" class="py-2.5 rounded-xl bg-surface border border-maitha text-maitha text-xs font-black flex items-center justify-center gap-1 active:scale-95 transition">
                         <span>📩 مراسلة الإدارة</span>
-                    </a>
+                    </button>
                     <button onclick="enterPendingFromReg()" class="py-2.5 rounded-xl bg-maitha text-black text-xs font-black">
                         متابعة الدخول ⏳
                     </button>
@@ -634,7 +635,7 @@
                     </p>
                 </div>
 
-                <div class="bg-surface border border-line rounded-xl p-3 space-y-1.5 text-xs">
+                <div class="bg-surface border border-line rounded-xl p-3 space-y-1.5 text-xs text-right">
                     <div class="flex items-center justify-between">
                         <span class="text-zinc-400 font-bold">🆔 رقم الطلب:</span>
                         <span id="pendReqNum" onclick="copyTextVal(this.textContent, 'رقم الطلب')" class="font-black text-maitha mono-num cursor-pointer" dir="ltr">--</span>
@@ -642,6 +643,22 @@
                     <div class="flex items-center justify-between">
                         <span class="text-zinc-400 font-bold">🔑 كود الاشتراك:</span>
                         <span id="pendCode" onclick="copyTextVal(this.textContent, 'الكود')" class="font-black text-white mono-num cursor-pointer" dir="ltr">--</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-zinc-400 font-bold">👤 الاسم والدولة:</span>
+                        <span id="pendNameCountry" class="font-black text-zinc-200">--</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-zinc-400 font-bold">📆 مدة الاشتراك:</span>
+                        <span id="pendDays" class="font-black text-maitha mono-num">-- يوم</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-zinc-400 font-bold">📅 تاريخ ووقت الطلب:</span>
+                        <span id="pendCreatedDate" class="font-bold text-zinc-200 mono-num text-[10px]" dir="ltr">--</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-zinc-400 font-bold">⏱️ مدة الانتظار:</span>
+                        <span id="pendWaitDuration" class="font-black text-amber-300 mono-num text-[10px]">الآن</span>
                     </div>
                 </div>
 
@@ -661,7 +678,7 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 pt-1">
-                    <a href="https://t.me/K6633" target="_blank" rel="noopener noreferrer" class="py-2.5 rounded-xl bg-surface border border-maitha text-maitha text-xs font-black text-center">📩 تواصل مع الإدارة</a>
+                    <button type="button" onclick="contactAdminWithPendingDetails()" class="py-2.5 rounded-xl bg-surface border border-maitha text-maitha text-xs font-black text-center active:scale-95 transition">📩 تواصل مع الإدارة</button>
                     <button onclick="checkPendingApprovalNow(true)" class="py-2.5 rounded-xl bg-maitha text-black text-xs font-black">فحص التفعيل ↻</button>
                 </div>
                 <button onclick="exitPendingGate()" class="text-[11px] text-zinc-500 hover:text-zinc-300 font-bold pt-1">العودة لشاشة تسجيل الدخول</button>
@@ -677,7 +694,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v2.7</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v2.8</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -699,7 +716,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.7</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.8</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت.</p>
                     </div>
@@ -720,7 +737,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.7</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.8</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على التثبيت.</p>
                     </div>
@@ -1257,7 +1274,7 @@
             <section id="tab-download" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2></div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v2.7</span>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v2.8</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
@@ -1269,7 +1286,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4><span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.7</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.8</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون</b> مدى الحياة بدون شهادة.</p>
                         </div>
@@ -1284,7 +1301,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الأندرويد</h4><span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.7</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.8</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة وثبّته على جهازك.</p>
                         </div>
@@ -1390,7 +1407,7 @@
                     <!-- زر التحديث الفوري -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
-                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v2.7</span>)</h4>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v2.8</span>)</h4>
                             <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع.</p>
                         </div>
                         <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">تحديث الآن ↻</button>
@@ -2044,10 +2061,61 @@
             document.getElementById('pendWelcomeTitle').textContent = `أهلاً بك يا ${user.name || 'مشتركنا الكريم'} في M TRADE`;
             document.getElementById('pendReqNum').textContent = user.req_num || 'قيد الترقيم';
             document.getElementById('pendCode').textContent = user.code || '--';
+            const ncEl = document.getElementById('pendNameCountry');
+            if (ncEl) ncEl.textContent = `${user.flag || getCountryFlag(user.country)} ${user.name || '-'} (${user.country || 'الإمارات'})`;
+            const dEl = document.getElementById('pendDays');
+            if (dEl) dEl.textContent = `${user.days || 7} يوم${user.is_renewal ? ' (تجديد)' : ''}`;
+
+            const createdMs = user.updated_at || user.created_at || Date.now();
+            const fmtFull = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', hour12: true
+            }).format(new Date(createdMs));
+            const cdEl = document.getElementById('pendCreatedDate');
+            if (cdEl) cdEl.textContent = fmtFull;
             document.getElementById('dhikrCounterVal').textContent = dhikrCount;
 
+            const updateWaitText = () => {
+                const wEl = document.getElementById('pendWaitDuration');
+                if (!wEl) return;
+                const diffSec = Math.max(0, Math.floor((Date.now() - createdMs) / 1000));
+                const mins = Math.floor(diffSec / 60);
+                const hrs = Math.floor(mins / 60);
+                if (hrs > 0) wEl.textContent = `منذ ${hrs} ساعة و ${mins % 60} دقيقة`;
+                else if (mins > 0) wEl.textContent = `منذ ${mins} دقيقة`;
+                else wEl.textContent = `منذ لحظات (${diffSec} ثانية)`;
+            };
+            updateWaitText();
+
             if (pendingPollInterval) clearInterval(pendingPollInterval);
-            pendingPollInterval = setInterval(() => checkPendingApprovalNow(false), 10000);
+            pendingPollInterval = setInterval(() => {
+                updateWaitText();
+                checkPendingApprovalNow(false);
+            }, 10000);
+        }
+
+        function contactAdminWithPendingDetails() {
+            const u = pendingUserRecord || {};
+            const createdMs = u.updated_at || u.created_at || Date.now();
+            const fmtFull = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', hour12: true
+            }).format(new Date(createdMs));
+            const msg =
+                `السلام عليكم إدارة M TRADE VIP 🟡\n` +
+                `أرغب في تفعيل اشتراكي (${u.is_renewal ? 'طلب تجديد' : 'اشتراك جديد'}):\n` +
+                `━━━━━━━━━━━━━━━━━━\n` +
+                `👤 الاسم: ${u.name || '-'}\n` +
+                `🌍 الدولة: ${u.flag || getCountryFlag(u.country)} ${u.country || 'الإمارات'}\n` +
+                `🆔 رقم الطلب: ${u.req_num || '-'}\n` +
+                `🔑 كود الاشتراك: ${u.code || '-'}\n` +
+                `⏳ المدة المطلوبة: ${u.days || 7} يوم\n` +
+                `📅 تاريخ ووقت الطلب: ${fmtFull} (بتوقيت الإمارات)`;
+
+            try { navigator.clipboard?.writeText(msg); } catch (e) {}
+            const tgUrl = `https://t.me/K6633?text=${encodeURIComponent(msg)}`;
+            window.open(tgUrl, '_blank', 'noopener,noreferrer');
+            showToast('تم تجهيز ونسخ تفاصيل اشتراكك لمراسلة الإدارة 📩');
         }
 
         async function checkPendingApprovalNow(manual = false) {
