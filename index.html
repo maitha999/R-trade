@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="https://r-trade.vip/icon-only.png">
     <title>M TRADE | R-Trade.VIP</title>
     <script>
-        const APP_UI_VERSION = "2.3";
+        const APP_UI_VERSION = "2.4";
         (function() {
             try {
                 const savedVer = localStorage.getItem("mtrade_ui_ver");
@@ -251,33 +251,33 @@
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-zinc-400 block mb-1">سعر الدخول</label>
-                        <input id="pubSigEntry" type="number" step="any" oninput="autoSuggestTpFromEntry()" placeholder="0.00"
+                        <input id="pubSigEntry" type="text" inputmode="decimal" oninput="autoSuggestTpFromEntry()" placeholder="مثال: 2650 أو 2650.50"
                             class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-2.5 py-2 text-xs font-black text-white mono-num outline-none">
                     </div>
                 </div>
 
                 <div>
                     <label class="text-[10px] font-bold text-rose-300 block mb-1">🛑 وقف الخسارة (SL)</label>
-                    <input id="pubSigSl" type="number" step="any" oninput="autoSuggestTpFromEntry()" placeholder="0.00"
+                    <input id="pubSigSl" type="text" inputmode="decimal" oninput="autoSuggestTpFromEntry()" placeholder="اختياري — أي رقم أو بدون وقف"
                         class="w-full bg-surface border border-rose-500/40 focus:border-rose-400 rounded-xl px-3 py-2 text-xs font-black text-rose-300 mono-num outline-none">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="text-[10px] font-bold text-emerald-300 block mb-1">الهدف 1 (TP1)</label>
-                        <input id="pubSigTp1" type="number" step="any" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
+                        <input id="pubSigTp1" type="text" inputmode="decimal" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-emerald-300 block mb-1">الهدف 2 (TP2)</label>
-                        <input id="pubSigTp2" type="number" step="any" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
+                        <input id="pubSigTp2" type="text" inputmode="decimal" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-emerald-300 block mb-1">الهدف 3 (TP3)</label>
-                        <input id="pubSigTp3" type="number" step="any" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
+                        <input id="pubSigTp3" type="text" inputmode="decimal" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-emerald-300 block mb-1">الهدف 4 (TP4)</label>
-                        <input id="pubSigTp4" type="number" step="any" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
+                        <input id="pubSigTp4" type="text" inputmode="decimal" oninput="this.dataset.manualEdited='1'" class="w-full bg-surface border border-line rounded-xl px-2.5 py-1.5 text-xs font-black text-white mono-num outline-none">
                     </div>
                 </div>
 
@@ -317,6 +317,19 @@
                     <div>
                         <label class="text-[10px] font-bold text-zinc-400 block mb-1">اسم المشترك أو المحلل</label>
                         <input id="admNewName" type="text" placeholder="مثال: أحمد المنصوري" class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] font-bold text-zinc-400 block mb-1">النوع</label>
+                            <select id="admNewGender" class="w-full bg-surface border border-line rounded-xl px-2.5 py-2 text-xs font-black text-white outline-none">
+                                <option value="male">ذكر 👨🏻</option>
+                                <option value="female">أنثى 👩🏻</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-zinc-400 block mb-1">الدولة العربية</label>
+                            <select id="admNewCountry" class="w-full bg-surface border border-line rounded-xl px-2 py-2 text-xs font-black text-maitha outline-none"></select>
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -412,6 +425,23 @@
                     <span class="text-xs font-bold text-zinc-300">حفظ الكود على هذا الجهاز للدخول التلقائي</span>
                 </label>
 
+                <!-- القوانين وإخلاء المسؤولية القانونية على صفحة الدخول -->
+                <div class="bg-surface border border-line rounded-xl p-3 space-y-2 text-[10px] text-zinc-300 leading-relaxed">
+                    <div class="flex items-center justify-between border-b border-line pb-1.5">
+                        <span class="font-black text-maitha text-[11px]">⚖️ القوانين وإخلاء المسؤولية القانونية</span>
+                        <span class="text-zinc-500 font-bold">إلزامي</span>
+                    </div>
+                    <ul class="space-y-1 text-zinc-400 font-semibold">
+                        <li>• الأسواق المالية شديدة التقلب والمخاطرة، ولا توجد أي توصية أو تحليل يضمن الربح أو يمنع الخسارة.</li>
+                        <li>• جميع التحليلات والتوصيات لأغراض معلوماتية وتدريبية، وقرار التداول وحجم المخاطرة مسؤوليتك الشخصية الكاملة بنسبة 100%.</li>
+                        <li>• يمنع مشاركة الكود أو نسخ المحتوى وإعادة نشره، ويحق للإدارة إيقاف أي حساب مخالف فوراً.</li>
+                    </ul>
+                    <label class="flex items-start gap-2 pt-1 cursor-pointer select-none text-white font-bold">
+                        <input id="legalAgreeChk" type="checkbox" checked class="w-4 h-4 accent-[#F5C400] rounded mt-0.5 shrink-0">
+                        <span>أقرّ وأوافق على القوانين وأتحمّل كامل المسؤولية الشخصية عن صفقاتي ومخاطر السوق.</span>
+                    </label>
+                </div>
+
                 <div id="loginErrorBox" class="hidden rounded-lg px-3 py-2 text-[11px] font-extrabold text-rose-300 text-center" style="background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.35);"></div>
 
                 <button id="loginSubmitBtn" onclick="attemptLogin()" class="w-full py-3 rounded-xl bg-maitha hover:opacity-95 text-black text-sm font-black active:scale-95 transition shadow-lg">
@@ -450,7 +480,7 @@
             </div>
 
             <p class="text-center text-[10px] font-bold text-zinc-500">
-                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v2.3</span>
+                جميع الحقوق محفوظة © 2026 لدى <span class="text-maitha">R-Trade.VIP</span> • <span class="mono-num">v2.4</span>
             </p>
         </div>
     </div>
@@ -467,38 +497,51 @@
             </div>
 
             <div id="selfRegFormArea" class="space-y-3 text-xs">
-                <p class="text-[11px] text-zinc-400 leading-relaxed">سجّل بياناتك للحصول على <b class="text-maitha">كود الاشتراك ورقم الطلب</b> (يُسمح بطلب واحد فقط لكل جهاز).</p>
+                <p class="text-[11px] text-zinc-400 leading-relaxed">سجّل بياناتك (اشتراك واحد فقط لكل جهاز في فترة التجربة دون تحديد مبلغ).</p>
                 <div>
                     <label class="text-[11px] font-bold text-zinc-300 block mb-1">👤 الاسم الكامل</label>
-                    <input id="regUserName" type="text" placeholder="اكتب اسمك هنا..." class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-3 py-2.5 text-xs font-bold text-white outline-none">
+                    <input id="regUserName" type="text" placeholder="اكتب اسمك هنا..." class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[11px] font-bold text-zinc-300 block mb-1">النوع</label>
+                        <select id="regUserGender" class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-2.5 py-2 text-xs font-black text-white outline-none">
+                            <option value="male">ذكر 👨🏻</option>
+                            <option value="female">أنثى 👩🏻</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-zinc-300 block mb-1">الدولة العربية</label>
+                        <select id="regUserCountry" class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-2 py-2 text-xs font-black text-maitha outline-none"></select>
+                    </div>
                 </div>
                 <div>
-                    <label class="text-[11px] font-bold text-zinc-300 block mb-1">⏳ مدة الاشتراك المطلوبة (فترة التجربة)</label>
-                    <select id="regUserDays" class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-3 py-2.5 text-xs font-black text-maitha outline-none">
+                    <label class="text-[11px] font-bold text-zinc-300 block mb-1">⏳ مدة الاشتراك المطلوبة</label>
+                    <select id="regUserDays" class="w-full bg-surface border border-line focus:border-maitha rounded-xl px-3 py-2 text-xs font-black text-maitha outline-none">
                         <option value="7">📅 اشتراك أسبوع (7 أيام)</option>
                         <option value="30" selected>🗓 اشتراك شهر (30 يوم)</option>
-                        <option value="90">👑 اشتراك 3 أشهر (90 يوم)</option>
                     </select>
                 </div>
+                <label class="flex items-start gap-2 cursor-pointer select-none text-[10px] text-zinc-300 font-bold bg-surface border border-line rounded-xl p-2.5">
+                    <input id="regAgreeLegalChk" type="checkbox" checked class="w-4 h-4 accent-[#F5C400] rounded mt-0.5 shrink-0">
+                    <span>أوافق على القوانين وأقرّ بأن السوق متقلب والخسارة محتملة وتقع على مسؤوليتي الشخصية الكاملة.</span>
+                </label>
                 <button id="regSubmitBtn" onclick="submitSelfRegistration()" class="w-full py-3 rounded-xl bg-maitha text-black text-xs font-black active:scale-95 transition shadow-lg">
                     إرسال طلب الاشتراك 🚀
                 </button>
             </div>
 
             <div id="selfRegSuccessArea" class="hidden space-y-3 text-center">
-                <div class="bg-surface border border-maitha/50 rounded-xl p-4 space-y-2">
-                    <span class="text-2xl block">🎫</span>
-                    <h4 class="text-xs font-black text-emerald-400">تم تسجيل طلبك بنجاح!</h4>
-                    <p class="text-[11px] text-zinc-300 font-semibold">يرجى <b>تصوير الشاشة</b> أو حفظ الكود ورقم الطلب لمراسلة الإدارة وتفعيل حسابك:</p>
-                    <div class="bg-panel border border-line rounded-lg p-2.5 space-y-1.5">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-zinc-400 font-bold">🆔 رقم الطلب:</span>
-                            <span id="regOutReqNum" onclick="copyTextVal(this.textContent, 'رقم الطلب')" class="font-black text-white mono-num cursor-pointer" dir="ltr">--</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-zinc-400 font-bold">🔑 كود الدخول:</span>
-                            <span id="regOutCode" onclick="copyTextVal(this.textContent, 'الكود')" class="font-black text-maitha mono-num cursor-pointer" dir="ltr">--</span>
-                        </div>
+                <div class="bg-surface border border-maitha/50 rounded-xl p-4 space-y-2.5">
+                    <span class="text-2xl block">📸</span>
+                    <h4 class="text-xs font-black text-emerald-400">تم تسجيل طلبك — صوّر الشاشة أو انسخ الكود</h4>
+                    <p class="text-[11px] text-zinc-300 font-semibold leading-relaxed">احتفظ بكود الاشتراك أدناه في المفكرة أو صوّر الشاشة لحين موافقة الإدارة وتفعيل حسابك:</p>
+                    <div class="bg-panel border border-maitha/50 rounded-xl p-3 space-y-2">
+                        <span class="text-[10px] text-zinc-400 font-bold block">🔑 كود الاشتراك الخاص بك:</span>
+                        <div id="regOutCode" class="text-base font-black text-maitha mono-num tracking-wider" dir="ltr">--</div>
+                        <button type="button" onclick="copyTextVal(document.getElementById('regOutCode').textContent, 'كود الاشتراك')" class="w-full py-2 rounded-lg bg-maitha text-black text-xs font-black active:scale-95 transition">
+                            📋 نسخ الكود للاحتفاظ به
+                        </button>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
@@ -569,7 +612,7 @@
                     <img src="https://r-trade.vip/icon-only.png" alt="M TRADE" class="w-9 h-9 rounded-lg border border-maitha object-cover bg-black">
                     <div>
                         <h2 class="text-sm font-black text-white leading-none">تحميل تطبيق M TRADE</h2>
-                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v2.3</span>
+                        <span class="text-[10px] font-bold text-zinc-400">الإصدار الرسمي v2.4</span>
                     </div>
                 </div>
                 <button onclick="closePublicDownload()" class="px-3.5 py-2 rounded-lg bg-maitha text-black text-xs font-black flex items-center gap-1.5 active:scale-95 transition">
@@ -591,7 +634,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع (بدون شهادة)</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.3</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.4</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون والآيباد</b> مدى الحياة. افتح الموقع عبر <b class="text-zinc-200">Safari</b> واضغط زر التثبيت.</p>
                     </div>
@@ -612,7 +655,7 @@
                                     <span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.3</span>
+                            <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.4</span>
                         </div>
                         <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة، ثم افتحه ووافق على التثبيت.</p>
                     </div>
@@ -864,6 +907,32 @@
                     <div id="signalsNewsWarning" class="hidden rounded-lg px-3 py-2 text-[11px] font-black text-rose-300 flex items-center gap-2" style="background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.45);">
                         <span>🚨</span>
                         <span id="signalsNewsWarningText">تحذير: يوجد خبر اقتصادي قوي قريب — يرجى الحذر وتقليل حجم العقد أو تأمين الصفقات!</span>
+                    </div>
+                </div>
+
+                <!-- سجل الأداء الشهري للمحللين + تنبيهات وصول السعر الخاصة -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                    <div class="bg-panel border border-line rounded-xl p-3 space-y-2">
+                        <div class="flex items-center justify-between border-b border-line pb-1.5">
+                            <span class="text-[11px] font-black text-maitha">🏅 سجل الأداء الشهري للمحللين</span>
+                            <span class="text-[9px] font-bold text-zinc-400">الصفقات الناجحة</span>
+                        </div>
+                        <div id="analystMonthlyLeaderboard" class="space-y-1.5 text-[11px]">
+                            <p class="text-zinc-500 text-[10px]">جاري احتساب أداء المحللين...</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-panel border border-line rounded-xl p-3 space-y-2">
+                        <div class="flex items-center justify-between border-b border-line pb-1.5">
+                            <span class="text-[11px] font-black text-maitha">🔔 تنبيه وصول السعر (Price Alert)</span>
+                            <span class="text-[9px] font-bold text-zinc-400">خاص بك</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <input id="paSymbolInput" type="text" placeholder="BTCUSD" class="w-24 bg-surface border border-line rounded-lg px-2 py-1.5 text-[11px] font-black text-white mono-num uppercase outline-none">
+                            <input id="paPriceInput" type="text" inputmode="decimal" placeholder="السعر المستهدف" class="flex-1 bg-surface border border-line rounded-lg px-2 py-1.5 text-[11px] font-black text-maitha mono-num outline-none">
+                            <button type="button" onclick="addUserPriceAlert()" class="px-2.5 py-1.5 rounded-lg bg-maitha text-black text-[11px] font-black active:scale-95">+</button>
+                        </div>
+                        <div id="userPriceAlertsList" class="space-y-1 max-h-24 overflow-y-auto text-[10px]"></div>
                     </div>
                 </div>
 
@@ -1122,7 +1191,7 @@
             <section id="tab-download" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-line pb-2.5">
                     <div class="flex items-center gap-2"><span class="w-1.5 h-5 rounded-sm bg-maitha"></span><h2 class="text-sm font-black text-white">تحميل تطبيق M TRADE</h2></div>
-                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v2.3</span>
+                    <span class="px-2.5 py-0.5 rounded text-[11px] font-black text-black bg-maitha mono-num">v2.4</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                     <div class="bg-panel border border-line rounded-xl p-4 space-y-3.5 flex flex-col justify-between">
@@ -1134,7 +1203,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الآيفون والآيباد</h4><span class="text-[10px] font-bold text-zinc-400">iOS • تثبيت مباشر للجميع</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.3</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-maitha mono-num">iOS v2.4</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">يعمل على <b class="text-zinc-200">جميع أجهزة الآيفون</b> مدى الحياة بدون شهادة.</p>
                         </div>
@@ -1149,7 +1218,7 @@
                                     </div>
                                     <div><h4 class="text-sm font-black text-white">نسخة الأندرويد</h4><span class="text-[10px] font-bold text-zinc-400">Android • ملف APK مباشر</span></div>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.3</span>
+                                <span class="px-2 py-0.5 rounded bg-surface border border-line text-[10px] font-extrabold text-emerald-400 mono-num">APK v2.4</span>
                             </div>
                             <p class="text-[11px] text-zinc-400 leading-relaxed">حمّل ملف <b class="text-zinc-200">M-Trade.apk</b> مباشرة وثبّته على جهازك.</p>
                         </div>
@@ -1255,7 +1324,7 @@
                     <!-- زر التحديث الفوري -->
                     <div class="bg-surface border border-line rounded-xl p-3.5 flex items-center justify-between gap-2">
                         <div>
-                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v2.3</span>)</h4>
+                            <h4 class="text-xs font-black text-white">🔄 إصدار التطبيق (<span class="text-maitha mono-num">v2.4</span>)</h4>
                             <p class="text-[10px] text-zinc-400 mt-0.5">اضغط للتأكد من سحب أحدث نسخة من الموقع.</p>
                         </div>
                         <button onclick="forceAppRefresh()" class="px-3 py-2 rounded-lg bg-panel border border-maitha text-maitha text-[11px] font-black shrink-0 active:scale-95 transition">تحديث الآن ↻</button>
@@ -1468,6 +1537,144 @@
 
 
 
+
+        // ================= قائمة الدول العربية الكاملة + الأعلام =================
+        const ARAB_COUNTRIES = [
+            { name: "الإمارات", flag: "🇦🇪" }, { name: "السعودية", flag: "🇸🇦" },
+            { name: "الكويت", flag: "🇰🇼" }, { name: "قطر", flag: "🇶🇦" },
+            { name: "البحرين", flag: "🇧🇭" }, { name: "عُمان", flag: "🇴🇲" },
+            { name: "مصر", flag: "🇪🇬" }, { name: "الأردن", flag: "🇯🇴" },
+            { name: "لبنان", flag: "🇱🇧" }, { name: "سوريا", flag: "🇸🇾" },
+            { name: "العراق", flag: "🇮🇶" }, { name: "فلسطين", flag: "🇵🇸" },
+            { name: "اليمن", flag: "🇾🇪" }, { name: "المغرب", flag: "🇲🇦" },
+            { name: "الجزائر", flag: "🇩🇿" }, { name: "تونس", flag: "🇹🇳" },
+            { name: "ليبيا", flag: "🇱🇾" }, { name: "السودان", flag: "🇸🇩" },
+            { name: "موريتانيا", flag: "🇲🇷" }, { name: "الصومال", flag: "🇸🇴" },
+            { name: "جيبوتي", flag: "🇩🇯" }, { name: "جزر القمر", flag: "🇰🇲" }
+        ];
+
+        function getCountryFlag(countryName) {
+            const found = ARAB_COUNTRIES.find(c => c.name === countryName);
+            return found ? found.flag : "🌍";
+        }
+
+        function populateArabCountrySelects() {
+            const optsHtml = ARAB_COUNTRIES.map(c => `<option value="${c.name}">${c.flag} ${c.name}</option>`).join('');
+            const rSel = document.getElementById('regUserCountry');
+            const aSel = document.getElementById('admNewCountry');
+            if (rSel && !rSel.innerHTML) rSel.innerHTML = optsHtml;
+            if (aSel && !aSel.innerHTML) aSel.innerHTML = optsHtml;
+        }
+
+        // ================= سجل الأداء الشهري للمحللين =================
+        function renderAnalystMonthlyLeaderboard() {
+            const box = document.getElementById('analystMonthlyLeaderboard');
+            if (!box) return;
+            const monthAgo = Date.now() - 30 * 86400 * 1000;
+            const stats = {};
+            (appState.signals || []).forEach(s => {
+                if ((s.source === 'analyst' || s.analyst_name) && (s.updated_at || s.created_at || 0) >= monthAgo) {
+                    const name = s.analyst_name || 'محلل';
+                    if (!stats[name]) stats[name] = { name, wins: 0, total: 0 };
+                    stats[name].total++;
+                    if ((s.targets_hit || 0) > 0 || s.status === 'closed_win') stats[name].wins++;
+                }
+            });
+            const rows = Object.values(stats).sort((a, b) => b.wins - a.wins);
+            if (!rows.length) {
+                box.innerHTML = `<p class="text-zinc-500 text-[10px]">لا توجد صفقات محللين مسجلة هذا الشهر بعد.</p>`;
+                return;
+            }
+            box.innerHTML = rows.slice(0, 5).map((r, i) => `
+                <div class="flex items-center justify-between bg-surface border border-line rounded-lg px-2.5 py-1.5">
+                    <span class="font-bold text-white"><b class="text-maitha mono-num">#${i + 1}</b> ${r.name}</span>
+                    <span class="font-black text-emerald-400 mono-num">${r.wins} ناجحة / ${r.total}</span>
+                </div>`).join('');
+        }
+
+        // ================= تنبيهات وصول السعر الخاصة بالمشترك (Price Alert) =================
+        const STORAGE_PRICE_ALERTS = "mtrade_price_alerts_v1";
+        let userPriceAlerts = [];
+
+        function loadUserPriceAlerts() {
+            try { userPriceAlerts = JSON.parse(localStorage.getItem(STORAGE_PRICE_ALERTS) || "[]"); } catch (e) { userPriceAlerts = []; }
+            renderUserPriceAlerts();
+        }
+
+        function addUserPriceAlert() {
+            const sym = (document.getElementById('paSymbolInput')?.value || '').trim().toUpperCase();
+            const target = parseFloat(String(document.getElementById('paPriceInput')?.value || '').replace(/,/g, ''));
+            if (!sym || isNaN(target) || target <= 0) { showToast('أدخل رمز العملة والسعر المستهدف'); return; }
+            userPriceAlerts.push({ id: Date.now(), symbol: sym, target, triggered: false });
+            localStorage.setItem(STORAGE_PRICE_ALERTS, JSON.stringify(userPriceAlerts));
+            document.getElementById('paPriceInput').value = '';
+            renderUserPriceAlerts();
+            showToast(`تم ضبط منبه ${sym} عند ${target} 🔔`);
+        }
+
+        function removeUserPriceAlert(id) {
+            userPriceAlerts = userPriceAlerts.filter(a => a.id !== id);
+            localStorage.setItem(STORAGE_PRICE_ALERTS, JSON.stringify(userPriceAlerts));
+            renderUserPriceAlerts();
+        }
+
+        function renderUserPriceAlerts() {
+            const box = document.getElementById('userPriceAlertsList');
+            if (!box) return;
+            if (!userPriceAlerts.length) {
+                box.innerHTML = `<p class="text-zinc-500">لا توجد منبهات سعرية مضافة.</p>`;
+                return;
+            }
+            box.innerHTML = userPriceAlerts.map(a => `
+                <div class="flex items-center justify-between bg-surface border border-line rounded px-2 py-1">
+                    <span class="font-bold text-white mono-num">${a.symbol} → <b class="text-maitha">${a.target}</b> ${a.triggered ? '✅' : '⏳'}</span>
+                    <button type="button" onclick="removeUserPriceAlert(${a.id})" class="text-rose-400 font-black px-1">✕</button>
+                </div>`).join('');
+        }
+
+        function evaluatePriceAlertsLive() {
+            if (!userPriceAlerts.length) return;
+            let changed = false;
+            userPriceAlerts.forEach(a => {
+                if (a.triggered) return;
+                const p = livePriceMap[a.symbol] || livePriceMap[symbolToBinancePair(a.symbol)];
+                if (p && Math.abs(p - a.target) / a.target <= 0.0008) {
+                    a.triggered = true;
+                    changed = true;
+                    addNotification(`تنبيه وصول السعر 🔔 ${a.symbol}`, `وصل السعر الآن إلى ${p} بالقرب من هدفك (${a.target})!`, 'signal', 'force');
+                }
+            });
+            if (changed) {
+                localStorage.setItem(STORAGE_PRICE_ALERTS, JSON.stringify(userPriceAlerts));
+                renderUserPriceAlerts();
+            }
+        }
+
+        // ================= حالة الاتصال (متصل) للإداريين فقط + تعديل الدولة/العلم =================
+        async function sendOnlinePresenceHeartbeat() {
+            if (!currentUserRecord?.code || currentUserRecord.isOwner) return;
+            try {
+                await fetch(`${FIREBASE_DB_URL}/mtrade_users/${encodeURIComponent(currentUserRecord.code)}.json`, {
+                    method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ last_seen_ms: Date.now() })
+                });
+            } catch (e) {}
+        }
+
+        function adminEditCountryFlag(code, name, curCountry) {
+            const nextCountry = prompt(`أدخل اسم الدولة العربية لـ (${name}) من القائمة (الإمارات، السعودية، مصر، الكويت، قطر، البحرين، عُمان، الأردن...):`, curCountry || "الإمارات");
+            if (!nextCountry || !nextCountry.trim()) return;
+            const cleanC = nextCountry.trim();
+            openConfirmModal('تأكيد تحديث الدولة والعلم', `تحديث دولة (${name}) إلى (${getCountryFlag(cleanC)} ${cleanC})؟`, async () => {
+                await fetch(`${FIREBASE_DB_URL}/mtrade_users/${encodeURIComponent(code)}.json`, {
+                    method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: cleanC, flag: getCountryFlag(cleanC) })
+                });
+                showToast('تم تحديث الدولة والعلم ✅');
+                loadAdminUsersList();
+            });
+        }
+
         // ================= جلب السعر اللحظي في نافذة نشر التوصية =================
         let modalLiveQuoteVal = 0;
 
@@ -1579,7 +1786,12 @@
         }
 
         async function submitSelfRegistration() {
+            const regLegal = document.getElementById('regAgreeLegalChk');
+            if (regLegal && !regLegal.checked) { showToast('يرجى الموافقة على القوانين وتحمل مسؤولية المخاطرة أولاً'); return; }
             const name = document.getElementById('regUserName').value.trim();
+            const gender = document.getElementById('regUserGender')?.value || 'male';
+            const country = document.getElementById('regUserCountry')?.value || 'الإمارات';
+            const flag = getCountryFlag(country);
             const days = parseInt(document.getElementById('regUserDays').value, 10) || 7;
             const btn = document.getElementById('regSubmitBtn');
             if (!name) { showToast('يرجى كتابة اسمك أولاً'); return; }
@@ -1594,7 +1806,7 @@
                     const r = await fetch(`${workerBaseUrl}/register-request`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, days, device_id: deviceId })
+                        body: JSON.stringify({ name, gender, country, flag, days, device_id: deviceId })
                     });
                     resData = await r.json();
                 } else {
@@ -1837,18 +2049,21 @@
             const sym = document.getElementById('pubSigSymbol').value.trim().toUpperCase();
             const dir = document.getElementById('pubSigDir').value;
             const tf = document.getElementById('pubSigTf').value;
-            const entry = parseFloat(document.getElementById('pubSigEntry').value);
-            const sl = parseFloat(document.getElementById('pubSigSl').value);
+            const parseFlexNum = (v) => parseFloat(String(v || '').replace(/,/g, '').trim());
+            const entry = parseFlexNum(document.getElementById('pubSigEntry').value);
+            const slRaw = document.getElementById('pubSigSl').value.trim();
+            const slParsed = slRaw ? parseFlexNum(slRaw) : NaN;
+            const sl = !isNaN(slParsed) ? slParsed : 0;
             const tpVals = [
-                parseFloat(document.getElementById('pubSigTp1').value),
-                parseFloat(document.getElementById('pubSigTp2').value),
-                parseFloat(document.getElementById('pubSigTp3').value),
-                parseFloat(document.getElementById('pubSigTp4').value),
+                parseFlexNum(document.getElementById('pubSigTp1').value),
+                parseFlexNum(document.getElementById('pubSigTp2').value),
+                parseFlexNum(document.getElementById('pubSigTp3').value),
+                parseFlexNum(document.getElementById('pubSigTp4').value),
             ];
             const customNote = document.getElementById('pubSigNote').value.trim();
 
-            if (!sym || isNaN(entry) || isNaN(sl)) {
-                showToast('يرجى إدخال اسم العملة وسعر الدخول والوقف بشكل صحيح');
+            if (!sym || isNaN(entry) || entry <= 0) {
+                showToast('يرجى إدخال اسم العملة وسعر الدخول بشكل صحيح');
                 return;
             }
 
@@ -1867,9 +2082,14 @@
                 });
 
                 const sigKey = editId || `${sym}_${tf}_M_${Date.now().toString().slice(-4)}`;
-                const authorName = currentUserRecord.isOwner ? 'OWNER' : (currentUserRecord.name || 'محلل');
-                const sourceType = currentUserRecord.isAnalystRole ? 'analyst' : 'admin';
-                const authorLabel = currentUserRecord.isAnalystRole ? `من المحلل: ${authorName}` : `توصية الإدارة (${authorName}) 👑`;
+                const authorName = currentUserRecord.isOwner ? 'OWNER' : (currentUserRecord.name || 'إداري');
+                const isFem = currentUserRecord.gender === 'female';
+                const sourceType = currentUserRecord.isAnalystRole ? 'analyst' : (currentUserRecord.isOwner ? 'admin' : 'admin_staff');
+                const authorLabel = currentUserRecord.isAnalystRole
+                    ? `${isFem ? 'المحللة' : 'المحلل'}: ${authorName}`
+                    : (currentUserRecord.isOwner
+                        ? `👑 توصية المالك: ${authorName}`
+                        : `${isFem ? 'الإدارية' : 'الإداري'}: ${authorName}`);
 
                 const payload = {
                     id: sigKey,
@@ -1894,6 +2114,7 @@
                     note: customNote || (currentUserRecord.isAnalystRole ? `تحليل خاص من المحلل ${authorName} — توكل على الله.` : 'توصية معتمدة من الإدارة — التزم بإدارة رأس المال.'),
                     updated_at: Date.now(),
                     time_uae: format12HourTime(new Date(), 'Asia/Dubai', false),
+                    date_time_uae: `${new Intl.DateTimeFormat('ar-AE', { timeZone: 'Asia/Dubai', day: 'numeric', month: 'short' }).format(new Date())} • ${format12HourTime(new Date(), 'Asia/Dubai', false)}`,
                 };
                 if (!editId) payload.created_at = Date.now();
 
@@ -1993,14 +2214,16 @@
                     <div class="bg-surface border border-line rounded-xl p-3 space-y-2">
                         <div class="flex items-center justify-between gap-2">
                             <div>
-                                <span class="text-xs font-black text-white">${u.name || '-'}</span>
-                                <span class="px-2 py-0.5 rounded bg-panel border border-line text-[9px] font-bold text-maitha mr-1">${u.role === 'analyst' ? 'محلل' : u.role === 'admin' ? 'إداري' : 'مشترك'}</span>
+                                <span class="text-xs font-black text-white">${u.flag || getCountryFlag(u.country)} ${u.name || '-'}</span>
+                                <span class="px-2 py-0.5 rounded bg-panel border border-line text-[9px] font-bold text-maitha mr-1">${u.role === 'analyst' ? (u.gender === 'female' ? 'محللة' : 'محلل') : u.role === 'admin' ? (u.gender === 'female' ? 'إدارية' : 'إداري') : 'مشترك'}</span>
+                                ${u.last_seen_ms && (Date.now() - u.last_seen_ms < 60000) ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-black text-emerald-300 bg-emerald-950 mr-1">🟢 متصل</span>` : ''}`
                                 ${!hideCodesForAdmin ? `<span class="text-[10px] text-zinc-400 mono-num block mt-0.5" dir="ltr">${u.code}</span>` : `<span class="text-[10px] text-zinc-500 block mt-0.5">الكود محمي 🔒</span>`}
                             </div>
                             <span class="px-2 py-0.5 rounded text-[10px] font-black ${u.status === 'active' ? 'bg-emerald-950 text-emerald-300' : 'bg-rose-950 text-rose-300'}">${u.status === 'active' ? 'نشط' : 'موقوف'}</span>
                         </div>
                         <div class="flex items-center gap-1.5 flex-wrap">
                             <button onclick="adminRenameUser('${u.code}', '${(u.name || '').replace(/'/g, '')}')" class="px-2 py-1 rounded bg-panel border border-line text-zinc-200 text-[10px] font-bold">✏️ الاسم</button>
+                            <button onclick="adminEditCountryFlag('${u.code}', '${(u.name || '').replace(/'/g, '')}', '${u.country || 'الإمارات'}')" class="px-2 py-1 rounded bg-panel border border-line text-maitha text-[10px] font-bold">🌍 الدولة/العلم</button>
                             <button onclick="adminExtendUser('${u.code}', '${(u.name || '').replace(/'/g, '')}', ${u.expires_at || 0}, ${u.days || 30})" class="px-2 py-1 rounded bg-panel border border-maitha/40 text-maitha text-[10px] font-bold">+30 يوم</button>
                             <button onclick="adminPromoteUser('${u.code}', '${(u.name || '').replace(/'/g, '')}', '${u.role || 'subscriber'}')" class="px-2 py-1 rounded bg-panel border border-line text-emerald-300 text-[10px] font-bold">⬆️ ترقية</button>
                             <button onclick="adminResetDevice('${u.code}', '${(u.name || '').replace(/'/g, '')}')" class="px-2 py-1 rounded bg-panel border border-line text-zinc-300 text-[10px] font-bold">🔓 فك الجهاز</button>
@@ -2405,6 +2628,8 @@
         async function attemptLogin(autoCode = null) {
             const inputEl = document.getElementById('loginCodeInput'), btnEl = document.getElementById('loginSubmitBtn');
             const errBox = document.getElementById('loginErrorBox'), rememberChk = document.getElementById('rememberCodeChk');
+            const legalChk = document.getElementById('legalAgreeChk');
+            if (!autoCode && legalChk && !legalChk.checked) { showLoginError('يرجى الموافقة على القوانين وإخلاء المسؤولية أولاً.'); return; }
             const code = (autoCode || (inputEl ? inputEl.value : '')).trim().toUpperCase();
             if (!code) { showLoginError('يرجى إدخال كود الاشتراك أولاً.'); return; }
 
@@ -2490,8 +2715,11 @@
             document.getElementById('mainAppWrapper').classList.remove('hidden');
             document.body.classList.add('app-unlocked');
 
+            populateArabCountrySelects();
+            loadUserPriceAlerts();
             loadSoundPrefs();
             loadNotificationsLog();
+            sendOnlinePresenceHeartbeat();
             renderAccountTab();
             checkPrivateMessage(user);
 
@@ -2537,7 +2765,8 @@
                 fetchLiveSignals(false);
                 loadRealEconomicCalendar(false);
                 checkAdminBroadcast();
-                setInterval(() => { if (currentUserRecord) paintLivePricesToCards(); }, 1000);
+                setInterval(() => { if (currentUserRecord) { paintLivePricesToCards(); evaluatePriceAlertsLive(); } }, 1000);
+                setInterval(() => { if (currentUserRecord) sendOnlinePresenceHeartbeat(); }, 25000);
                 setInterval(() => { if (currentUserRecord) refreshLiveSignalPrices(); }, 10000);
                 setInterval(() => {
                     fetchFromFirebase(false);
@@ -2778,6 +3007,7 @@
 
                 appState.signals = list;
                 renderSignalsList();
+                renderAnalystMonthlyLeaderboard();
                 refreshLiveSignalPrices();
                 if (manual) showToast('تم تحديث قائمة التوصيات الحية ↻');
             } catch (e) {}
@@ -2891,7 +3121,7 @@
                         ${s.reversal_warning ? `<div class="px-2.5 py-1.5 rounded-lg text-[10px] font-black text-amber-300" style="background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.45);">⚠️ تنبيه انعكاس محتمل — يُنصح بحجز الأرباح أو الخروج الآمن.</div>` : ''}
                         <div class="pt-2 border-t border-line flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
                             <span class="font-bold text-zinc-300">${s.close_reason || s.note || 'توكل على الله والتزم بإدارة المخاطر.'}</span>
-                            <span class="mono-num">🇦🇪 ${s.time_uae || ''}</span>
+                            <span class="mono-num">🇦🇪 ${s.date_time_uae || s.time_uae || ''}</span>
                         </div>
                         ${canManageThisSig ? `
                         <div class="pt-2 border-t border-line flex items-center gap-1.5 flex-wrap">
@@ -3859,6 +4089,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            populateArabCountrySelects();
             const savedCode = localStorage.getItem(STORAGE_SAVED_CODE);
             if (savedCode) {
                 const inputEl = document.getElementById('loginCodeInput');
